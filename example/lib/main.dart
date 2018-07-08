@@ -48,9 +48,11 @@ class _TargetWidgetState extends State<TargetWidget> {
   SuperTooltip tooltip;
 
   Future<bool> _willPopCallback() async {
+    // If the tooltip is open we don't pop the page on a backbutton press
+    // but close the ToolTip
     if (tooltip.isOpen) {
       tooltip.close();
-      return false; // return true if the route to be popped
+      return false;
     }
     return true;
   }
