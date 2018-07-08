@@ -17,4 +17,4 @@ tooltip = SuperTooltip(
 
 Image default 
 
-![](screenshots/default_parameter.png)
+![dsd](screenshots/default_parameters.PNG)
