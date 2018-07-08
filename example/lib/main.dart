@@ -67,6 +67,7 @@ class _TargetWidgetState extends State<TargetWidget> {
     var targetGlobalCenter =
         renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
 
+    // We create the tooltip on the first use
     tooltip = SuperTooltip(
       popupDirection: TooltipDirection.down,
       content: new Material(
