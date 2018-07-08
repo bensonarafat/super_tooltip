@@ -127,7 +127,7 @@ tooltip = SuperTooltip(
 );
 ```
 
-If you want the ToolTip to cover the maximum vertical available space, just set `snapsFarAwayVertically: true`. Also we can made the border green and thicker.
+If you want the ToolTip to cover the maximum vertical available space, just set `snapsFarAwayVertically: true`. Also we can made the border green and thicker and the touch through area a rectangle.
 
 ![](screenshots/snappvertical.PNG)
 

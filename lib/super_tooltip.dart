@@ -11,41 +11,99 @@ enum ClipAreaShape { oval, rectangle }
 typedef OutSideTapHandler = void Function();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/// Super flexible Tooltip class that allows you to show any content 
+/// inside a Tooltip in the overlay of the screen.
+/// 
 class SuperTooltip {
-//
+
+  /// Allows to accedd the closebutton for UI Testing
   static Key closeButtonKey = const Key("CloseButtonKey");
 
+  /// Signals if the Tooltip is visible at the moment
   bool isOpen = false;
+  /// 
+  /// The content of the Tooltip
   final Widget content;
+  /// 
+  /// The direcion in which the tooltip should open 
   TooltipDirection popupDirection;
+  /// 
+  /// optional handler that gets called when the Tooltip is closed
   final OutSideTapHandler onClose;
+  ///
+  /// [minWidth], [minHeight], [maxWidth], [maxHeight] optional size constraints. 
+  /// If a constraint is not set the size will ajust to the content
   double minWidth, minHeight, maxWidth, maxHeight;
+  ///
+  /// The minium padding from the Tooltip to the screen limits
   final double minimumOutSidePadding;
-  final bool snapsFarAwayVertically, snapsFarAwayHorizontally;
+  ///
+  /// If [snapsFarAwayVertically== true] the bigger free space above or below the target will be 
+  /// covered completely by the ToolTip. All other dimension or position constraints get overwritten 
+  final bool snapsFarAwayVertically;
+  ///
+  /// If [snapsFarAwayHorizontally== true] the bigger free space left or right of the target will be 
+  /// covered completely by the ToolTip. All other dimension or position constraints get overwritten 
+  final bool snapsFarAwayHorizontally;
+  /// [top], [right], [bottom], [left] position the Tooltip absolute relative to the whole screen
   double top, right, bottom, left;
+  ///
+  /// A Tooltip can have none, an inside or an outside close icon
   final ShowCloseButton showCloseButton;
+  ///
+  /// [hasShadow] defines if the tooltip should have a shadow
   final bool hasShadow;
+  ///
+  /// the stroke width of the border
   final double borderWidth;
+  ///
+  /// The corder radii of the border
   final double borderRadius;
+  ///
+  /// The color of the border
   final Color borderColor;
+  /// 
+  /// The color of the close icon
   final Color closeButtonColor;
+  /// 
+  /// The size of the close button 
   final double closeButtonSize;
+  ///
+  /// The length of the Arrow
   final double arrowLength;
+  /// 
+  /// The width of the arrow at its base
   final double arrowBaseWidth;
+  ///
+  /// The distance of the tip of the arrow's tip to the center of the target
   final double arrowTipDistance;
+  ///
+  /// The backgroundcolor of the Tooltip
   final Color backgroundColor;
+  /// The color of the rest of the overlay surrounding the Tooltip.
+  /// typically a translucent color.
   final Color outsideBackgroundColor;
-  final Rect touchThrougArea; // area the outside background doesn't cover.
+  ///
+  /// By default touching the surrounding of the Tooltip closes the tooltip.
+  /// you can define a rectangle area where the background is completely transparent 
+  /// and the widgets below react to touch
+  final Rect touchThrougArea; 
+  ///
+  /// The shape of the [touchThrougArea]. 
   final ClipAreaShape touchThroughAreaShape;
+  ///
+  /// If [touchThroughAreaShape] is [ClipAreaShape.rectangle] you can define a border radius
   final double touchThroughAreaCornerRadius;
-  final Key ballonContainerKey;
-  Offset targetCenter;
-  OverlayEntry backGroundOverlay;
-  OverlayEntry ballonOverlay;
+  ///
+  /// Let's you pass a key to the Tooltips cotainer for UI Testing
+  final Key tooltipContainerKey;
+
+  Offset _targetCenter;
+  OverlayEntry _backGroundOverlay;
+  OverlayEntry _ballonOverlay;
 
   SuperTooltip({
-    this.ballonContainerKey,
+    this.tooltipContainerKey,
     @required this.content, // The contents of the tooltip.
     @required this.popupDirection,
     this.onClose,
@@ -80,14 +138,31 @@ class SuperTooltip {
         assert((maxWidth ?? double.infinity) >= (minWidth ?? 0.0)),
         assert((maxHeight ?? double.infinity) >= (minHeight ?? 0.0));
 
+  ///
+  /// Removes the Tooltip from the overlay
+  void close() {
+    if (onClose != null) {
+      onClose();
+    }
+
+    _ballonOverlay.remove();
+    _backGroundOverlay.remove();
+    isOpen = false;
+  }
+
+
+
+  ///
+  /// Displays the tooltip
+  /// The center of [targetContext] is used as target of the arrow
   void show(BuildContext targetContext) {
     final RenderBox renderBox = targetContext.findRenderObject();
     final RenderBox overlay = Overlay.of(targetContext).context.findRenderObject();
 
-    targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
+    _targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
 
     // Create the background below the popup including the clipArea.
-    backGroundOverlay = OverlayEntry(
+    _backGroundOverlay = OverlayEntry(
         builder: (context) => _AnimationWrapper(
               builder: (context, opacity) => AnimatedOpacity(
                     opacity: opacity,
@@ -109,7 +184,7 @@ class SuperTooltip {
       maxHeight = null;
       left = 0.0;
       right = 0.0;
-      if (targetCenter.dy > overlay.size.center(Offset.zero).dy) {
+      if (_targetCenter.dy > overlay.size.center(Offset.zero).dy) {
         popupDirection = TooltipDirection.up;
         top = 0.0;
       } else {
@@ -121,7 +196,7 @@ class SuperTooltip {
       maxWidth = null;
       top = 0.0;
       bottom = 0.0;
-      if (targetCenter.dx < overlay.size.center(Offset.zero).dx) {
+      if (_targetCenter.dx < overlay.size.center(Offset.zero).dx) {
         popupDirection = TooltipDirection.right;
         right = 0.0;
       } else {
@@ -130,7 +205,7 @@ class SuperTooltip {
       }
     }
 
-    ballonOverlay = OverlayEntry(
+    _ballonOverlay = OverlayEntry(
         builder: (context) => _AnimationWrapper(
               builder: (context, opacity) => AnimatedOpacity(
                     duration: Duration(
@@ -141,7 +216,7 @@ class SuperTooltip {
                         child: CustomSingleChildLayout(
                             delegate: _PopupBallonLayoutDelegate(
                               popupDirection: popupDirection,
-                              targetCenter: targetCenter,
+                              targetCenter: _targetCenter,
                               minWidth: minWidth,
                               maxWidth: maxWidth,
                               minHeight: minHeight,
@@ -154,33 +229,33 @@ class SuperTooltip {
                             ),
                             child: Stack(
                               fit: StackFit.passthrough,
-                              children: [buildPopUp(), buildCloseButton()],
+                              children: [_buildPopUp(), _buildCloseButton()],
                             ))),
                   ),
             ));
 
-    Overlay.of(targetContext).insertAll([backGroundOverlay, ballonOverlay]);
+    Overlay.of(targetContext).insertAll([_backGroundOverlay, _ballonOverlay]);
     isOpen = true;
   }
 
-  Widget buildPopUp() {
+  Widget _buildPopUp() {
     return Positioned(
       child: Container(
-        key: ballonContainerKey,
+        key: tooltipContainerKey,
         decoration: ShapeDecoration(
             color: backgroundColor,
             shadows: hasShadow
                 ? [BoxShadow(color: Colors.black54, blurRadius: 10.0, spreadRadius: 5.0)]
                 : null,
-            shape: _BubbleShape(popupDirection, targetCenter, borderRadius, arrowBaseWidth,
+            shape: _BubbleShape(popupDirection, _targetCenter, borderRadius, arrowBaseWidth,
                 arrowTipDistance, borderColor, borderWidth, left, top, right, bottom)),
-        margin: getBallonContainerMargin(),
+        margin: _getBallonContainerMargin(),
         child: content,
       ),
     );
   }
 
-  Widget buildCloseButton() {
+  Widget _buildCloseButton() {
     const internalClickAreaPadding = 2.0;
 
     //
@@ -255,17 +330,8 @@ class SuperTooltip {
         ));
   }
 
-  void close() {
-    if (onClose != null) {
-      onClose();
-    }
 
-    ballonOverlay.remove();
-    backGroundOverlay.remove();
-    isOpen = false;
-  }
-
-  EdgeInsets getBallonContainerMargin() {
+  EdgeInsets _getBallonContainerMargin() {
     var top = (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 5 : 0.0;
 
     switch (popupDirection) {
