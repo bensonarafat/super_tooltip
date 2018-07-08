@@ -21,7 +21,7 @@
 
 <header id="title">
   <ol class="breadcrumbs gt-separated dark hidden-xs">
-    <li class="self-crumb">super_tooltip package</li>
+    <li><a href="https://github.com/escamoteur/super_tooltip">super_tooltip package</a></li>
   </ol>
   <div class="self-name">super_tooltip</div>
   <form class="search navbar-right" role="search">
@@ -50,7 +50,7 @@
 <p>Concept and Copyright by Marcelo Glasberg.</p>
 <p>LICENSE</p>
 <p>GPL v3, for the moment. Will be changed to a commercially friendly license as soon &gt;as possible. Meanwhile, please request a free commercially friendly license here: &gt;marcglasberg @ gmail dot com. Most requests will be granted very quickly.</p></blockquote>
-<p><img alt="" src="screenshots/default_parameters.PNG"></p>
+<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/default_parameters.PNG"></p>
 <p>A tooltip has to be created inside a StatefulWidget that should be the target for the Tooltip it can be shown whenever you like. In the example we show it as a response of a TouchEvent.</p>
 <pre class="language-Dart"><code class="language-Dart">// We create the tooltip on the first use
 tooltip = SuperTooltip(
@@ -70,7 +70,7 @@ tooltip.show(context);
 As this widget as many features I won't list them all here. Please refer to the API docs and the source comments.
 Instead I will show some of the features here. The first example was using all default values.</p>
 <p>Let's add a red close button, making popup to the right and limit its width:</p>
-<p><img alt="" src="screenshots/leftwithcloseandmaxwidth.PNG"></p>
+<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/leftwithcloseandmaxwidth.PNG"></p>
 <pre class="language-Dart"><code class="language-Dart">// We create the tooltip on the first use
 tooltip = SuperTooltip(
   popupDirection: TooltipDirection.right,
@@ -89,7 +89,7 @@ tooltip = SuperTooltip(
 );
 </code></pre>
 <p>Let's nail the bubble into a fixed position and move the close button to the outside and remove the shadow</p>
-<p><img alt="" src="screenshots/outside_close_button.PNG"></p>
+<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/outside_close_button.PNG"></p>
 <pre class="language-Dart"><code class="language-Dart">tooltip = SuperTooltip(
   popupDirection: TooltipDirection.up,
   top: 50.0,
@@ -110,7 +110,7 @@ tooltip = SuperTooltip(
 );
 </code></pre>
 <p>Maybe you want to allow the user to touch an area below the overlay without closing the Tooltip? Open the area around the target this is quite easy. Additional we now open to the left and moved the tip of the arrow a bit away from the target:</p>
-<p><img alt="" src="screenshots/touchthrough.PNG"></p>
+<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/touchthrough.PNG"></p>
 <pre class="language-Dart"><code class="language-Dart">
 // Get the center of our target as global coordinates relative to overlay coordinates:
 RenderBox renderBox = context.findRenderObject();
@@ -140,8 +140,8 @@ tooltip = SuperTooltip(
   ),
 );
 </code></pre>
-<p>If you want the ToolTip to cover the maximum vertical available space, just set <code>snapsFarAwayVertically: true</code>. Also we can made the border green and thicker.</p>
-<p><img alt="" src="screenshots/snappvertical.PNG"></p>
+<p>If you want the ToolTip to cover the maximum vertical available space, just set <code>snapsFarAwayVertically: true</code>. Also we can made the border green and thicker and the touch through area a rectangle.</p>
+<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/snappvertical.PNG"></p>
 <pre class="language-Dart"><code class="language-Dart">tooltip = SuperTooltip(
    popupDirection: TooltipDirection.left,
    arrowTipDistance: 15.0,
@@ -183,7 +183,7 @@ tooltip = SuperTooltip(
 
 <footer>
   <span class="no-break">
-    super_tooltip 0.0.1
+    super_tooltip 0.9.0
   </span>
 
 </footer>

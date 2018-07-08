@@ -16,7 +16,7 @@ My Client allowed me to publish this widget but currently you have to send him a
 
 
 
-![](screenshots/default_parameters.PNG)
+![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/default_parameters.PNG)
 
 
 A tooltip has to be created inside a StatefulWidget that should be the target for the Tooltip it can be shown whenever you like. In the example we show it as a response of a TouchEvent.
@@ -44,7 +44,7 @@ Instead I will show some of the features here. The first example was using all d
 
 Let's add a red close button, making popup to the right and limit its width:
 
-![](screenshots/leftwithcloseandmaxwidth.PNG)
+![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/leftwithcloseandmaxwidth.PNG)
 
 ```Dart
 // We create the tooltip on the first use
@@ -67,7 +67,7 @@ tooltip = SuperTooltip(
 
 Let's nail the bubble into a fixed position and move the close button to the outside and remove the shadow
 
-![](screenshots/outside_close_button.PNG)
+![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/outside_close_button.PNG)
 
 ```Dart
 tooltip = SuperTooltip(
@@ -94,7 +94,7 @@ tooltip = SuperTooltip(
 Maybe you want to allow the user to touch an area below the overlay without closing the Tooltip? Open the area around the target this is quite easy. Additional we now open to the left and moved the tip of the arrow a bit away from the target:
 
 
-![](screenshots/touchthrough.PNG)
+![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/touchthrough.PNG)
 
 ```Dart
 
@@ -129,7 +129,7 @@ tooltip = SuperTooltip(
 
 If you want the ToolTip to cover the maximum vertical available space, just set `snapsFarAwayVertically: true`. Also we can made the border green and thicker and the touch through area a rectangle.
 
-![](screenshots/snappvertical.PNG)
+![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/snappvertical.PNG)
 
 ```Dart
 tooltip = SuperTooltip(

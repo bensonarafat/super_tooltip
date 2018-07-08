@@ -49,9 +49,6 @@
       <li><a href="super_tooltip/SuperTooltip/arrowLength.html">arrowLength</a></li>
       <li><a href="super_tooltip/SuperTooltip/arrowTipDistance.html">arrowTipDistance</a></li>
       <li><a href="super_tooltip/SuperTooltip/backgroundColor.html">backgroundColor</a></li>
-      <li><a href="super_tooltip/SuperTooltip/backGroundOverlay.html">backGroundOverlay</a></li>
-      <li><a href="super_tooltip/SuperTooltip/ballonContainerKey.html">ballonContainerKey</a></li>
-      <li><a href="super_tooltip/SuperTooltip/ballonOverlay.html">ballonOverlay</a></li>
       <li><a href="super_tooltip/SuperTooltip/borderColor.html">borderColor</a></li>
       <li><a href="super_tooltip/SuperTooltip/borderRadius.html">borderRadius</a></li>
       <li><a href="super_tooltip/SuperTooltip/borderWidth.html">borderWidth</a></li>
@@ -74,7 +71,7 @@
       <li><a href="super_tooltip/SuperTooltip/showCloseButton.html">showCloseButton</a></li>
       <li><a href="super_tooltip/SuperTooltip/snapsFarAwayHorizontally.html">snapsFarAwayHorizontally</a></li>
       <li><a href="super_tooltip/SuperTooltip/snapsFarAwayVertically.html">snapsFarAwayVertically</a></li>
-      <li><a href="super_tooltip/SuperTooltip/targetCenter.html">targetCenter</a></li>
+      <li><a href="super_tooltip/SuperTooltip/tooltipContainerKey.html">tooltipContainerKey</a></li>
       <li><a href="super_tooltip/SuperTooltip/top.html">top</a></li>
       <li><a href="super_tooltip/SuperTooltip/touchThrougArea.html">touchThrougArea</a></li>
       <li><a href="super_tooltip/SuperTooltip/touchThroughAreaCornerRadius.html">touchThroughAreaCornerRadius</a></li>
@@ -83,10 +80,7 @@
       <li class="inherited"><a href="super_tooltip/SuperTooltip/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title"><a href="super_tooltip/SuperTooltip-class.html#instance-methods">Methods</a></li>
-      <li><a href="super_tooltip/SuperTooltip/buildCloseButton.html">buildCloseButton</a></li>
-      <li><a href="super_tooltip/SuperTooltip/buildPopUp.html">buildPopUp</a></li>
       <li><a href="super_tooltip/SuperTooltip/close.html">close</a></li>
-      <li><a href="super_tooltip/SuperTooltip/getBallonContainerMargin.html">getBallonContainerMargin</a></li>
       <li><a href="super_tooltip/SuperTooltip/show.html">show</a></li>
       <li class="inherited"><a href="super_tooltip/SuperTooltip/noSuchMethod.html">noSuchMethod</a></li>
       <li class="inherited"><a href="super_tooltip/SuperTooltip/toString.html">toString</a></li>
@@ -109,6 +103,10 @@
       <span class="name ">show</span>
 (<wbr><span class="parameter" id="show-param-targetContext"><span class="type-annotation">BuildContext</span> <span class="parameter-name">targetContext</span></span>)
     </section>
+    <section class="desc markdown">
+      <p>Displays the tooltip
+The center of <code>targetContext</code> is used as target of the arrow</p>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span> </h2>
@@ -116,10 +114,10 @@
   final RenderBox renderBox = targetContext.findRenderObject();
   final RenderBox overlay = Overlay.of(targetContext).context.findRenderObject();
 
-  targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
+  _targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
 
   &#47;&#47; Create the background below the popup including the clipArea.
-  backGroundOverlay = OverlayEntry(
+  _backGroundOverlay = OverlayEntry(
       builder: (context) =&gt; _AnimationWrapper(
             builder: (context, opacity) =&gt; AnimatedOpacity(
                   opacity: opacity,
@@ -141,7 +139,7 @@
     maxHeight = null;
     left = 0.0;
     right = 0.0;
-    if (targetCenter.dy &gt; overlay.size.center(Offset.zero).dy) {
+    if (_targetCenter.dy &gt; overlay.size.center(Offset.zero).dy) {
       popupDirection = TooltipDirection.up;
       top = 0.0;
     } else {
@@ -153,7 +151,7 @@
     maxWidth = null;
     top = 0.0;
     bottom = 0.0;
-    if (targetCenter.dx &lt; overlay.size.center(Offset.zero).dx) {
+    if (_targetCenter.dx &lt; overlay.size.center(Offset.zero).dx) {
       popupDirection = TooltipDirection.right;
       right = 0.0;
     } else {
@@ -162,7 +160,7 @@
     }
   }
 
-  ballonOverlay = OverlayEntry(
+  _ballonOverlay = OverlayEntry(
       builder: (context) =&gt; _AnimationWrapper(
             builder: (context, opacity) =&gt; AnimatedOpacity(
                   duration: Duration(
@@ -173,7 +171,7 @@
                       child: CustomSingleChildLayout(
                           delegate: _PopupBallonLayoutDelegate(
                             popupDirection: popupDirection,
-                            targetCenter: targetCenter,
+                            targetCenter: _targetCenter,
                             minWidth: minWidth,
                             maxWidth: maxWidth,
                             minHeight: minHeight,
@@ -186,12 +184,12 @@
                           ),
                           child: Stack(
                             fit: StackFit.passthrough,
-                            children: [buildPopUp(), buildCloseButton()],
+                            children: [_buildPopUp(), _buildCloseButton()],
                           ))),
                 ),
           ));
 
-  Overlay.of(targetContext).insertAll([backGroundOverlay, ballonOverlay]);
+  Overlay.of(targetContext).insertAll([_backGroundOverlay, _ballonOverlay]);
   isOpen = true;
 }</code></pre>
     </section>
@@ -205,7 +203,7 @@
 
 <footer>
   <span class="no-break">
-    super_tooltip 0.0.1
+    super_tooltip 0.9.0
   </span>
 
 </footer>
