@@ -69,14 +69,28 @@ class _TargetWidgetState extends State<TargetWidget> {
 
     // We create the tooltip on the first use
     tooltip = SuperTooltip(
-      popupDirection: TooltipDirection.down,
+      popupDirection: TooltipDirection.left,
+      arrowTipDistance: 15.0,
+      arrowBaseWidth: 40.0,
+      arrowLength: 40.0,
+      borderColor: Colors.green,
+      borderWidth: 5.0,
+      snapsFarAwayVertically: true,
+      showCloseButton: ShowCloseButton.inside,
+      hasShadow: false,
+      touchThrougArea: new Rect.fromLTWH(targetGlobalCenter.dx-100, targetGlobalCenter.dy-100, 200.0, 160.0),
+      touchThroughAreaShape: ClipAreaShape.rectangle,
+
       content: new Material(
-          child: Text(
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-            "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
-            "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
+          child: Padding(
+            padding: const EdgeInsets.only(top:20.0),
+            child: Text(
+              "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
+              "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
+              "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
         softWrap: true,
-      )),
+      ),
+          )),
     );
 
     tooltip.show(context);

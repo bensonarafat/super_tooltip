@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="API docs for the SuperTooltip class from the super_tooltip library, for the Dart programming language.">
+  <title>SuperTooltip class - super_tooltip library - Dart API</title>
+  <!-- required because all the links are pseudo-absolute -->
+  <base href="..">
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link rel="stylesheet" href="static-assets/github.css">
+  <link rel="stylesheet" href="static-assets/styles.css">
+  <link rel="icon" href="static-assets/favicon.png">
+
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="index.html">super_tooltip</a></li>
+    <li><a href="super_tooltip/super_tooltip-library.html">super_tooltip</a></li>
+    <li class="self-crumb">SuperTooltip class</li>
+  </ol>
+  <div class="self-name">SuperTooltip</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5>super_tooltip library</h5>
+    <ol>
+      <li class="section-title"><a href="super_tooltip/super_tooltip-library.html#classes">Classes</a></li>
+      <li><a href="super_tooltip/SuperTooltip-class.html">SuperTooltip</a></li>
+    
+    
+    
+    
+      <li class="section-title"><a href="super_tooltip/super_tooltip-library.html#enums">Enums</a></li>
+      <li><a href="super_tooltip/ClipAreaShape-class.html">ClipAreaShape</a></li>
+      <li><a href="super_tooltip/ShowCloseButton-class.html">ShowCloseButton</a></li>
+      <li><a href="super_tooltip/TooltipDirection-class.html">TooltipDirection</a></li>
+    
+      <li class="section-title"><a href="super_tooltip/super_tooltip-library.html#typedefs">Typedefs</a></li>
+      <li><a href="super_tooltip/FadeBuilder.html">FadeBuilder</a></li>
+      <li><a href="super_tooltip/OutSideTapHandler.html">OutSideTapHandler</a></li>
+    
+    </ol>
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+    <h1>SuperTooltip class</h1>
+
+    <section class="desc markdown">
+      <p>/////////////////////////////////////////////////////////////////////////////////////////////////</p>
+    </section>
+    
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="SuperTooltip" class="callable">
+          <span class="name"><a href="super_tooltip/SuperTooltip/SuperTooltip.html">SuperTooltip</a></span><span class="signature">({<span class="parameter" id="-param-ballonContainerKey"><span class="type-annotation">Key</span> <span class="parameter-name">ballonContainerKey</span>, </span> <span class="parameter" id="-param-content"><span>@required</span> <span class="type-annotation">Widget</span> <span class="parameter-name">content</span>, </span> <span class="parameter" id="-param-popupDirection"><span>@required</span> <span class="type-annotation"><a href="super_tooltip/TooltipDirection-class.html">TooltipDirection</a></span> <span class="parameter-name">popupDirection</span>, </span> <span class="parameter" id="-param-onClose"><span class="type-annotation"><a href="super_tooltip/OutSideTapHandler.html">OutSideTapHandler</a></span> <span class="parameter-name">onClose</span>, </span> <span class="parameter" id="-param-minWidth"><span class="type-annotation">double</span> <span class="parameter-name">minWidth</span>, </span> <span class="parameter" id="-param-minHeight"><span class="type-annotation">double</span> <span class="parameter-name">minHeight</span>, </span> <span class="parameter" id="-param-maxWidth"><span class="type-annotation">double</span> <span class="parameter-name">maxWidth</span>, </span> <span class="parameter" id="-param-maxHeight"><span class="type-annotation">double</span> <span class="parameter-name">maxHeight</span>, </span> <span class="parameter" id="-param-top"><span class="type-annotation">double</span> <span class="parameter-name">top</span>, </span> <span class="parameter" id="-param-right"><span class="type-annotation">double</span> <span class="parameter-name">right</span>, </span> <span class="parameter" id="-param-bottom"><span class="type-annotation">double</span> <span class="parameter-name">bottom</span>, </span> <span class="parameter" id="-param-left"><span class="type-annotation">double</span> <span class="parameter-name">left</span>, </span> <span class="parameter" id="-param-minimumOutSidePadding"><span class="type-annotation">double</span> <span class="parameter-name">minimumOutSidePadding</span>: <span class="default-value">20.0</span>, </span> <span class="parameter" id="-param-showCloseButton"><span class="type-annotation"><a href="super_tooltip/ShowCloseButton-class.html">ShowCloseButton</a></span> <span class="parameter-name">showCloseButton</span>: <span class="default-value">ShowCloseButton.none</span>, </span> <span class="parameter" id="-param-snapsFarAwayVertically"><span class="type-annotation">bool</span> <span class="parameter-name">snapsFarAwayVertically</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="-param-snapsFarAwayHorizontally"><span class="type-annotation">bool</span> <span class="parameter-name">snapsFarAwayHorizontally</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="-param-hasShadow"><span class="type-annotation">bool</span> <span class="parameter-name">hasShadow</span>: <span class="default-value">true</span>, </span> <span class="parameter" id="-param-borderWidth"><span class="type-annotation">double</span> <span class="parameter-name">borderWidth</span>: <span class="default-value">2.0</span>, </span> <span class="parameter" id="-param-borderRadius"><span class="type-annotation">double</span> <span class="parameter-name">borderRadius</span>: <span class="default-value">10.0</span>, </span> <span class="parameter" id="-param-borderColor"><span class="type-annotation">Color</span> <span class="parameter-name">borderColor</span>: <span class="default-value">Colors.black</span>, </span> <span class="parameter" id="-param-closeButtonColor"><span class="type-annotation">Color</span> <span class="parameter-name">closeButtonColor</span>: <span class="default-value">Colors.black</span>, </span> <span class="parameter" id="-param-closeButtonSize"><span class="type-annotation">double</span> <span class="parameter-name">closeButtonSize</span>: <span class="default-value">30.0</span>, </span> <span class="parameter" id="-param-arrowLength"><span class="type-annotation">double</span> <span class="parameter-name">arrowLength</span>: <span class="default-value">20.0</span>, </span> <span class="parameter" id="-param-arrowBaseWidth"><span class="type-annotation">double</span> <span class="parameter-name">arrowBaseWidth</span>: <span class="default-value">20.0</span>, </span> <span class="parameter" id="-param-arrowTipDistance"><span class="type-annotation">double</span> <span class="parameter-name">arrowTipDistance</span>: <span class="default-value">2.0</span>, </span> <span class="parameter" id="-param-backgroundColor"><span class="type-annotation">Color</span> <span class="parameter-name">backgroundColor</span>: <span class="default-value">Colors.white</span>, </span> <span class="parameter" id="-param-outsideBackgroundColor"><span class="type-annotation">Color</span> <span class="parameter-name">outsideBackgroundColor</span>: <span class="default-value">const Color.fromARGB(50, 255, 255, 255)</span>, </span> <span class="parameter" id="-param-touchThroughAreaShape"><span class="type-annotation"><a href="super_tooltip/ClipAreaShape-class.html">ClipAreaShape</a></span> <span class="parameter-name">touchThroughAreaShape</span>: <span class="default-value">ClipAreaShape.oval</span>, </span> <span class="parameter" id="-param-touchThroughAreaCornerRadius"><span class="type-annotation">double</span> <span class="parameter-name">touchThroughAreaCornerRadius</span>: <span class="default-value">5.0</span>, </span> <span class="parameter" id="-param-touchThrougArea"><span class="type-annotation">Rect</span> <span class="parameter-name">touchThrougArea</span></span> })</span>
+        </dt>
+        <dd>
+          
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="arrowBaseWidth" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/arrowBaseWidth.html">arrowBaseWidth</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="arrowLength" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/arrowLength.html">arrowLength</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="arrowTipDistance" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/arrowTipDistance.html">arrowTipDistance</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="backgroundColor" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/backgroundColor.html">backgroundColor</a></span>
+          <span class="signature">&#8594; Color</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="backGroundOverlay" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/backGroundOverlay.html">backGroundOverlay</a></span>
+          <span class="signature">&#8596; OverlayEntry</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="ballonContainerKey" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/ballonContainerKey.html">ballonContainerKey</a></span>
+          <span class="signature">&#8594; Key</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="ballonOverlay" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/ballonOverlay.html">ballonOverlay</a></span>
+          <span class="signature">&#8596; OverlayEntry</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="borderColor" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/borderColor.html">borderColor</a></span>
+          <span class="signature">&#8594; Color</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="borderRadius" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/borderRadius.html">borderRadius</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="borderWidth" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/borderWidth.html">borderWidth</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="bottom" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/bottom.html">bottom</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="closeButtonColor" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/closeButtonColor.html">closeButtonColor</a></span>
+          <span class="signature">&#8594; Color</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="closeButtonSize" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/closeButtonSize.html">closeButtonSize</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="content" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/content.html">content</a></span>
+          <span class="signature">&#8594; Widget</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="hasShadow" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/hasShadow.html">hasShadow</a></span>
+          <span class="signature">&#8594; bool</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="isOpen" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/isOpen.html">isOpen</a></span>
+          <span class="signature">&#8596; bool</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="left" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/left.html">left</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="maxHeight" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/maxHeight.html">maxHeight</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="maxWidth" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/maxWidth.html">maxWidth</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="minHeight" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/minHeight.html">minHeight</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="minimumOutSidePadding" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/minimumOutSidePadding.html">minimumOutSidePadding</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="minWidth" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/minWidth.html">minWidth</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="onClose" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/onClose.html">onClose</a></span>
+          <span class="signature">&#8594; <a href="super_tooltip/OutSideTapHandler.html">OutSideTapHandler</a></span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="outsideBackgroundColor" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/outsideBackgroundColor.html">outsideBackgroundColor</a></span>
+          <span class="signature">&#8594; Color</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="popupDirection" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/popupDirection.html">popupDirection</a></span>
+          <span class="signature">&#8596; <a href="super_tooltip/TooltipDirection-class.html">TooltipDirection</a></span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="right" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/right.html">right</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="showCloseButton" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/showCloseButton.html">showCloseButton</a></span>
+          <span class="signature">&#8594; <a href="super_tooltip/ShowCloseButton-class.html">ShowCloseButton</a></span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="snapsFarAwayHorizontally" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/snapsFarAwayHorizontally.html">snapsFarAwayHorizontally</a></span>
+          <span class="signature">&#8594; bool</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="snapsFarAwayVertically" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/snapsFarAwayVertically.html">snapsFarAwayVertically</a></span>
+          <span class="signature">&#8594; bool</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="targetCenter" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/targetCenter.html">targetCenter</a></span>
+          <span class="signature">&#8596; Offset</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="top" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/top.html">top</a></span>
+          <span class="signature">&#8596; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+        <dt id="touchThrougArea" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/touchThrougArea.html">touchThrougArea</a></span>
+          <span class="signature">&#8594; Rect</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="touchThroughAreaCornerRadius" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/touchThroughAreaCornerRadius.html">touchThroughAreaCornerRadius</a></span>
+          <span class="signature">&#8594; double</span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="touchThroughAreaShape" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/touchThroughAreaShape.html">touchThroughAreaShape</a></span>
+          <span class="signature">&#8594; <a href="super_tooltip/ClipAreaShape-class.html">ClipAreaShape</a></span>
+        </dt>
+        <dd>
+          
+          <div class="features">final</div>
+</dd>
+        <dt id="hashCode" class="property inherited">
+          <span class="name"><a href="super_tooltip/SuperTooltip/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; int</span>
+        </dt>
+        <dd class="inherited">
+          The hash code for this object. <a href="super_tooltip/SuperTooltip/hashCode.html">[...]</a>
+          <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="runtimeType" class="property inherited">
+          <span class="name"><a href="super_tooltip/SuperTooltip/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; Type</span>
+        </dt>
+        <dd class="inherited">
+          A representation of the runtime type of the object.
+          <div class="features">read-only, inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="buildCloseButton" class="callable">
+          <span class="name"><a href="super_tooltip/SuperTooltip/buildCloseButton.html">buildCloseButton</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Widget</span>
+          </span>
+        </dt>
+        <dd>
+          
+          
+</dd>
+        <dt id="buildPopUp" class="callable">
+          <span class="name"><a href="super_tooltip/SuperTooltip/buildPopUp.html">buildPopUp</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Widget</span>
+          </span>
+        </dt>
+        <dd>
+          
+          
+</dd>
+        <dt id="close" class="callable">
+          <span class="name"><a href="super_tooltip/SuperTooltip/close.html">close</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+        </dt>
+        <dd>
+          
+          
+</dd>
+        <dt id="getBallonContainerMargin" class="callable">
+          <span class="name"><a href="super_tooltip/SuperTooltip/getBallonContainerMargin.html">getBallonContainerMargin</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; EdgeInsets</span>
+          </span>
+        </dt>
+        <dd>
+          
+          
+</dd>
+        <dt id="show" class="callable">
+          <span class="name"><a href="super_tooltip/SuperTooltip/show.html">show</a></span><span class="signature">(<wbr><span class="parameter" id="show-param-targetContext"><span class="type-annotation">BuildContext</span> <span class="parameter-name">targetContext</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+        </dt>
+        <dd>
+          
+          
+</dd>
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="super_tooltip/SuperTooltip/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          Invoked when a non-existent method or property is accessed. <a href="super_tooltip/SuperTooltip/noSuchMethod.html">[...]</a>
+          <div class="features">inherited</div>
+</dd>
+        <dt id="toString" class="callable inherited">
+          <span class="name"><a href="super_tooltip/SuperTooltip/toString.html">toString</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; String</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          Returns a string representation of this object.
+          <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+          <span class="name"><a href="super_tooltip/SuperTooltip/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+            <span class="returntype parameter">&#8594; bool</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          The equality operator. <a href="super_tooltip/SuperTooltip/operator_equals.html">[...]</a>
+          <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="static-properties">
+      <h2>Static Properties</h2>
+
+      <dl class="properties">
+        <dt id="closeButtonKey" class="property">
+          <span class="name"><a href="super_tooltip/SuperTooltip/closeButtonKey.html">closeButtonKey</a></span>
+          <span class="signature">&#8596; Key</span>
+        </dt>
+        <dd>
+          
+          <div class="features">read / write</div>
+</dd>
+      </dl>
+    </section>
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <ol>
+      <li class="section-title"><a href="super_tooltip/SuperTooltip-class.html#constructors">Constructors</a></li>
+      <li><a href="super_tooltip/SuperTooltip/SuperTooltip.html">SuperTooltip</a></li>
+    
+      <li class="section-title">
+        <a href="super_tooltip/SuperTooltip-class.html#instance-properties">Properties</a>
+      </li>
+      <li><a href="super_tooltip/SuperTooltip/arrowBaseWidth.html">arrowBaseWidth</a></li>
+      <li><a href="super_tooltip/SuperTooltip/arrowLength.html">arrowLength</a></li>
+      <li><a href="super_tooltip/SuperTooltip/arrowTipDistance.html">arrowTipDistance</a></li>
+      <li><a href="super_tooltip/SuperTooltip/backgroundColor.html">backgroundColor</a></li>
+      <li><a href="super_tooltip/SuperTooltip/backGroundOverlay.html">backGroundOverlay</a></li>
+      <li><a href="super_tooltip/SuperTooltip/ballonContainerKey.html">ballonContainerKey</a></li>
+      <li><a href="super_tooltip/SuperTooltip/ballonOverlay.html">ballonOverlay</a></li>
+      <li><a href="super_tooltip/SuperTooltip/borderColor.html">borderColor</a></li>
+      <li><a href="super_tooltip/SuperTooltip/borderRadius.html">borderRadius</a></li>
+      <li><a href="super_tooltip/SuperTooltip/borderWidth.html">borderWidth</a></li>
+      <li><a href="super_tooltip/SuperTooltip/bottom.html">bottom</a></li>
+      <li><a href="super_tooltip/SuperTooltip/closeButtonColor.html">closeButtonColor</a></li>
+      <li><a href="super_tooltip/SuperTooltip/closeButtonSize.html">closeButtonSize</a></li>
+      <li><a href="super_tooltip/SuperTooltip/content.html">content</a></li>
+      <li><a href="super_tooltip/SuperTooltip/hasShadow.html">hasShadow</a></li>
+      <li><a href="super_tooltip/SuperTooltip/isOpen.html">isOpen</a></li>
+      <li><a href="super_tooltip/SuperTooltip/left.html">left</a></li>
+      <li><a href="super_tooltip/SuperTooltip/maxHeight.html">maxHeight</a></li>
+      <li><a href="super_tooltip/SuperTooltip/maxWidth.html">maxWidth</a></li>
+      <li><a href="super_tooltip/SuperTooltip/minHeight.html">minHeight</a></li>
+      <li><a href="super_tooltip/SuperTooltip/minimumOutSidePadding.html">minimumOutSidePadding</a></li>
+      <li><a href="super_tooltip/SuperTooltip/minWidth.html">minWidth</a></li>
+      <li><a href="super_tooltip/SuperTooltip/onClose.html">onClose</a></li>
+      <li><a href="super_tooltip/SuperTooltip/outsideBackgroundColor.html">outsideBackgroundColor</a></li>
+      <li><a href="super_tooltip/SuperTooltip/popupDirection.html">popupDirection</a></li>
+      <li><a href="super_tooltip/SuperTooltip/right.html">right</a></li>
+      <li><a href="super_tooltip/SuperTooltip/showCloseButton.html">showCloseButton</a></li>
+      <li><a href="super_tooltip/SuperTooltip/snapsFarAwayHorizontally.html">snapsFarAwayHorizontally</a></li>
+      <li><a href="super_tooltip/SuperTooltip/snapsFarAwayVertically.html">snapsFarAwayVertically</a></li>
+      <li><a href="super_tooltip/SuperTooltip/targetCenter.html">targetCenter</a></li>
+      <li><a href="super_tooltip/SuperTooltip/top.html">top</a></li>
+      <li><a href="super_tooltip/SuperTooltip/touchThrougArea.html">touchThrougArea</a></li>
+      <li><a href="super_tooltip/SuperTooltip/touchThroughAreaCornerRadius.html">touchThroughAreaCornerRadius</a></li>
+      <li><a href="super_tooltip/SuperTooltip/touchThroughAreaShape.html">touchThroughAreaShape</a></li>
+      <li class="inherited"><a href="super_tooltip/SuperTooltip/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="super_tooltip/SuperTooltip/runtimeType.html">runtimeType</a></li>
+    
+      <li class="section-title"><a href="super_tooltip/SuperTooltip-class.html#instance-methods">Methods</a></li>
+      <li><a href="super_tooltip/SuperTooltip/buildCloseButton.html">buildCloseButton</a></li>
+      <li><a href="super_tooltip/SuperTooltip/buildPopUp.html">buildPopUp</a></li>
+      <li><a href="super_tooltip/SuperTooltip/close.html">close</a></li>
+      <li><a href="super_tooltip/SuperTooltip/getBallonContainerMargin.html">getBallonContainerMargin</a></li>
+      <li><a href="super_tooltip/SuperTooltip/show.html">show</a></li>
+      <li class="inherited"><a href="super_tooltip/SuperTooltip/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="super_tooltip/SuperTooltip/toString.html">toString</a></li>
+    
+      <li class="section-title inherited"><a href="super_tooltip/SuperTooltip-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="super_tooltip/SuperTooltip/operator_equals.html">operator ==</a></li>
+    
+      <li class="section-title"><a href="super_tooltip/SuperTooltip-class.html#static-properties">Static properties</a></li>
+      <li><a href="super_tooltip/SuperTooltip/closeButtonKey.html">closeButtonKey</a></li>
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    super_tooltip 0.0.1
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/highlight.pack.js"></script>
+<script src="static-assets/URI.js"></script>
+<script src="static-assets/script.js"></script>
+
+
+</body>
+
+</html>
