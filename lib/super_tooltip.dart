@@ -132,7 +132,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   AnimationController _animationController;
   SuperTooltipController _superTooltipController;
   OverlayEntry _entry;
-  OverlayEntry _backgroundEntry;
+  OverlayEntry _barrierEntry;
   bool _ignorePointer = false;
 
   @override
@@ -162,7 +162,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   @override
   void dispose() {
     _entry?.remove();
-    _backgroundEntry?.remove();
+    _barrierEntry?.remove();
     _superTooltipController.removeListener(_onChangeNotifier);
     _animationController.dispose();
     super.dispose();
@@ -250,7 +250,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       }
     }
 
-    _backgroundEntry = OverlayEntry(
+    _barrierEntry = OverlayEntry(
       builder: (context) => IgnorePointer(
         ignoring: _ignorePointer,
         child: FadeTransition(
@@ -259,7 +259,6 @@ class _ExtendedTooltipState extends State<SuperTooltip>
             onTap: _superTooltipController.hideTooltip,
             child: Container(
               decoration: ShapeDecoration(
-                color: Colors.blue.withAlpha(50),
                 shape: _ShapeOverlay(
                   clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
                   clipAreaShape: widget.touchThroughAreaShape,
@@ -313,7 +312,6 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                     shape: _BubbleShape(
                       arrowBaseWidth: widget.arrowBaseWidth,
                       arrowTipDistance: widget.arrowTipDistance,
-                      // TODO:
                       borderColor: widget.borderColor,
                       borderRadius: widget.borderRadius,
                       borderWidth: widget.borderWidth,
@@ -334,7 +332,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     );
 
     Overlay.of(context).insertAll([
-      if (widget.showBarrier) _backgroundEntry,
+      if (widget.showBarrier) _barrierEntry,
       _entry,
     ]);
   }
@@ -358,7 +356,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
     setState(() {
       _entry.remove();
-      _backgroundEntry?.remove();
+      _barrierEntry?.remove();
     });
   }
 }
@@ -858,7 +856,7 @@ EdgeInsets _getTooltipMargin({
   @required double arrowLength,
   @required PreferredDirection preferredDirection,
 }) {
-  var top =
+  final top =
       (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 5 : 0.0;
 
   switch (preferredDirection) {
