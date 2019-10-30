@@ -20,14 +20,14 @@ class SuperTooltipController extends ChangeNotifier {
     event = _Event.show;
     _completer = Completer();
     notifyListeners();
-    return _completer.future.then((_) => _isVisible = true);
+    return _completer.future.whenComplete(() => _isVisible = true);
   }
 
   Future<void> hideTooltip() {
     event = _Event.hide;
     _completer = Completer();
     notifyListeners();
-    return _completer.future.then((_) => _isVisible = false);
+    return _completer.future.whenComplete(() => _isVisible = false);
   }
 
   void complete() {
@@ -36,8 +36,6 @@ class SuperTooltipController extends ChangeNotifier {
     }
   }
 }
-
-// TODO: Change preferredDirectionn direction and hot reload and assertion error
 
 class SuperTooltip extends StatefulWidget {
   const SuperTooltip({
@@ -56,9 +54,12 @@ class SuperTooltip extends StatefulWidget {
     this.left,
     this.closeButtonSize,
     // TODO: Make edgeinsets instead
-    this.margin = 20.0,
+    this.minimumOutsideMargin = 20.0,
     this.verticalOffset = 0.0,
     this.elevation = 0.0,
+    // TODO: The native flutter tooltip uses verticalOffset
+    //  to space the tooltip from the child. But we'll likely
+    // need just offset, since it's 4 way directional
     // this.verticalOffset = 24.0,
     this.backgroundColor,
     this.decoration,
@@ -96,12 +97,10 @@ class SuperTooltip extends StatefulWidget {
   final void Function() onHide;
   final bool snapsFarAwayVertically;
   final bool snapsFarAwayHorizontally;
-
   final double top, right, bottom, left;
-
   final ShowCloseButton showCloseButton;
   final double closeButtonSize;
-  final double margin;
+  final double minimumOutsideMargin;
   final double verticalOffset;
   final Widget child;
   final Color borderColor;
@@ -133,7 +132,6 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   SuperTooltipController _superTooltipController;
   OverlayEntry _entry;
   OverlayEntry _barrierEntry;
-  bool _ignorePointer = false;
 
   @override
   void initState() {
@@ -141,7 +139,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       duration: widget.fadeInDuration,
       reverseDuration: widget.fadeOutDuration,
       vsync: this,
-    )..addStatusListener(_handleStatusChanged);
+    );
     _superTooltipController = widget.controller ?? SuperTooltipController();
     _superTooltipController.addListener(_onChangeNotifier);
 
@@ -161,8 +159,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
   @override
   void dispose() {
-    _entry?.remove();
-    _barrierEntry?.remove();
+    if (_entry != null) _removeEntries();
     _superTooltipController.removeListener(_onChangeNotifier);
     _animationController.dispose();
     super.dispose();
@@ -180,19 +177,6 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     );
   }
 
-  void _handleStatusChanged(AnimationStatus status) {
-    switch (status) {
-      case AnimationStatus.completed:
-        setState(() => _ignorePointer = true);
-        break;
-      case AnimationStatus.dismissed:
-      case AnimationStatus.forward:
-      case AnimationStatus.reverse:
-        setState(() => _ignorePointer = false);
-        break;
-    }
-  }
-
   void _onChangeNotifier() {
     switch (_superTooltipController.event) {
       case _Event.show:
@@ -204,7 +188,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     }
   }
 
-  void _createOverlayEntry() {
+  void _createOverlayEntries() {
     final RenderBox renderBox = context.findRenderObject();
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     final size = renderBox.size;
@@ -250,10 +234,10 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       }
     }
 
-    _barrierEntry = OverlayEntry(
-      builder: (context) => IgnorePointer(
-        ignoring: _ignorePointer,
-        child: FadeTransition(
+    // Only assign it if we're going to use it
+    if (widget.showBarrier) {
+      _barrierEntry = OverlayEntry(
+        builder: (context) => FadeTransition(
           opacity: animation,
           child: GestureDetector(
             onTap: _superTooltipController.hideTooltip,
@@ -269,8 +253,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
 
     _entry = OverlayEntry(
       builder: (BuildContext context) => FadeTransition(
@@ -280,23 +264,26 @@ class _ExtendedTooltipState extends State<SuperTooltip>
             link: _layerLink,
             showWhenUnlinked: false,
             offset: offsetToTarget,
-            child: IgnorePointer(
-              ignoring: _ignorePointer,
-              child: CustomSingleChildLayout(
-                delegate: _TooltipPositionDelegate(
-                  preferredDirection: preferredDirection,
-                  constraints: constraints,
-                  top: top,
-                  bottom: bottom,
-                  left: left,
-                  right: right,
-                  target: target,
-                  // verticalOffset: widget.verticalOffset,
-                  overlay: overlay,
-                  margin: widget.margin,
-                  snapsFarAwayHorizontally: widget.snapsFarAwayHorizontally,
-                  snapsFarAwayVertically: widget.snapsFarAwayVertically,
-                ),
+            child: CustomSingleChildLayout(
+              delegate: _TooltipPositionDelegate(
+                preferredDirection: preferredDirection,
+                constraints: constraints,
+                top: top,
+                bottom: bottom,
+                left: left,
+                right: right,
+                target: target,
+                // verticalOffset: widget.verticalOffset,
+                overlay: overlay,
+                margin: widget.minimumOutsideMargin,
+                snapsFarAwayHorizontally: widget.snapsFarAwayHorizontally,
+                snapsFarAwayVertically: widget.snapsFarAwayVertically,
+              ),
+              // TODO:  Text fields and such will need a material ancestor
+              // In order to function properly. Need to find more elegant way
+              // to add this.
+              child: Material(
+                color: Colors.transparent,
                 child: Container(
                   margin: _getTooltipMargin(
                     arrowLength: widget.arrowLength,
@@ -331,6 +318,9 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       ),
     );
 
+    assert((_barrierEntry == null && !widget.showBarrier) ||
+        (_barrierEntry != null && widget.showBarrier));
+
     Overlay.of(context).insertAll([
       if (widget.showBarrier) _barrierEntry,
       _entry,
@@ -340,12 +330,20 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   _showTooltip() async {
     widget.onShow?.call();
 
-    // TODO: Double check no extra overlays will be created
-    _createOverlayEntry();
+    if (_entry != null) return; // Already visible.
+
+    _createOverlayEntries();
 
     await _animationController
         .forward()
         .whenComplete(_superTooltipController.complete);
+  }
+
+  _removeEntries() {
+    _entry?.remove();
+    _entry = null;
+    _barrierEntry?.remove();
+    _entry = null;
   }
 
   _hideTooltip() async {
@@ -354,10 +352,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
         .reverse()
         .whenComplete(_superTooltipController.complete);
 
-    setState(() {
-      _entry.remove();
-      _barrierEntry?.remove();
-    });
+    _removeEntries();
   }
 }
 
@@ -391,8 +386,8 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    // TODO:
-    // return constraints.deflate(margin);
+    // TODO: when margin is EdgeInsets, look into
+    // constraints.deflate(margin);
 
     var newConstraints = constraints;
 
