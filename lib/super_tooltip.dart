@@ -11,9 +11,9 @@ enum ClipAreaShape { oval, rectangle }
 typedef OutSideTapHandler = void Function();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Super flexible Tooltip class that allows you to show any content 
+/// Super flexible Tooltip class that allows you to show any content
 /// inside a Tooltip in the overlay of the screen.
-/// 
+///
 class SuperTooltip {
 
   /// Allows to accedd the closebutton for UI Testing
@@ -21,29 +21,29 @@ class SuperTooltip {
 
   /// Signals if the Tooltip is visible at the moment
   bool isOpen = false;
-  /// 
+  ///
   /// The content of the Tooltip
   final Widget content;
-  /// 
-  /// The direcion in which the tooltip should open 
+  ///
+  /// The direcion in which the tooltip should open
   TooltipDirection popupDirection;
-  /// 
+  ///
   /// optional handler that gets called when the Tooltip is closed
   final OutSideTapHandler onClose;
   ///
-  /// [minWidth], [minHeight], [maxWidth], [maxHeight] optional size constraints. 
+  /// [minWidth], [minHeight], [maxWidth], [maxHeight] optional size constraints.
   /// If a constraint is not set the size will ajust to the content
   double minWidth, minHeight, maxWidth, maxHeight;
   ///
   /// The minium padding from the Tooltip to the screen limits
   final double minimumOutSidePadding;
   ///
-  /// If [snapsFarAwayVertically== true] the bigger free space above or below the target will be 
-  /// covered completely by the ToolTip. All other dimension or position constraints get overwritten 
+  /// If [snapsFarAwayVertically== true] the bigger free space above or below the target will be
+  /// covered completely by the ToolTip. All other dimension or position constraints get overwritten
   final bool snapsFarAwayVertically;
   ///
-  /// If [snapsFarAwayHorizontally== true] the bigger free space left or right of the target will be 
-  /// covered completely by the ToolTip. All other dimension or position constraints get overwritten 
+  /// If [snapsFarAwayHorizontally== true] the bigger free space left or right of the target will be
+  /// covered completely by the ToolTip. All other dimension or position constraints get overwritten
   final bool snapsFarAwayHorizontally;
   /// [top], [right], [bottom], [left] position the Tooltip absolute relative to the whole screen
   double top, right, bottom, left;
@@ -54,6 +54,15 @@ class SuperTooltip {
   /// [hasShadow] defines if the tooltip should have a shadow
   final bool hasShadow;
   ///
+  /// The shadow color.
+  final Color shadowColor;
+  ///
+  /// The shadow blur radius.
+  final double shadowBlurRadius;
+  ///
+  /// The shadow spread radius.
+  final double shadowSpreadRadius;
+  ///
   /// the stroke width of the border
   final double borderWidth;
   ///
@@ -62,16 +71,16 @@ class SuperTooltip {
   ///
   /// The color of the border
   final Color borderColor;
-  /// 
+  ///
   /// The color of the close icon
   final Color closeButtonColor;
-  /// 
-  /// The size of the close button 
+  ///
+  /// The size of the close button
   final double closeButtonSize;
   ///
   /// The length of the Arrow
   final double arrowLength;
-  /// 
+  ///
   /// The width of the arrow at its base
   final double arrowBaseWidth;
   ///
@@ -85,11 +94,11 @@ class SuperTooltip {
   final Color outsideBackgroundColor;
   ///
   /// By default touching the surrounding of the Tooltip closes the tooltip.
-  /// you can define a rectangle area where the background is completely transparent 
+  /// you can define a rectangle area where the background is completely transparent
   /// and the widgets below react to touch
-  final Rect touchThrougArea; 
+  final Rect touchThrougArea;
   ///
-  /// The shape of the [touchThrougArea]. 
+  /// The shape of the [touchThrougArea].
   final ClipAreaShape touchThroughAreaShape;
   ///
   /// If [touchThroughAreaShape] is [ClipAreaShape.rectangle] you can define a border radius
@@ -120,6 +129,9 @@ class SuperTooltip {
     this.snapsFarAwayVertically = false,
     this.snapsFarAwayHorizontally = false,
     this.hasShadow = true,
+    this.shadowColor = Colors.black54,
+    this.shadowBlurRadius = 10.0,
+    this.shadowSpreadRadius = 5.0,
     this.borderWidth = 2.0,
     this.borderRadius = 10.0,
     this.borderColor = Colors.black,
@@ -245,7 +257,7 @@ class SuperTooltip {
         decoration: ShapeDecoration(
             color: backgroundColor,
             shadows: hasShadow
-                ? [BoxShadow(color: Colors.black54, blurRadius: 10.0, spreadRadius: 5.0)]
+                ? [BoxShadow(color: shadowColor, blurRadius: shadowBlurRadius, spreadRadius: shadowSpreadRadius)]
                 : null,
             shape: _BubbleShape(popupDirection, _targetCenter, borderRadius, arrowBaseWidth,
                 arrowTipDistance, borderColor, borderWidth, left, top, right, bottom)),
