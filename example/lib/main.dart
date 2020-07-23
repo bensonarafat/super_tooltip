@@ -63,11 +63,12 @@ class _TargetWidgetState extends State<TargetWidget> {
       return;
     }
 
-    RenderBox renderBox = context.findRenderObject();
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    var renderBox = context.findRenderObject() as RenderBox;
+    final overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
 
-    var targetGlobalCenter =
-        renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
+    var targetGlobalCenter = renderBox
+        .localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
 
     // We create the tooltip on the first use
     tooltip = SuperTooltip(
@@ -80,19 +81,19 @@ class _TargetWidgetState extends State<TargetWidget> {
       snapsFarAwayVertically: true,
       showCloseButton: ShowCloseButton.inside,
       hasShadow: false,
-      touchThrougArea: new Rect.fromLTWH(targetGlobalCenter.dx-100, targetGlobalCenter.dy-100, 200.0, 160.0),
+      touchThrougArea: new Rect.fromLTWH(targetGlobalCenter.dx - 100,
+          targetGlobalCenter.dy - 100, 200.0, 160.0),
       touchThroughAreaShape: ClipAreaShape.rectangle,
-
       content: new Material(
           child: Padding(
-            padding: const EdgeInsets.only(top:20.0),
-            child: Text(
-              "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-              "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
-              "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
-        softWrap: true,
-      ),
-          )),
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Text(
+          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
+          "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
+          "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
+          softWrap: true,
+        ),
+      )),
     );
 
     tooltip.show(context);

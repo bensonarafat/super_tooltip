@@ -3,23 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.19.0">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 0.31.0">
   <meta name="description" content="super_tooltip API docs, for the Dart programming language.">
   <title>super_tooltip - Dart API docs</title>
 
+  
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
 
 </head>
 
-<body>
+<body data-base-href=""
+      data-using-base-href="false">
 
 <div id="overlay-under-drawer"></div>
 
 <header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="https://github.com/escamoteur/super_tooltip">super_tooltip package</a></li>
   </ol>
@@ -31,26 +35,36 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <h5><span class="package-name">super_tooltip</span> <span class="package-kind">package</span></h5>
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="https://github.com/escamoteur/super_tooltip">super_tooltip package</a></li>
+    </ol>
+    
+    <h5 class="hidden-xs"><span class="package-name">super_tooltip</span> <span class="package-kind">package</span></h5>
     <ol>
           <li class="section-title">Libraries</li>
           <li><a href="super_tooltip/super_tooltip-library.html">super_tooltip</a></li>
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <section class="desc markdown">
-        <h1>super_tooltip</h1>
+        <h1 id="super_tooltip">super_tooltip</h1>
 <p><code>SuperTooltip</code> is derived from a widget I wrote for a client. It is super flexible and allows you to display ToolTips in the overlay of the screen. The whole screen gets covered with a typically translucent background color. Tapping on the background closes the Tooltip.</p>
-<p>My Client allowed me to publish this widget but currently you have to send him an email to get a commercial licence which will be given free if you aren't a competitor.</p>
 <blockquote>
 <p>AUTHOR</p>
 <p>Developed by Thomas Burkhart.</p>
 <p>Concept and Copyright by Marcelo Glasberg.</p>
 <p>LICENSE</p>
-<p>GPL v3, for the moment. Will be changed to a commercially friendly license as soon &gt;as possible. Meanwhile, please request a free commercially friendly license here: &gt;marcglasberg @ gmail dot com. Most requests will be granted very quickly.</p></blockquote>
-<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/default_parameters.PNG"></p>
+<p>MIT</p>
+</blockquote>
+<p><img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/default_parameters.PNG" alt=""></p>
 <p>A tooltip has to be created inside a StatefulWidget that should be the target for the Tooltip it can be shown whenever you like. In the example we show it as a response of a TouchEvent.</p>
 <pre class="language-Dart"><code class="language-Dart">// We create the tooltip on the first use
 tooltip = SuperTooltip(
@@ -70,7 +84,7 @@ tooltip.show(context);
 As this widget as many features I won't list them all here. Please refer to the API docs and the source comments.
 Instead I will show some of the features here. The first example was using all default values.</p>
 <p>Let's add a red close button, making popup to the right and limit its width:</p>
-<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/leftwithcloseandmaxwidth.PNG"></p>
+<p><img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/leftwithcloseandmaxwidth.PNG" alt=""></p>
 <pre class="language-Dart"><code class="language-Dart">// We create the tooltip on the first use
 tooltip = SuperTooltip(
   popupDirection: TooltipDirection.right,
@@ -89,7 +103,7 @@ tooltip = SuperTooltip(
 );
 </code></pre>
 <p>Let's nail the bubble into a fixed position and move the close button to the outside and remove the shadow</p>
-<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/outside_close_button.PNG"></p>
+<p><img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/outside_close_button.PNG" alt=""></p>
 <pre class="language-Dart"><code class="language-Dart">tooltip = SuperTooltip(
   popupDirection: TooltipDirection.up,
   top: 50.0,
@@ -110,11 +124,11 @@ tooltip = SuperTooltip(
 );
 </code></pre>
 <p>Maybe you want to allow the user to touch an area below the overlay without closing the Tooltip? Open the area around the target this is quite easy. Additional we now open to the left and moved the tip of the arrow a bit away from the target:</p>
-<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/touchthrough.PNG"></p>
+<p><img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/touchthrough.PNG" alt=""></p>
 <pre class="language-Dart"><code class="language-Dart">
 // Get the center of our target as global coordinates relative to overlay coordinates:
-RenderBox renderBox = context.findRenderObject();
-final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+RenderBox renderBox = context.findRenderObject() as RenderBox;
+final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 var targetGlobalCenter =
     renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
 
@@ -141,7 +155,7 @@ tooltip = SuperTooltip(
 );
 </code></pre>
 <p>If you want the ToolTip to cover the maximum vertical available space, just set <code>snapsFarAwayVertically: true</code>. Also we can made the border green and thicker and the touch through area a rectangle.</p>
-<p><img alt="" src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/snappvertical.PNG"></p>
+<p><img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/snappvertical.PNG" alt=""></p>
 <pre class="language-Dart"><code class="language-Dart">tooltip = SuperTooltip(
    popupDirection: TooltipDirection.left,
    arrowTipDistance: 15.0,
@@ -170,20 +184,25 @@ tooltip = SuperTooltip(
             <h2>Libraries</h2>
           <dl>
             <dt id="super_tooltip">
-              <span class="name"><a href="super_tooltip/super_tooltip-library.html">super_tooltip</a></span>
+              <span class="name"><a href="super_tooltip/super_tooltip-library.html">super_tooltip</a></span>             
             </dt>
             <dd>
-              
-            </dd>          </dl>
+               
+            </dd>
+          </dl>
         </section>
 
   </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div>
 
 </main>
 
 <footer>
   <span class="no-break">
-    super_tooltip 0.9.0
+    super_tooltip
+      0.9.5
   </span>
 
 </footer>

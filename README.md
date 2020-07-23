@@ -2,7 +2,6 @@
 
 `SuperTooltip` is derived from a widget I wrote for a client. It is super flexible and allows you to display ToolTips in the overlay of the screen. The whole screen gets covered with a typically translucent background color. Tapping on the background closes the Tooltip.
 
-My Client allowed me to publish this widget but currently you have to send him an email to get a commercial licence which will be given free if you aren't a competitor.
 
 >AUTHOR
 >
@@ -12,8 +11,7 @@ My Client allowed me to publish this widget but currently you have to send him a
 >
 >LICENSE
 >
->GPL v3, for the moment. Will be changed to a commercially friendly license as soon >as possible. Meanwhile, please request a free commercially friendly license here: >marcglasberg @ gmail dot com. Most requests will be granted very quickly.
-
+>MIT
 
 
 ![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/default_parameters.PNG)
@@ -99,8 +97,8 @@ Maybe you want to allow the user to touch an area below the overlay without clos
 ```Dart
 
 // Get the center of our target as global coordinates relative to overlay coordinates:
-RenderBox renderBox = context.findRenderObject();
-final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+RenderBox renderBox = context.findRenderObject() as RenderBox;
+final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 var targetGlobalCenter =
     renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
 
