@@ -51,6 +51,10 @@ class SuperTooltip extends StatefulWidget {
     this.closeButtonSize,
     this.snapsFarAwayVertically = false,
     this.snapsFarAwayHorizontally = false,
+    this.hasShadow = true,
+    this.shadowColor = Colors.black54,
+    this.shadowBlurRadius = 10.0,
+    this.shadowSpreadRadius = 5.0,
     this.top,
     this.right,
     this.bottom,
@@ -99,6 +103,10 @@ class SuperTooltip extends StatefulWidget {
   final void Function() onHide;
   final bool snapsFarAwayVertically;
   final bool snapsFarAwayHorizontally;
+  final bool hasShadow;
+  final Color shadowColor;
+  final double shadowBlurRadius;
+  final double shadowSpreadRadius;
   final double top, right, bottom, left;
   final ShowCloseButton showCloseButton;
   final Color closeButtonColor;
@@ -309,19 +317,24 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                       child: widget.content,
                       decoration: ShapeDecoration(
                         color: color,
-                        shadows: kElevationToShadow[widget.elevation],
+                        shadows: widget.hasShadow
+                            ? <BoxShadow>[
+                                BoxShadow(
+                                  blurRadius: widget.shadowBlurRadius,
+                                  spreadRadius: widget.shadowSpreadRadius,
+                                  color: widget.shadowColor,
+                                ),
+                              ]
+                            : null,
                         shape: _BubbleShape(
                           arrowBaseWidth: widget.arrowBaseWidth,
                           arrowTipDistance: widget.arrowTipDistance,
                           borderColor: widget.borderColor,
-                          borderRadius: widget.borderRadius,
                           borderWidth: widget.borderWidth,
-                          bottom: bottom,
                           left: left,
                           preferredDirection: preferredDirection,
                           right: right,
-                          target: target,
-                          top: top,
+                          bottom: bottom,
                         ),
                       ),
                     ),
