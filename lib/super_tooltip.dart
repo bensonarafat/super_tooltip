@@ -333,11 +333,14 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                           arrowBaseWidth: widget.arrowBaseWidth,
                           arrowTipDistance: widget.arrowTipDistance,
                           borderColor: widget.borderColor,
+                          borderRadius: widget.borderRadius,
                           borderWidth: widget.borderWidth,
+                          bottom: bottom,
                           left: left,
                           preferredDirection: preferredDirection,
                           right: right,
-                          bottom: bottom,
+                          target: target,
+                          top: top,
                         ),
                       ),
                     ),
@@ -355,7 +358,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
         (_barrierEntry != null && widget.showBarrier));
 
     Overlay.of(context).insertAll([
-      widget.showBarrier ? _barrierEntry : null,
+      if (widget.showBarrier) _barrierEntry,
       _entry,
     ]);
   }
