@@ -6,7 +6,7 @@ homepage: https://github.com/escamoteur/super_tooltip
 
 
 environment:
-  sdk: '>=2.0.0-dev <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
   flutter:
