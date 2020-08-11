@@ -983,7 +983,7 @@ EdgeInsets _getTooltipMargin({
   @required PreferredDirection preferredDirection,
 }) {
   final top =
-      (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 5 : 0.0;
+      (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 12 : 0.0;
 
   switch (preferredDirection) {
     case PreferredDirection.down:
