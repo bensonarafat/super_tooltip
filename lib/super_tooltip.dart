@@ -52,6 +52,8 @@ class SuperTooltip extends StatefulWidget {
     this.showCloseButton,
     this.closeButtonColor,
     this.closeButtonSize,
+    this.showBarrier,
+    this.barrierColor,
     this.snapsFarAwayVertically = false,
     this.snapsFarAwayHorizontally = false,
     this.hasShadow = true,
@@ -85,8 +87,6 @@ class SuperTooltip extends StatefulWidget {
     this.arrowLength = 20.0,
     this.arrowBaseWidth = 20.0,
     this.arrowTipDistance = 2.0,
-    this.showBarrier = true,
-    this.barrierColor = Colors.black54,
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
@@ -150,6 +150,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   ShowCloseButton showCloseButton;
   Color closeButtonColor;
   double closeButtonSize;
+  bool showBarrier;
+  Color barrierColor;
 
   @override
   void initState() {
@@ -188,6 +190,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     showCloseButton = widget.showCloseButton ?? ShowCloseButton.none;
     closeButtonColor = widget.closeButtonColor ?? Colors.black;
     closeButtonSize = widget.closeButtonSize ?? 30.0;
+    showBarrier = widget.showBarrier ?? true;
+    barrierColor = widget.barrierColor ?? Colors.black54;
 
     return CompositedTransformTarget(
       link: _layerLink,
@@ -256,7 +260,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       }
     }
 
-    _barrierEntry = widget.showBarrier
+    _barrierEntry = showBarrier
         ? OverlayEntry(
             builder: (context) => FadeTransition(
               opacity: animation,
@@ -268,7 +272,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                       clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
                       clipAreaShape: widget.touchThroughAreaShape,
                       clipRect: widget.touchThrougArea,
-                      barrierColor: widget.barrierColor,
+                      barrierColor: barrierColor,
                     ),
                   ),
                 ),
@@ -354,7 +358,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     );
 
     Overlay.of(context).insertAll([
-      if (widget.showBarrier) _barrierEntry,
+      if (showBarrier) _barrierEntry,
       _entry,
     ]);
   }
