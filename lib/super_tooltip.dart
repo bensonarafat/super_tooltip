@@ -253,27 +253,26 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       }
     }
 
-    // Only assign it if we're going to use it
-    if (widget.showBarrier) {
-      _barrierEntry = OverlayEntry(
-        builder: (context) => FadeTransition(
-          opacity: animation,
-          child: GestureDetector(
-            onTap: _superTooltipController.hideTooltip,
-            child: Container(
-              decoration: ShapeDecoration(
-                shape: _ShapeOverlay(
-                  clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
-                  clipAreaShape: widget.touchThroughAreaShape,
-                  clipRect: widget.touchThrougArea,
-                  barrierColor: widget.barrierColor,
+    _barrierEntry = widget.showBarrier
+        ? OverlayEntry(
+            builder: (context) => FadeTransition(
+              opacity: animation,
+              child: GestureDetector(
+                onTap: _superTooltipController.hideTooltip,
+                child: Container(
+                  decoration: ShapeDecoration(
+                    shape: _ShapeOverlay(
+                      clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
+                      clipAreaShape: widget.touchThroughAreaShape,
+                      clipRect: widget.touchThrougArea,
+                      barrierColor: widget.barrierColor,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      );
-    }
+          )
+        : null;
 
     _entry = OverlayEntry(
       builder: (BuildContext context) => FadeTransition(
@@ -350,9 +349,6 @@ class _ExtendedTooltipState extends State<SuperTooltip>
         ),
       ),
     );
-
-    assert((_barrierEntry == null && !widget.showBarrier) ||
-        (_barrierEntry != null && widget.showBarrier));
 
     Overlay.of(context).insertAll([
       if (widget.showBarrier) _barrierEntry,
