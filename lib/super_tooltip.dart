@@ -94,6 +94,7 @@ class SuperTooltip extends StatefulWidget {
 
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
   static Key outsideCloseButtonKey = const Key("OutsideCloseButtonKey");
+  static Key barrierKey = const Key("barrierKey");
 
   final Widget content;
   final PreferredDirection preferredDirection;
@@ -264,6 +265,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
               child: GestureDetector(
                 onTap: _superTooltipController.hideTooltip,
                 child: Container(
+                  key: SuperTooltip.barrierKey,
                   decoration: ShapeDecoration(
                     shape: _ShapeOverlay(
                       clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
@@ -893,9 +895,9 @@ class _ShapeOverlay extends ShapeBorder {
   });
 
   final Rect clipRect;
-  final Color barrierColor;
   final ClipAreaShape clipAreaShape;
   final double clipAreaCornerRadius;
+  final Color barrierColor;
 
   @override
   EdgeInsetsGeometry get dimensions => EdgeInsets.all(10.0);
