@@ -56,10 +56,10 @@ class SuperTooltip extends StatefulWidget {
     this.barrierColor,
     this.snapsFarAwayVertically = false,
     this.snapsFarAwayHorizontally = false,
-    this.hasShadow = true,
-    this.shadowColor = Colors.black54,
-    this.shadowBlurRadius = 10.0,
-    this.shadowSpreadRadius = 5.0,
+    this.hasShadow,
+    this.shadowColor,
+    this.shadowBlurRadius,
+    this.shadowSpreadRadius,
     this.top,
     this.right,
     this.bottom,
@@ -98,6 +98,7 @@ class SuperTooltip extends StatefulWidget {
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
   static Key outsideCloseButtonKey = const Key("OutsideCloseButtonKey");
   static Key barrierKey = const Key("barrierKey");
+  static Key bubbleKey = const Key("bubbleKey");
 
   final Widget content;
   final PreferredDirection preferredDirection;
@@ -153,6 +154,10 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   double closeButtonSize;
   bool showBarrier;
   Color barrierColor;
+  bool hasShadow;
+  Color shadowColor;
+  double shadowBlurRadius;
+  double shadowSpreadRadius;
 
   @override
   void initState() {
@@ -193,6 +198,10 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     closeButtonSize = widget.closeButtonSize ?? 30.0;
     showBarrier = widget.showBarrier ?? true;
     barrierColor = widget.barrierColor ?? Colors.black54;
+    hasShadow = widget.hasShadow ?? true;
+    shadowColor = widget.shadowColor ?? Colors.black54;
+    shadowBlurRadius = widget.shadowBlurRadius ?? 10.0;
+    shadowSpreadRadius = widget.shadowSpreadRadius ?? 5.0;
 
     return CompositedTransformTarget(
       link: _layerLink,
@@ -316,6 +325,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                   Material(
                     color: Colors.transparent,
                     child: Container(
+                      key: SuperTooltip.bubbleKey,
                       margin: _getTooltipMargin(
                         arrowLength: widget.arrowLength,
                         arrowTipDistance: widget.arrowTipDistance,
@@ -323,15 +333,14 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                         preferredDirection: preferredDirection,
                         showCloseButton: showCloseButton,
                       ),
-                      child: widget.content,
                       decoration: ShapeDecoration(
                         color: backgroundColor,
-                        shadows: widget.hasShadow
+                        shadows: hasShadow
                             ? <BoxShadow>[
                                 BoxShadow(
-                                  blurRadius: widget.shadowBlurRadius,
-                                  spreadRadius: widget.shadowSpreadRadius,
-                                  color: widget.shadowColor,
+                                  blurRadius: shadowBlurRadius,
+                                  spreadRadius: shadowSpreadRadius,
+                                  color: shadowColor,
                                 ),
                               ]
                             : null,
@@ -349,6 +358,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                           top: top,
                         ),
                       ),
+                      child: widget.content,
                     ),
                   ),
                   _buildCloseButton(),
