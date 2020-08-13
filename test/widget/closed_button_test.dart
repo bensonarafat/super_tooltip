@@ -47,6 +47,26 @@ class _HomePageState extends State<HomePage> {
 }
 
 void main() {
+  testWidgets(
+    'SuperTooltip should handle null options gracefully',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: HomePage(
+          showCloseButton: null,
+          closeButtonColor: null,
+          closeButtonSize: null,
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(targetWidgetKey));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsNothing);
+      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+    },
+  );
+
   group('showCloseButton option', () {
     testWidgets(
       'Close-button should not be displayed by default',
