@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
-const Key showTooltipButtonKey = Key('ShowTooltipButton');
+const Key targetWidgetKey = Key('targetWidget');
 
 class HomePage extends StatefulWidget {
-  const HomePage(
-      {Key key, this.showCloseButton, this.closeButtonColor, this.closeButtonSize})
-      : super(key: key);
+  const HomePage({
+    Key key,
+    this.showCloseButton,
+    this.closeButtonColor,
+    this.closeButtonSize,
+  }) : super(key: key);
 
   final ShowCloseButton showCloseButton;
   final Color closeButtonColor;
@@ -24,26 +27,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: GestureDetector(
-          key: showTooltipButtonKey,
-          onTap: () async => await _controller.showTooltip(),
-          child: SuperTooltip(
-            controller: _controller,
-            preferredDirection: PreferredDirection.down,
-            showCloseButton: widget.showCloseButton,
-            closeButtonColor: widget.closeButtonColor,
-            closeButtonSize: widget.closeButtonSize,
-            content: const Material(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: Text('Lorem ipsum...', softWrap: true),
-              ),
-            ),
-            child: Container(
-              width: 40.0,
-              height: 40.0,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-            ),
+        child: SuperTooltip(
+          controller: _controller,
+          preferredDirection: PreferredDirection.down,
+          showCloseButton: widget.showCloseButton,
+          closeButtonColor: widget.closeButtonColor,
+          closeButtonSize: widget.closeButtonSize,
+          content: const Material(child: Text('Lorem ipsum...')),
+          child: Container(
+            key: targetWidgetKey,
+            width: 40.0,
+            height: 40.0,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
           ),
         ),
       ),
@@ -59,7 +54,7 @@ void main() {
         await tester.pumpWidget(MaterialApp(home: HomePage()));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(showTooltipButtonKey));
+        await tester.tap(find.byKey(targetWidgetKey));
         await tester.pumpAndSettle();
 
         expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsNothing);
@@ -75,7 +70,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(showTooltipButtonKey));
+        await tester.tap(find.byKey(targetWidgetKey));
         await tester.pumpAndSettle();
 
         expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsNothing);
@@ -91,7 +86,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(showTooltipButtonKey));
+        await tester.tap(find.byKey(targetWidgetKey));
         await tester.pumpAndSettle();
 
         expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsOneWidget);
@@ -107,7 +102,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(showTooltipButtonKey));
+        await tester.tap(find.byKey(targetWidgetKey));
         await tester.pumpAndSettle();
 
         expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsNothing);
@@ -124,7 +119,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(showTooltipButtonKey));
+      await tester.tap(find.byKey(targetWidgetKey));
       await tester.pumpAndSettle();
 
       final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
@@ -150,7 +145,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(showTooltipButtonKey));
+      await tester.tap(find.byKey(targetWidgetKey));
       await tester.pumpAndSettle();
 
       final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
@@ -172,7 +167,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(showTooltipButtonKey));
+      await tester.tap(find.byKey(targetWidgetKey));
       await tester.pumpAndSettle();
 
       final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
@@ -200,7 +195,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(showTooltipButtonKey));
+      await tester.tap(find.byKey(targetWidgetKey));
       await tester.pumpAndSettle();
 
       final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
