@@ -228,7 +228,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       -target.dx + size.width / 2,
       -target.dy + size.height / 2,
     );
-    final color = widget.backgroundColor ?? Theme.of(context).cardColor;
+    final backgroundColor =
+        widget.backgroundColor ?? Theme.of(context).cardColor;
 
     var constraints = widget.constraints;
     var preferredDirection = widget.preferredDirection;
@@ -324,7 +325,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                       ),
                       child: widget.content,
                       decoration: ShapeDecoration(
-                        color: color,
+                        color: backgroundColor,
                         shadows: widget.hasShadow
                             ? <BoxShadow>[
                                 BoxShadow(
