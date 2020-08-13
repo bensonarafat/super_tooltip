@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import "dart:ui" as ui;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
@@ -97,6 +97,7 @@ class SuperTooltip extends StatefulWidget {
 
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
   static Key outsideCloseButtonKey = const Key("OutsideCloseButtonKey");
+  static Key barrierKey = const Key("barrierKey");
 
   final Widget content;
   final PreferredDirection preferredDirection;
@@ -267,6 +268,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
               child: GestureDetector(
                 onTap: _superTooltipController.hideTooltip,
                 child: Container(
+                  key: SuperTooltip.barrierKey,
                   decoration: ShapeDecoration(
                     shape: _ShapeOverlay(
                       clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
@@ -638,12 +640,9 @@ class _BubbleShape extends ShapeBorder {
     ..addPath(getOuterPath(rect), Offset.zero);
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
     //
-    late double topLeftRadius,
-        topRightRadius,
-        bottomLeftRadius,
-        bottomRightRadius;
+    double topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius;
 
     Path _getLeftTopPath(Rect rect) => Path()
       ..moveTo(rect.left, rect.bottom - bottomLeftRadius)
@@ -908,9 +907,9 @@ class _ShapeOverlay extends ShapeBorder {
   });
 
   final Rect clipRect;
-  final Color barrierColor;
   final ClipAreaShape clipAreaShape;
   final double clipAreaCornerRadius;
+  final Color barrierColor;
 
   @override
   EdgeInsetsGeometry get dimensions => EdgeInsets.all(10.0);
@@ -954,7 +953,8 @@ class _ShapeOverlay extends ShapeBorder {
         )
         ..close();
     }
-    return exclusion;
+
+    return Path.combine(ui.PathOperation.difference, outer, exclusion);
   }
 
   @override
