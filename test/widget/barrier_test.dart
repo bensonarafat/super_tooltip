@@ -35,7 +35,10 @@ class _HomePageState extends State<HomePage> {
             key: targetWidgetKey,
             width: 40.0,
             height: 40.0,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
@@ -55,8 +58,7 @@ void main() {
       await tester.tap(find.byKey(targetWidgetKey));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsNothing);
-      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+      expect(find.byKey(SuperTooltip.barrierKey), findsOneWidget);
     },
   );
 
@@ -77,7 +79,9 @@ void main() {
     testWidgets(
       'barrier should be not displayed if showBarrier is false',
       (WidgetTester tester) async {
-        await tester.pumpWidget(MaterialApp(home: HomePage(showBarrier: false)));
+        await tester.pumpWidget(
+          MaterialApp(home: HomePage(showBarrier: false)),
+        );
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(targetWidgetKey));

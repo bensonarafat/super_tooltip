@@ -35,7 +35,10 @@ class _HomePageState extends State<HomePage> {
             key: targetWidgetKey,
             width: 40.0,
             height: 40.0,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
@@ -55,38 +58,43 @@ void main() {
       await tester.tap(find.byKey(targetWidgetKey));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(SuperTooltip.insideCloseButtonKey), findsNothing);
-      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+      expect(find.byKey(SuperTooltip.barrierKey), findsOneWidget);
     },
   );
 
   group('barrierColor option', () {
-    testWidgets('barrier-color should be black by default', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: HomePage(showBarrier: true)));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'barrier-color should be black by default',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(MaterialApp(home: HomePage(showBarrier: true)));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(targetWidgetKey));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(targetWidgetKey));
+        await tester.pumpAndSettle();
 
-      final barrier = find.byKey(SuperTooltip.barrierKey);
-      await expectLater(barrier, matchesGoldenFile('barrier_color_default.png'));
-    });
+        final barrier = find.byKey(SuperTooltip.barrierKey);
+        await expectLater(
+            barrier, matchesGoldenFile('barrier_color_default.png'));
+      },
+    );
 
-    testWidgets('barrier-color should be equal to given color',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: HomePage(
-          showBarrier: true,
-          barrierColor: Colors.blue,
-        ),
-      ));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'barrier-color should be equal to given color',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(MaterialApp(
+          home: HomePage(
+            showBarrier: true,
+            barrierColor: Colors.blue,
+          ),
+        ));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(targetWidgetKey));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(targetWidgetKey));
+        await tester.pumpAndSettle();
 
-      final barrier = find.byKey(SuperTooltip.barrierKey);
-      await expectLater(barrier, matchesGoldenFile('barrier_color_blue.png'));
-    });
+        final barrier = find.byKey(SuperTooltip.barrierKey);
+        await expectLater(barrier, matchesGoldenFile('barrier_color_blue.png'));
+      },
+    );
   });
 }
