@@ -38,7 +38,8 @@ class _HomePageState extends State<HomePage> {
             key: targetWidgetKey,
             width: 40.0,
             height: 40.0,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
           ),
         ),
       ),
@@ -132,100 +133,108 @@ void main() {
   });
 
   group('closeButtonColor option', () {
-    testWidgets('Close-button color should be black by default',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'Close-button color should be black by default',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(targetWidgetKey));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(targetWidgetKey));
+        await tester.pumpAndSettle();
 
-      final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
-      expect(insideCloseButton, findsOneWidget);
+        final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
+        expect(insideCloseButton, findsOneWidget);
 
-      final button = tester.widget<IconButton>(insideCloseButton);
-      final icon = button.icon as Icon;
-      expect(icon.color, equals(Colors.black));
+        final button = tester.widget<IconButton>(insideCloseButton);
+        final icon = button.icon as Icon;
+        expect(icon.color, equals(Colors.black));
 
-      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
-    });
+        expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+      },
+    );
 
-    testWidgets('Close-button color should be equal to given value',
-        (WidgetTester tester) async {
-      final buttonColor = Colors.green;
+    testWidgets(
+      'Close-button color should be equal to given value',
+      (WidgetTester tester) async {
+        final buttonColor = Colors.green;
 
-      await tester.pumpWidget(
-        MaterialApp(
-            home: HomePage(
-          showCloseButton: ShowCloseButton.inside,
-          closeButtonColor: buttonColor,
-        )),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          MaterialApp(
+              home: HomePage(
+            showCloseButton: ShowCloseButton.inside,
+            closeButtonColor: buttonColor,
+          )),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(targetWidgetKey));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(targetWidgetKey));
+        await tester.pumpAndSettle();
 
-      final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
-      expect(insideCloseButton, findsOneWidget);
+        final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
+        expect(insideCloseButton, findsOneWidget);
 
-      final button = tester.widget<IconButton>(insideCloseButton);
-      final icon = button.icon as Icon;
-      expect(icon.color, equals(buttonColor));
+        final button = tester.widget<IconButton>(insideCloseButton);
+        final icon = button.icon as Icon;
+        expect(icon.color, equals(buttonColor));
 
-      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
-    });
+        expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+      },
+    );
   });
 
   group('closeButtonSize option', () {
-    testWidgets('Close-button size should be 30.0 by default',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'Close-button size should be 30.0 by default',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(targetWidgetKey));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(targetWidgetKey));
+        await tester.pumpAndSettle();
 
-      final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
-      expect(insideCloseButton, findsOneWidget);
+        final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
+        expect(insideCloseButton, findsOneWidget);
 
-      final button = tester.widget<IconButton>(insideCloseButton);
-      final icon = button.icon as Icon;
-      expect(icon.size, equals(30.0));
+        final button = tester.widget<IconButton>(insideCloseButton);
+        final icon = button.icon as Icon;
+        expect(icon.size, equals(30.0));
 
-      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
-    });
+        expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+      },
+    );
 
-    testWidgets('Close-button size should be equal to given value',
-        (WidgetTester tester) async {
-      final buttonColor = Colors.green;
+    testWidgets(
+      'Close-button size should be equal to given value',
+      (WidgetTester tester) async {
+        final buttonColor = Colors.green;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: HomePage(
-            showCloseButton: ShowCloseButton.inside,
-            closeButtonColor: buttonColor,
-            closeButtonSize: 20.0,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: HomePage(
+              showCloseButton: ShowCloseButton.inside,
+              closeButtonColor: buttonColor,
+              closeButtonSize: 20.0,
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(targetWidgetKey));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(targetWidgetKey));
+        await tester.pumpAndSettle();
 
-      final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
-      expect(insideCloseButton, findsOneWidget);
+        final insideCloseButton = find.byKey(SuperTooltip.insideCloseButtonKey);
+        expect(insideCloseButton, findsOneWidget);
 
-      final button = tester.widget<IconButton>(insideCloseButton);
-      final icon = button.icon as Icon;
-      expect(icon.size, equals(20.0));
+        final button = tester.widget<IconButton>(insideCloseButton);
+        final icon = button.icon as Icon;
+        expect(icon.size, equals(20.0));
 
-      expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
-    });
+        expect(find.byKey(SuperTooltip.outsideCloseButtonKey), findsNothing);
+      },
+    );
   });
 }
