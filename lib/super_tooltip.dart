@@ -133,6 +133,14 @@ class SuperTooltip {
   /// Let's you pass a key to the Tooltips cotainer for UI Testing
   final Key tooltipContainerKey;
 
+  ///
+  /// Allow the tooltip to be dismissed tapping outside
+  final bool dismissOnTapOutside;
+
+  ///
+  /// Enable background overlay
+  final bool containsBackgroundOverlay;
+
   Offset _targetCenter;
   OverlayEntry _backGroundOverlay;
   OverlayEntry _ballonOverlay;
@@ -171,6 +179,8 @@ class SuperTooltip {
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
+    this.dismissOnTapOutside = true,
+    this.containsBackgroundOverlay = true,
   })  : assert(popupDirection != null),
         assert(content != null),
         assert((maxWidth ?? double.infinity) >= (minWidth ?? 0.0)),
@@ -184,7 +194,7 @@ class SuperTooltip {
     }
 
     _ballonOverlay.remove();
-    _backGroundOverlay.remove();
+    _backGroundOverlay?.remove();
     isOpen = false;
   }
 
@@ -200,25 +210,29 @@ class SuperTooltip {
         ancestor: overlay);
 
     // Create the background below the popup including the clipArea.
-    _backGroundOverlay = OverlayEntry(
-        builder: (context) => _AnimationWrapper(
-              builder: (context, opacity) => AnimatedOpacity(
-                opacity: opacity,
-                duration: const Duration(milliseconds: 600),
-                child: GestureDetector(
-                  onTap: () {
-                    close();
-                  },
-                  child: Container(
-                      decoration: ShapeDecoration(
-                          shape: _ShapeOverlay(
-                              touchThrougArea,
-                              touchThroughAreaShape,
-                              touchThroughAreaCornerRadius,
-                              outsideBackgroundColor))),
+    if (containsBackgroundOverlay) {
+      _backGroundOverlay = OverlayEntry(
+          builder: (context) => _AnimationWrapper(
+                builder: (context, opacity) => AnimatedOpacity(
+                  opacity: opacity,
+                  duration: const Duration(milliseconds: 600),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (dismissOnTapOutside) {
+                        close();
+                      }
+                    },
+                    child: Container(
+                        decoration: ShapeDecoration(
+                            shape: _ShapeOverlay(
+                                touchThrougArea,
+                                touchThroughAreaShape,
+                                touchThroughAreaCornerRadius,
+                                outsideBackgroundColor))),
+                  ),
                 ),
-              ),
-            ));
+              ));
+    }
 
     /// Handling snap far away feature.
     if (snapsFarAwayVertically) {
@@ -275,7 +289,14 @@ class SuperTooltip {
               ),
             ));
 
-    Overlay.of(targetContext).insertAll([_backGroundOverlay, _ballonOverlay]);
+    var overlays = <OverlayEntry>[];
+
+    if (containsBackgroundOverlay) {
+      overlays.add(_backGroundOverlay);
+    }
+    overlays.add(_ballonOverlay);
+
+    Overlay.of(targetContext).insertAll(overlays);
     isOpen = true;
   }
 
