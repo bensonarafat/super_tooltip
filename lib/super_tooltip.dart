@@ -87,7 +87,6 @@ class SuperTooltip extends StatefulWidget {
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
-    // FIXME: Why does a 0.0 borderwidth still show a border?
     this.borderWidth = 0.0,
     this.borderRadius = 10.0,
   }) : super(key: key);
@@ -234,7 +233,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       -target.dx + size.width / 2,
       -target.dy + size.height / 2,
     );
-    final backgroundColor = widget.backgroundColor ?? Theme.of(context).cardColor;
+    final backgroundColor =
+        widget.backgroundColor ?? Theme.of(context).cardColor;
 
     var constraints = widget.constraints;
     var preferredDirection = widget.preferredDirection;
@@ -329,6 +329,11 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                         preferredDirection: preferredDirection,
                         showCloseButton: showCloseButton,
                       ),
+                      padding: _getTooltipPadding(
+                        closeButtonSize: closeButtonSize,
+                        preferredDirection: preferredDirection,
+                        showCloseButton: showCloseButton,
+                      ),
                       decoration: ShapeDecoration(
                         color: backgroundColor,
                         shadows: hasShadow
@@ -379,7 +384,9 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
     _createOverlayEntries();
 
-    await _animationController.forward().whenComplete(_superTooltipController.complete);
+    await _animationController
+        .forward()
+        .whenComplete(_superTooltipController.complete);
   }
 
   _removeEntries() {
@@ -391,7 +398,9 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
   _hideTooltip() async {
     widget.onHide?.call();
-    await _animationController.reverse().whenComplete(_superTooltipController.complete);
+    await _animationController
+        .reverse()
+        .whenComplete(_superTooltipController.complete);
 
     _removeEntries();
   }
@@ -756,10 +765,13 @@ class _BubbleShape extends ShapeBorder {
                   min(target.dy - arrowBaseWidth / 2,
                       rect.bottom - bottomRightRadius - arrowBaseWidth),
                   rect.top + topRightRadius))
-          ..lineTo(target.dx - arrowTipDistance, target.dy) // right to arrow tip   \
+          ..lineTo(
+              target.dx - arrowTipDistance, target.dy) // right to arrow tip   \
           //  left /
-          ..lineTo(rect.right,
-              min(target.dy + arrowBaseWidth / 2, rect.bottom - bottomRightRadius))
+          ..lineTo(
+              rect.right,
+              min(target.dy + arrowBaseWidth / 2,
+                  rect.bottom - bottomRightRadius))
           ..lineTo(rect.right, rect.bottom - borderRadius)
           ..arcToPoint(Offset(rect.right - bottomRightRadius, rect.bottom),
               radius: Radius.circular(bottomRightRadius), clockwise: true)
@@ -783,8 +795,10 @@ class _BubbleShape extends ShapeBorder {
           ..lineTo(target.dx + arrowTipDistance, target.dy)
 
           //  right \
-          ..lineTo(rect.left,
-              min(target.dy + arrowBaseWidth / 2, rect.bottom - bottomLeftRadius))
+          ..lineTo(
+              rect.left,
+              min(target.dy + arrowBaseWidth / 2,
+                  rect.bottom - bottomLeftRadius))
           ..lineTo(rect.left, rect.bottom - bottomLeftRadius)
           ..arcToPoint(Offset(rect.left + bottomLeftRadius, rect.bottom),
               radius: Radius.circular(bottomLeftRadius), clockwise: false);
@@ -956,7 +970,8 @@ class _ShapeOverlay extends ShapeBorder {
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) => canvas.drawPath(
+  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) =>
+      canvas.drawPath(
         getOuterPath(rect),
         Paint()..color = barrierColor,
       );
@@ -979,7 +994,8 @@ EdgeInsets _getTooltipMargin({
   @required double arrowLength,
   @required PreferredDirection preferredDirection,
 }) {
-  final top = (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 12 : 0.0;
+  final top =
+      (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 12 : 0.0;
 
   switch (preferredDirection) {
     case PreferredDirection.down:
@@ -993,6 +1009,32 @@ EdgeInsets _getTooltipMargin({
 
     case PreferredDirection.right:
       return EdgeInsets.only(left: arrowTipDistance + arrowLength, top: top);
+
+    default:
+      throw ArgumentError(preferredDirection);
+  }
+}
+
+EdgeInsets _getTooltipPadding({
+  @required ShowCloseButton showCloseButton,
+  @required double closeButtonSize,
+  @required PreferredDirection preferredDirection,
+}) {
+  final top =
+      (showCloseButton == ShowCloseButton.inside) ? closeButtonSize : 0.0;
+
+  switch (preferredDirection) {
+    case PreferredDirection.down:
+      return EdgeInsets.only(top: top);
+
+    case PreferredDirection.up:
+      return EdgeInsets.only(top: top);
+
+    case PreferredDirection.left:
+      return EdgeInsets.only(top: top);
+
+    case PreferredDirection.right:
+      return EdgeInsets.only(top: top);
 
     default:
       throw ArgumentError(preferredDirection);
@@ -1086,7 +1128,8 @@ BoxConstraints _horizontalConstraints({
 
   if (top != null && bottom != null) {
     _maxHeight = _maxHeight - (top + bottom);
-  } else if ((top != null && bottom == null) || (top == null && bottom != null)) {
+  } else if ((top != null && bottom == null) ||
+      (top == null && bottom != null)) {
     // make sure that the sum of top, bottom + _maxHeight isn't bigger than the screen Height.
     final sideDelta = (top ?? 0.0) + (bottom ?? 0.0) + margin;
 
@@ -1136,7 +1179,8 @@ BoxConstraints _verticalConstraints({
 
   if (left != null && right != null) {
     _maxWidth = _maxWidth - (left + right);
-  } else if ((left != null && right == null) || (left == null && right != null)) {
+  } else if ((left != null && right == null) ||
+      (left == null && right != null)) {
     // make sure that the sum of left, right + maxwidth isn't bigger than the screen width.
     final sideDelta = (left ?? 0.0) + (right ?? 0.0) + margin;
 
