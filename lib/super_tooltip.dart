@@ -90,7 +90,6 @@ class SuperTooltip extends StatefulWidget {
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
-    // FIXME: Why does a 0.0 borderwidth still show a border?
     this.borderWidth = 0.0,
     this.borderRadius = 10.0,
   }) : super(key: key);
@@ -329,6 +328,11 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                       margin: _getTooltipMargin(
                         arrowLength: widget.arrowLength,
                         arrowTipDistance: widget.arrowTipDistance,
+                        closeButtonSize: closeButtonSize,
+                        preferredDirection: preferredDirection,
+                        showCloseButton: showCloseButton,
+                      ),
+                      padding: _getTooltipPadding(
                         closeButtonSize: closeButtonSize,
                         preferredDirection: preferredDirection,
                         showCloseButton: showCloseButton,
@@ -1008,6 +1012,32 @@ EdgeInsets _getTooltipMargin({
 
     case PreferredDirection.right:
       return EdgeInsets.only(left: arrowTipDistance + arrowLength, top: top);
+
+    default:
+      throw ArgumentError(preferredDirection);
+  }
+}
+
+EdgeInsets _getTooltipPadding({
+  @required ShowCloseButton showCloseButton,
+  @required double closeButtonSize,
+  @required PreferredDirection preferredDirection,
+}) {
+  final top =
+      (showCloseButton == ShowCloseButton.inside) ? closeButtonSize : 0.0;
+
+  switch (preferredDirection) {
+    case PreferredDirection.down:
+      return EdgeInsets.only(top: top);
+
+    case PreferredDirection.up:
+      return EdgeInsets.only(top: top);
+
+    case PreferredDirection.left:
+      return EdgeInsets.only(top: top);
+
+    case PreferredDirection.right:
+      return EdgeInsets.only(top: top);
 
     default:
       throw ArgumentError(preferredDirection);
