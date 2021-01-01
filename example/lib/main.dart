@@ -74,7 +74,7 @@ class _TargetWidgetState extends State<TargetWidget> {
         },
         child: SuperTooltip(
           controller: _controller,
-          preferredDirection: PreferredDirection.down,
+          preferredDirection: PreferredDirection.up,
           left: 0,
           arrowTipDistance: 15.0,
           arrowBaseWidth: 20.0,
@@ -93,23 +93,21 @@ class _TargetWidgetState extends State<TargetWidget> {
           // touchThrougArea: Rect.fromLTWH(
           //     targetGlobalCenter.dx - 100, targetGlobalCenter.dy - 100, 200.0, 160.0),
           touchThroughAreaShape: ClipAreaShape.rectangle,
-          content: Material(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Text(
-              "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-              "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
-              "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
-              softWrap: true,
-            ),
-          )),
+          content: Text(
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
+            "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
+            "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
+            softWrap: true,
+          ),
+
           child: Container(
-              width: 40.0,
-              height: 40.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.blue,
-              )),
+            width: 40.0,
+            height: 40.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue,
+            ),
+          ),
         ),
       ),
     );

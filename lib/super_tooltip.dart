@@ -331,7 +331,6 @@ class _ExtendedTooltipState extends State<SuperTooltip>
                       ),
                       padding: _getTooltipPadding(
                         closeButtonSize: closeButtonSize,
-                        preferredDirection: preferredDirection,
                         showCloseButton: showCloseButton,
                       ),
                       decoration: ShapeDecoration(
@@ -1018,27 +1017,10 @@ EdgeInsets _getTooltipMargin({
 EdgeInsets _getTooltipPadding({
   @required ShowCloseButton showCloseButton,
   @required double closeButtonSize,
-  @required PreferredDirection preferredDirection,
 }) {
   final top =
       (showCloseButton == ShowCloseButton.inside) ? closeButtonSize : 0.0;
-
-  switch (preferredDirection) {
-    case PreferredDirection.down:
-      return EdgeInsets.only(top: top);
-
-    case PreferredDirection.up:
-      return EdgeInsets.only(top: top);
-
-    case PreferredDirection.left:
-      return EdgeInsets.only(top: top);
-
-    case PreferredDirection.right:
-      return EdgeInsets.only(top: top);
-
-    default:
-      throw ArgumentError(preferredDirection);
-  }
+  return EdgeInsets.only(top: top);
 }
 
 double _leftMostXtoTarget({
