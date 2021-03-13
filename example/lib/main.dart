@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   _MyHomePageState createState() => new _MyHomePageState();
@@ -38,33 +38,33 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class TargetWidget extends StatefulWidget {
-  const TargetWidget({Key key}) : super(key: key);
+  const TargetWidget({Key? key}) : super(key: key);
 
   @override
   _TargetWidgetState createState() => new _TargetWidgetState();
 }
 
 class _TargetWidgetState extends State<TargetWidget> {
-  SuperTooltip tooltip;
+  SuperTooltip? tooltip;
 
   Future<bool> _willPopCallback() async {
     // If the tooltip is open we don't pop the page on a backbutton press
     // but close the ToolTip
-    if (tooltip.isOpen) {
-      tooltip.close();
+    if (tooltip!.isOpen) {
+      tooltip!.close();
       return false;
     }
     return true;
   }
 
   void onTap() {
-    if (tooltip != null && tooltip.isOpen) {
-      tooltip.close();
+    if (tooltip != null && tooltip!.isOpen) {
+      tooltip!.close();
       return;
     }
 
     var renderBox = context.findRenderObject() as RenderBox;
-    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final overlay = Overlay.of(context)!.context.findRenderObject() as RenderBox?;
 
     var targetGlobalCenter = renderBox
         .localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
@@ -95,7 +95,7 @@ class _TargetWidgetState extends State<TargetWidget> {
       )),
     );
 
-    tooltip.show(context);
+    tooltip!.show(context);
   }
 
   @override
