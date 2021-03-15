@@ -96,6 +96,10 @@ class SuperTooltip {
   final double closeButtonSize;
 
   ///
+  /// The icon for the close button
+  final IconData closeButtonIcon;
+
+  ///
   /// The length of the Arrow
   final double arrowLength;
 
@@ -169,6 +173,7 @@ class SuperTooltip {
     this.borderWidth = 2.0,
     this.borderRadius = 10.0,
     this.borderColor = Colors.black,
+    this.closeButtonIcon = Icons.close,
     this.closeButtonColor = Colors.black,
     this.closeButtonSize = 30.0,
     this.arrowLength = 20.0,
@@ -377,7 +382,7 @@ class SuperTooltip {
           child: Padding(
             padding: const EdgeInsets.all(internalClickAreaPadding),
             child: Icon(
-              Icons.close,
+              closeButtonIcon,
               size: closeButtonSize,
               color: closeButtonColor,
             ),
