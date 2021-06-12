@@ -138,8 +138,8 @@ class SuperTooltip {
   final Key? tooltipContainerKey;
 
   ///
-  /// Allow the tooltip to be dismissed tapping outside
-  final bool dismissOnTapOutside;
+  /// Allow the tooltip to be dismissed on action outside
+  final SuperTooltipDismissBehaviour dismissBehaviour;
 
   ///
   /// Enable background overlay
@@ -184,7 +184,7 @@ class SuperTooltip {
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
-    this.dismissOnTapOutside = true,
+    this.dismissBehaviour = SuperTooltipDismissBehaviour.onTap,
     this.containsBackgroundOverlay = true,
   })  : assert((maxWidth ?? double.infinity) >= (minWidth ?? 0.0)),
         assert((maxHeight ?? double.infinity) >= (minHeight ?? 0.0));
@@ -215,22 +215,39 @@ class SuperTooltip {
 
     // Create the background below the popup including the clipArea.
     if (containsBackgroundOverlay) {
+      late Widget background;
+
+      final backgroundDecoration = DecoratedBox(
+        decoration: ShapeDecoration(
+            shape: _ShapeOverlay(touchThrougArea, touchThroughAreaShape,
+                touchThroughAreaCornerRadius, outsideBackgroundColor)),
+      );
+
+      switch (dismissBehaviour) {
+        case SuperTooltipDismissBehaviour.onTap:
+          background = GestureDetector(
+            onTap: () => close(),
+            child: backgroundDecoration,
+          );
+          break;
+        case SuperTooltipDismissBehaviour.onPointerDown:
+          background = Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => close(),
+            child: IgnorePointer(child: backgroundDecoration),
+          );
+          break;
+        default:
+          background = backgroundDecoration;
+          break;
+      }
+
       _backGroundOverlay = OverlayEntry(
           builder: (context) => _AnimationWrapper(
                 builder: (context, opacity) => AnimatedOpacity(
                   opacity: opacity,
                   duration: const Duration(milliseconds: 600),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (dismissOnTapOutside) {
-                        close();
-                      }
-                    },
-                    child: Container(
-                        decoration: ShapeDecoration(
-                            shape: _ShapeOverlay(touchThrougArea, touchThroughAreaShape, touchThroughAreaCornerRadius,
-                                outsideBackgroundColor))),
-                  ),
+                  child: background,
                 ),
               ));
     }
@@ -938,3 +955,5 @@ class _AnimationWrapperState extends State<_AnimationWrapper> {
     return widget.builder!(context, opacity);
   }
 }
+
+enum SuperTooltipDismissBehaviour { none, onTap, onPointerDown }
