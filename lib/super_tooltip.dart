@@ -204,11 +204,14 @@ class SuperTooltip {
   ///
   /// Displays the tooltip
   /// The center of [targetContext] is used as target of the arrow
-  void show(BuildContext targetContext) {
+  ///
+  /// Uses [overlay] to show tooltip or [targetContext]'s overlay if [overlay] is null
+  void show(BuildContext targetContext, {OverlayState? overlay}) {
     final renderBox = targetContext.findRenderObject() as RenderBox;
-    final overlay = Overlay.of(targetContext)!.context.findRenderObject() as RenderBox?;
+    overlay ??= Overlay.of(targetContext)!;
+    final overlayRenderBox = overlay.context.findRenderObject() as RenderBox?;
 
-    _targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
+    _targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlayRenderBox);
 
     // Create the background below the popup including the clipArea.
     if (containsBackgroundOverlay) {
@@ -237,7 +240,7 @@ class SuperTooltip {
       maxHeight = null;
       left = 0.0;
       right = 0.0;
-      if (_targetCenter!.dy > overlay!.size.center(Offset.zero).dy) {
+      if (_targetCenter!.dy > overlayRenderBox!.size.center(Offset.zero).dy) {
         popupDirection = TooltipDirection.up;
         top = 0.0;
       } else {
@@ -249,7 +252,7 @@ class SuperTooltip {
       maxWidth = null;
       top = 0.0;
       bottom = 0.0;
-      if (_targetCenter!.dx < overlay!.size.center(Offset.zero).dx) {
+      if (_targetCenter!.dx < overlayRenderBox!.size.center(Offset.zero).dx) {
         popupDirection = TooltipDirection.right;
         right = 0.0;
       } else {
@@ -294,7 +297,7 @@ class SuperTooltip {
     }
     overlays.add(_ballonOverlay!);
 
-    Overlay.of(targetContext)!.insertAll(overlays);
+    overlay.insertAll(overlays);
     isOpen = true;
   }
 
