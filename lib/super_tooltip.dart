@@ -138,8 +138,12 @@ class SuperTooltip {
   final Key? tooltipContainerKey;
 
   ///
-  /// Allow the tooltip to be dismissed on action outside
-  final SuperTooltipDismissBehaviour dismissBehaviour;
+  /// Allow the tooltip to be dismissed tapping outside
+  final bool dismissOnTapOutside;
+
+  ///
+  /// Block pointer actions or pass them through background
+  final bool blockOutsidePointerEvents;
 
   ///
   /// Enable background overlay
@@ -184,7 +188,8 @@ class SuperTooltip {
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
-    this.dismissBehaviour = SuperTooltipDismissBehaviour.onTap,
+    this.dismissOnTapOutside = true,
+    this.blockOutsidePointerEvents = true,
     this.containsBackgroundOverlay = true,
   })  : assert((maxWidth ?? double.infinity) >= (minWidth ?? 0.0)),
         assert((maxHeight ?? double.infinity) >= (minHeight ?? 0.0));
@@ -217,29 +222,32 @@ class SuperTooltip {
     if (containsBackgroundOverlay) {
       late Widget background;
 
-      final backgroundDecoration = DecoratedBox(
-        decoration: ShapeDecoration(
-            shape: _ShapeOverlay(touchThrougArea, touchThroughAreaShape,
-                touchThroughAreaCornerRadius, outsideBackgroundColor)),
-      );
+      var shapeOverlay = _ShapeOverlay(touchThrougArea, touchThroughAreaShape,
+          touchThroughAreaCornerRadius, outsideBackgroundColor);
+      final backgroundDecoration =
+          DecoratedBox(decoration: ShapeDecoration(shape: shapeOverlay));
 
-      switch (dismissBehaviour) {
-        case SuperTooltipDismissBehaviour.onTap:
-          background = GestureDetector(
-            onTap: () => close(),
-            child: backgroundDecoration,
-          );
-          break;
-        case SuperTooltipDismissBehaviour.onPointerDown:
-          background = Listener(
-            behavior: HitTestBehavior.translucent,
-            onPointerDown: (_) => close(),
-            child: IgnorePointer(child: backgroundDecoration),
-          );
-          break;
-        default:
-          background = backgroundDecoration;
-          break;
+      if (dismissOnTapOutside && blockOutsidePointerEvents) {
+        background = GestureDetector(
+          onTap: () => close(),
+          child: backgroundDecoration,
+        );
+      } else if (dismissOnTapOutside && !blockOutsidePointerEvents) {
+        background = Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (event) {
+            if (!(shapeOverlay._getExclusion()?.contains(event.localPosition) ?? false)) {
+              close();
+            }
+          },
+          child: IgnorePointer(child: backgroundDecoration),
+        );
+      } else if (!dismissOnTapOutside && blockOutsidePointerEvents) {
+        background = backgroundDecoration;
+      } else if (!dismissOnTapOutside && !blockOutsidePointerEvents) {
+        background = IgnorePointer(child: backgroundDecoration);
+      } else {
+        background = backgroundDecoration;
       }
 
       _backGroundOverlay = OverlayEntry(
@@ -882,11 +890,19 @@ class _ShapeOverlay extends ShapeBorder {
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     var outer = new Path()..addRect(rect);
 
-    if (clipRect == null) {
+    final exclusion = _getExclusion();
+    if (exclusion == null) {
       return outer;
+    } else {
+      return Path.combine(ui.PathOperation.difference, outer, exclusion);
     }
+  }
+
+  Path? _getExclusion() {
     Path exclusion;
-    if (clipAreaShape == ClipAreaShape.oval) {
+    if (clipRect == null) {
+      return null;
+    } else if (clipAreaShape == ClipAreaShape.oval) {
       exclusion = new Path()..addOval(clipRect!);
     } else {
       exclusion = new Path()
@@ -905,8 +921,7 @@ class _ShapeOverlay extends ShapeBorder {
             radius: new Radius.circular(clipAreaCornerRadius))
         ..close();
     }
-
-    return Path.combine(ui.PathOperation.difference, outer, exclusion);
+    return exclusion;
   }
 
   @override
