@@ -142,6 +142,10 @@ class SuperTooltip {
   final bool dismissOnTapOutside;
 
   ///
+  /// Block pointer actions or pass them through background
+  final bool blockOutsidePointerEvents;
+
+  ///
   /// Enable background overlay
   final bool containsBackgroundOverlay;
 
@@ -185,6 +189,7 @@ class SuperTooltip {
     this.touchThroughAreaCornerRadius = 5.0,
     this.touchThrougArea,
     this.dismissOnTapOutside = true,
+    this.blockOutsidePointerEvents = true,
     this.containsBackgroundOverlay = true,
   })  : assert((maxWidth ?? double.infinity) >= (minWidth ?? 0.0)),
         assert((maxHeight ?? double.infinity) >= (minHeight ?? 0.0));
@@ -204,30 +209,53 @@ class SuperTooltip {
   ///
   /// Displays the tooltip
   /// The center of [targetContext] is used as target of the arrow
-  void show(BuildContext targetContext) {
+  ///
+  /// Uses [overlay] to show tooltip or [targetContext]'s overlay if [overlay] is null
+  void show(BuildContext targetContext, {OverlayState? overlay}) {
     final renderBox = targetContext.findRenderObject() as RenderBox;
-    final overlay = Overlay.of(targetContext)!.context.findRenderObject() as RenderBox?;
+    overlay ??= Overlay.of(targetContext)!;
+    final overlayRenderBox = overlay.context.findRenderObject() as RenderBox?;
 
-    _targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
+    _targetCenter = renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlayRenderBox);
 
     // Create the background below the popup including the clipArea.
     if (containsBackgroundOverlay) {
+      late Widget background;
+
+      var shapeOverlay = _ShapeOverlay(touchThrougArea, touchThroughAreaShape,
+          touchThroughAreaCornerRadius, outsideBackgroundColor);
+      final backgroundDecoration =
+          DecoratedBox(decoration: ShapeDecoration(shape: shapeOverlay));
+
+      if (dismissOnTapOutside && blockOutsidePointerEvents) {
+        background = GestureDetector(
+          onTap: () => close(),
+          child: backgroundDecoration,
+        );
+      } else if (dismissOnTapOutside && !blockOutsidePointerEvents) {
+        background = Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (event) {
+            if (!(shapeOverlay._getExclusion()?.contains(event.localPosition) ?? false)) {
+              close();
+            }
+          },
+          child: IgnorePointer(child: backgroundDecoration),
+        );
+      } else if (!dismissOnTapOutside && blockOutsidePointerEvents) {
+        background = backgroundDecoration;
+      } else if (!dismissOnTapOutside && !blockOutsidePointerEvents) {
+        background = IgnorePointer(child: backgroundDecoration);
+      } else {
+        background = backgroundDecoration;
+      }
+
       _backGroundOverlay = OverlayEntry(
           builder: (context) => _AnimationWrapper(
                 builder: (context, opacity) => AnimatedOpacity(
                   opacity: opacity,
                   duration: const Duration(milliseconds: 600),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (dismissOnTapOutside) {
-                        close();
-                      }
-                    },
-                    child: Container(
-                        decoration: ShapeDecoration(
-                            shape: _ShapeOverlay(touchThrougArea, touchThroughAreaShape, touchThroughAreaCornerRadius,
-                                outsideBackgroundColor))),
-                  ),
+                  child: background,
                 ),
               ));
     }
@@ -237,7 +265,7 @@ class SuperTooltip {
       maxHeight = null;
       left = 0.0;
       right = 0.0;
-      if (_targetCenter!.dy > overlay!.size.center(Offset.zero).dy) {
+      if (_targetCenter!.dy > overlayRenderBox!.size.center(Offset.zero).dy) {
         popupDirection = TooltipDirection.up;
         top = 0.0;
       } else {
@@ -249,7 +277,7 @@ class SuperTooltip {
       maxWidth = null;
       top = 0.0;
       bottom = 0.0;
-      if (_targetCenter!.dx < overlay!.size.center(Offset.zero).dx) {
+      if (_targetCenter!.dx < overlayRenderBox!.size.center(Offset.zero).dx) {
         popupDirection = TooltipDirection.right;
         right = 0.0;
       } else {
@@ -294,7 +322,7 @@ class SuperTooltip {
     }
     overlays.add(_ballonOverlay!);
 
-    Overlay.of(targetContext)!.insertAll(overlays);
+    overlay.insertAll(overlays);
     isOpen = true;
   }
 
@@ -862,11 +890,19 @@ class _ShapeOverlay extends ShapeBorder {
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     var outer = new Path()..addRect(rect);
 
-    if (clipRect == null) {
+    final exclusion = _getExclusion();
+    if (exclusion == null) {
       return outer;
+    } else {
+      return Path.combine(ui.PathOperation.difference, outer, exclusion);
     }
+  }
+
+  Path? _getExclusion() {
     Path exclusion;
-    if (clipAreaShape == ClipAreaShape.oval) {
+    if (clipRect == null) {
+      return null;
+    } else if (clipAreaShape == ClipAreaShape.oval) {
       exclusion = new Path()..addOval(clipRect!);
     } else {
       exclusion = new Path()
@@ -885,8 +921,7 @@ class _ShapeOverlay extends ShapeBorder {
             radius: new Radius.circular(clipAreaCornerRadius))
         ..close();
     }
-
-    return Path.combine(ui.PathOperation.difference, outer, exclusion);
+    return exclusion;
   }
 
   @override
@@ -935,3 +970,5 @@ class _AnimationWrapperState extends State<_AnimationWrapper> {
     return widget.builder!(context, opacity);
   }
 }
+
+enum SuperTooltipDismissBehaviour { none, onTap, onPointerDown }
