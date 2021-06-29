@@ -68,6 +68,10 @@ class SuperTooltip {
   final Color shadowColor;
 
   ///
+  /// The shadow offset
+  final Offset? shadowOffset;
+
+  ///
   /// The shadow blur radius.
   final double shadowBlurRadius;
 
@@ -174,6 +178,7 @@ class SuperTooltip {
     this.shadowColor = Colors.black54,
     this.shadowBlurRadius = 10.0,
     this.shadowSpreadRadius = 5.0,
+    this.shadowOffset = Offset.zero,
     this.borderWidth = 2.0,
     this.borderRadius = 10.0,
     this.borderColor = Colors.black,
@@ -333,7 +338,7 @@ class SuperTooltip {
         decoration: ShapeDecoration(
             color: backgroundColor,
             shadows: hasShadow
-                ? [BoxShadow(color: shadowColor, blurRadius: shadowBlurRadius, spreadRadius: shadowSpreadRadius)]
+                ? [BoxShadow(color: shadowColor, offset: shadowOffset ?? Offset.zero,blurRadius: shadowBlurRadius, spreadRadius: shadowSpreadRadius)]
                 : null,
             shape: _BubbleShape(popupDirection, _targetCenter, borderRadius, arrowBaseWidth, arrowTipDistance,
                 borderColor, borderWidth, left, top, right, bottom)),

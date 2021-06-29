@@ -64,7 +64,8 @@ class _TargetWidgetState extends State<TargetWidget> {
     }
 
     var renderBox = context.findRenderObject() as RenderBox;
-    final overlay = Overlay.of(context)!.context.findRenderObject() as RenderBox?;
+    final overlay =
+        Overlay.of(context)!.context.findRenderObject() as RenderBox?;
 
     var targetGlobalCenter = renderBox
         .localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
@@ -77,9 +78,9 @@ class _TargetWidgetState extends State<TargetWidget> {
       arrowLength: 40.0,
       borderColor: Colors.green,
       borderWidth: 5.0,
-      snapsFarAwayVertically: true,
       showCloseButton: ShowCloseButton.inside,
-      hasShadow: false,
+      hasShadow: true,
+      shadowOffset: Offset(10, 10),
       touchThrougArea: new Rect.fromLTWH(targetGlobalCenter.dx - 100,
           targetGlobalCenter.dy - 100, 200.0, 160.0),
       touchThroughAreaShape: ClipAreaShape.rectangle,
