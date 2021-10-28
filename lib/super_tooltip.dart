@@ -148,6 +148,10 @@ class SuperTooltip {
   ///
   /// Enable background overlay
   final bool containsBackgroundOverlay;
+  
+  ///
+  /// The parameter chooses popupDirection automatically by axis Y
+  final bool automaticallyVerticalDirection;
 
   Offset? _targetCenter;
   OverlayEntry? _backGroundOverlay;
@@ -191,6 +195,7 @@ class SuperTooltip {
     this.dismissOnTapOutside = true,
     this.blockOutsidePointerEvents = true,
     this.containsBackgroundOverlay = true,
+    this.automaticallyVerticalDirection = false,
   })  : assert((maxWidth ?? double.infinity) >= (minWidth ?? 0.0)),
         assert((maxHeight ?? double.infinity) >= (minHeight ?? 0.0));
 
@@ -258,6 +263,14 @@ class SuperTooltip {
                   child: background,
                 ),
               ));
+    }
+    
+    if (automaticallyVerticalDirection) {
+      if (_targetCenter!.dy > overlay!.size.center(Offset.zero).dy) {
+        popupDirection = TooltipDirection.up;
+      } else {
+        popupDirection = TooltipDirection.down;
+      }
     }
 
     /// Handling snap far away feature.
