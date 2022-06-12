@@ -33,6 +33,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
       backgroundColor: Colors.red,
       body: new Center(child: TargetWidget()),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => null,
+      ),
     );
   }
 }
@@ -73,6 +76,7 @@ class _TargetWidgetState extends State<TargetWidget> {
     // We create the tooltip on the first use
     tooltip = SuperTooltip(
       popupDirection: TooltipDirection.left,
+      snapsFarAwayVertically: false,
       arrowTipDistance: 15.0,
       arrowBaseWidth: 40.0,
       arrowLength: 40.0,
@@ -94,8 +98,10 @@ class _TargetWidgetState extends State<TargetWidget> {
           softWrap: true,
         ),
       )),
+      containsBackgroundOverlay: true,
+      outsideBackgroundColor: Colors.yellow,
+      touchThroughAreaCornerRadius: 30,
     );
-
     tooltip!.show(context);
   }
 
@@ -106,12 +112,14 @@ class _TargetWidgetState extends State<TargetWidget> {
       child: new GestureDetector(
         onTap: onTap,
         child: Container(
-            width: 20.0,
-            height: 20.0,
-            decoration: new BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blue,
-            )),
+          margin: EdgeInsets.only(top: 300.0),
+          width: 20.0,
+          height: 20.0,
+          decoration: new BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blue,
+          ),
+        ),
       ),
     );
   }
