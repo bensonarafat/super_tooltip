@@ -1092,7 +1092,7 @@ class _AnimationWrapperState extends State<_AnimationWrapper> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           opacity = 1.0;
