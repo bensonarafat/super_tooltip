@@ -1092,7 +1092,7 @@ class _AnimationWrapperState extends State<_AnimationWrapper> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    _ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           opacity = 1.0;
@@ -1105,6 +1105,14 @@ class _AnimationWrapperState extends State<_AnimationWrapper> {
   Widget build(BuildContext context) {
     return widget.builder!(context, opacity);
   }
+
+  /// This allows a value of type T or T?
+  /// to be treated as a value of type T?.
+  ///
+  /// We use this so that APIs that have become
+  /// non-nullable can still be used with `!` and `?`
+  /// to support older versions of the API as well.
+  T? _ambiguate<T>(T? value) => value;
 }
 
 enum SuperTooltipDismissBehaviour { none, onTap, onPointerDown }
