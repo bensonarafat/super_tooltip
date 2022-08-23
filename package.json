@@ -1,0 +1,28 @@
+{
+  "name": "super_tooltip",
+  "version": "1.0.0",
+  "description": "`SuperTooltip` It is super flexible and allows you to display ToolTips in the overlay of the screen. It gives you more flexibility over the Flutter standard ```Tooltip```. You have the option to make the whole screen covered with a background color. Tapping on the background closes the Tooltip.",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "example": "example",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/escamoteur/super_tooltip.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/escamoteur/super_tooltip/issues"
+  },
+  "homepage": "https://github.com/escamoteur/super_tooltip#readme",
+  "dependencies": {
+    "moment": "^2.29.4",
+    "simple-git": "^3.19.0"
+  }
+}

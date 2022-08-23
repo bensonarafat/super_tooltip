@@ -17,6 +17,7 @@ class BubbleShape extends ShapeBorder {
     required this.top,
     required this.right,
     required this.bottom,
+    required this.bubbleDimensions,
   });
 
   final Offset target;
@@ -27,6 +28,7 @@ class BubbleShape extends ShapeBorder {
   final double borderWidth;
   final double? left, top, right, bottom;
   final TooltipDirection preferredDirection;
+  final EdgeInsetsGeometry bubbleDimensions;
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
@@ -294,6 +296,7 @@ class BubbleShape extends ShapeBorder {
       top: top,
       right: right,
       bottom: bottom,
+      bubbleDimensions: bubbleDimensions,
     );
   }
 }

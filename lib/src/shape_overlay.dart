@@ -9,12 +9,14 @@ class ShapeOverlay extends ShapeBorder {
     required this.clipAreaShape,
     required this.clipAreaCornerRadius,
     required this.barrierColor,
+    required this.overlayDimensions,
   });
 
   final Rect? clipRect;
   final ClipAreaShape clipAreaShape;
   final double clipAreaCornerRadius;
   final Color? barrierColor;
+  final EdgeInsetsGeometry overlayDimensions;
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
@@ -76,6 +78,7 @@ class ShapeOverlay extends ShapeBorder {
       clipAreaShape: clipAreaShape,
       clipAreaCornerRadius: clipAreaCornerRadius,
       barrierColor: barrierColor,
+      overlayDimensions: overlayDimensions,
     );
   }
 }

@@ -59,6 +59,8 @@ class SuperTooltip extends StatefulWidget {
     this.touchThrougArea,
     this.borderWidth = 0.0,
     this.borderRadius = 10.0,
+    this.overlayDimensions = const EdgeInsets.all(10),
+    this.bubbleDimensions = const EdgeInsets.all(10),
   }) : super(key: key);
 
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
@@ -102,6 +104,14 @@ class SuperTooltip extends StatefulWidget {
   final Rect? touchThrougArea;
   final ClipAreaShape touchThroughAreaShape;
   final double touchThroughAreaCornerRadius;
+
+  ///
+  /// The param for [ShapeOverlay]
+  final EdgeInsetsGeometry overlayDimensions;
+
+  ///
+  /// The param for [BubbleShape]
+  final EdgeInsetsGeometry bubbleDimensions;
 
   @override
   State createState() => _SuperTooltipState();
@@ -253,6 +263,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                       clipAreaShape: widget.touchThroughAreaShape,
                       clipRect: widget.touchThrougArea,
                       barrierColor: barrierColor,
+                      overlayDimensions: widget.overlayDimensions,
                     ),
                   ),
                 ),
@@ -328,6 +339,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                           right: right,
                           target: target,
                           top: top,
+                          bubbleDimensions: widget.bubbleDimensions,
                         ),
                       ),
                       child: widget.content,
