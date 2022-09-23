@@ -31,14 +31,9 @@ class SuperTooltip extends StatefulWidget {
     this.right,
     this.bottom,
     this.left,
-    // TD: Make edgeinsets instead
     this.minimumOutsideMargin = 20.0,
     this.verticalOffset = 0.0,
     this.elevation = 0.0,
-    // TD: The native flutter tooltip uses verticalOffset
-    //  to space the tooltip from the child. But we'll likely
-    // need just offset, since it's 4 way directional
-    // this.verticalOffset = 24.0,
     this.backgroundColor,
     this.decoration,
     this.child,
@@ -283,15 +278,11 @@ class _SuperTooltipState extends State<SuperTooltip>
                 left: left,
                 right: right,
                 target: target,
-                // verticalOffset: widget.verticalOffset,
                 overlay: overlay,
                 margin: widget.minimumOutsideMargin,
                 snapsFarAwayHorizontally: widget.snapsFarAwayHorizontally,
                 snapsFarAwayVertically: widget.snapsFarAwayVertically,
               ),
-              // TD:  Text fields and such will need a material ancestor
-              // In order to function properly. Need to find more elegant way
-              // to add this.
               child: Stack(
                 fit: StackFit.passthrough,
                 children: <Widget>[
@@ -425,8 +416,6 @@ class _SuperTooltipState extends State<SuperTooltip>
 
       // DOWN: -------------------------------------
       case TooltipDirection.down:
-        // If this value gets negative the Shadow gets clipped. The problem occurs is arrowlength + arrowTipDistance
-        // is smaller than _outSideCloseButtonPadding which would mean arrowLength would need to be increased if the button is ouside.
         right = 2.0;
         if (showCloseButton == ShowCloseButton.inside) {
           top = widget.arrowLength + widget.arrowTipDistance + 2.0;
