@@ -104,13 +104,7 @@ class SuperTooltip extends StatefulWidget {
   final Rect? touchThrougArea;
   final ClipAreaShape touchThroughAreaShape;
   final double touchThroughAreaCornerRadius;
-
-  ///
-  /// The param for [ShapeOverlay]
   final EdgeInsetsGeometry overlayDimensions;
-
-  ///
-  /// The param for [BubbleShape]
   final EdgeInsetsGeometry bubbleDimensions;
 
   @override
@@ -363,7 +357,8 @@ class _SuperTooltipState extends State<SuperTooltip>
   _showTooltip() async {
     widget.onShow?.call();
 
-    if (_entry != null) return; // Already visible.
+    // Already visible.
+    if (_entry != null) return;
 
     _createOverlayEntries();
 
