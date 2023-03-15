@@ -1,3 +1,7 @@
+## [2.0.0] - 01.04.2023
+
+* Completely Change the Api for Super tooltip
+
 ## [1.0.1] - 15.3.2021
 
 * Allow to change the icon of the close button
