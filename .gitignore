@@ -12,4 +12,3 @@ pubspec.lock
 .vscode
 example/flutter_weather_demo/pubspec.lock
 /*.code-workspace
-example/android.iml

@@ -6,16 +6,16 @@ const Key targetWidgetKey = Key('targetWidget');
 
 class HomePage extends StatefulWidget {
   const HomePage({
-    Key key,
+    Key? key,
     this.showBarrier,
     this.barrierColor,
   }) : super(key: key);
 
-  final bool showBarrier;
-  final Color barrierColor;
+  final bool? showBarrier;
+  final Color? barrierColor;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
             key: targetWidgetKey,
             width: 40.0,
             height: 40.0,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.blue,
             ),
@@ -50,7 +50,7 @@ void main() {
   testWidgets(
     'SuperTooltip should handle null options gracefully',
     (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: HomePage(showBarrier: null),
       ));
       await tester.pumpAndSettle();
@@ -66,7 +66,7 @@ void main() {
     testWidgets(
       'barrier should be displayed by default',
       (WidgetTester tester) async {
-        await tester.pumpWidget(MaterialApp(home: HomePage()));
+        await tester.pumpWidget(const MaterialApp(home: HomePage()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(targetWidgetKey));
@@ -80,7 +80,7 @@ void main() {
       'barrier should be not displayed if showBarrier is false',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: HomePage(showBarrier: false)),
+          const MaterialApp(home: HomePage(showBarrier: false)),
         );
         await tester.pumpAndSettle();
 

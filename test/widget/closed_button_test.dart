@@ -6,18 +6,18 @@ const Key targetWidgetKey = Key('targetWidget');
 
 class HomePage extends StatefulWidget {
   const HomePage({
-    Key key,
+    Key? key,
     this.showCloseButton,
     this.closeButtonColor,
     this.closeButtonSize,
   }) : super(key: key);
 
-  final ShowCloseButton showCloseButton;
-  final Color closeButtonColor;
-  final double closeButtonSize;
+  final ShowCloseButton? showCloseButton;
+  final Color? closeButtonColor;
+  final double? closeButtonSize;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             width: 40.0,
             height: 40.0,
             decoration:
-                BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+                const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
           ),
         ),
       ),
@@ -51,7 +51,7 @@ void main() {
   testWidgets(
     'SuperTooltip should handle null options gracefully',
     (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: HomePage(
           showCloseButton: null,
           closeButtonColor: null,
@@ -72,7 +72,7 @@ void main() {
     testWidgets(
       'Close-button should not be displayed by default',
       (WidgetTester tester) async {
-        await tester.pumpWidget(MaterialApp(home: HomePage()));
+        await tester.pumpWidget(const MaterialApp(home: HomePage()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(targetWidgetKey));
@@ -87,7 +87,8 @@ void main() {
       'Close-button should not be displayed for ShowCloseButton.none value',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.none)),
+          const MaterialApp(
+              home: HomePage(showCloseButton: ShowCloseButton.none)),
         );
         await tester.pumpAndSettle();
 
@@ -103,7 +104,8 @@ void main() {
       'Close-button should be displayed inside of tooltip bubble for ShowCloseButton.inside value',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
+          const MaterialApp(
+              home: HomePage(showCloseButton: ShowCloseButton.inside)),
         );
         await tester.pumpAndSettle();
 
@@ -119,7 +121,8 @@ void main() {
       'Close-button should be displayed inside of tooltip bubble for ShowCloseButton.outside value',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.outside)),
+          const MaterialApp(
+              home: HomePage(showCloseButton: ShowCloseButton.outside)),
         );
         await tester.pumpAndSettle();
 
@@ -137,7 +140,8 @@ void main() {
       'Close-button color should be black by default',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
+          const MaterialApp(
+              home: HomePage(showCloseButton: ShowCloseButton.inside)),
         );
         await tester.pumpAndSettle();
 
@@ -158,10 +162,10 @@ void main() {
     testWidgets(
       'Close-button color should be equal to given value',
       (WidgetTester tester) async {
-        final buttonColor = Colors.green;
+        const buttonColor = Colors.green;
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
               home: HomePage(
             showCloseButton: ShowCloseButton.inside,
             closeButtonColor: buttonColor,
@@ -189,7 +193,8 @@ void main() {
       'Close-button size should be 30.0 by default',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: HomePage(showCloseButton: ShowCloseButton.inside)),
+          const MaterialApp(
+              home: HomePage(showCloseButton: ShowCloseButton.inside)),
         );
         await tester.pumpAndSettle();
 
@@ -210,10 +215,10 @@ void main() {
     testWidgets(
       'Close-button size should be equal to given value',
       (WidgetTester tester) async {
-        final buttonColor = Colors.green;
+        const buttonColor = Colors.green;
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: HomePage(
               showCloseButton: ShowCloseButton.inside,
               closeButtonColor: buttonColor,

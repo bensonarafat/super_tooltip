@@ -3,34 +3,36 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MainApp());
 
-class MyApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
+  const MainApp({Key key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Super Tooltip Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const ExamplePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({
-    Key? key,
+class ExamplePage extends StatefulWidget {
+  const ExamplePage({
+    Key key,
   }) : super(key: key);
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State createState() => _ExamplePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.red,
       body: Center(child: TargetWidget()),
     );
@@ -41,7 +43,7 @@ class TargetWidget extends StatefulWidget {
   const TargetWidget({Key? key}) : super(key: key);
 
   @override
-  _TargetWidgetState createState() => _TargetWidgetState();
+  State createState() => _TargetWidgetState();
 }
 
 class _TargetWidgetState extends State<TargetWidget> {
@@ -93,7 +95,7 @@ class _TargetWidgetState extends State<TargetWidget> {
           // touchThrougArea: Rect.fromLTWH(
           //     targetGlobalCenter.dx - 100, targetGlobalCenter.dy - 100, 200.0, 160.0),
           touchThroughAreaShape: ClipAreaShape.rectangle,
-          content: Text(
+          content: const Text(
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
             "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
             "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
@@ -103,7 +105,7 @@ class _TargetWidgetState extends State<TargetWidget> {
           child: Container(
             width: 40.0,
             height: 40.0,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.blue,
             ),

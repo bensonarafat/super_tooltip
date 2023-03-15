@@ -10,24 +10,24 @@ enum ShowCloseButton { inside, outside, none }
 
 enum ClipAreaShape { oval, rectangle }
 
-enum _Event { show, hide }
+enum Event { show, hide }
 
 class SuperTooltipController extends ChangeNotifier {
-  Completer _completer;
+  late Completer _completer;
   bool _isVisible = true;
   bool get isVisible => _isVisible;
 
-  _Event event;
+  late Event event;
 
   Future<void> showTooltip() {
-    event = _Event.show;
+    event = Event.show;
     _completer = Completer();
     notifyListeners();
     return _completer.future.whenComplete(() => _isVisible = true);
   }
 
   Future<void> hideTooltip() {
-    event = _Event.hide;
+    event = Event.hide;
     _completer = Completer();
     notifyListeners();
     return _completer.future.whenComplete(() => _isVisible = false);
@@ -42,8 +42,8 @@ class SuperTooltipController extends ChangeNotifier {
 
 class SuperTooltip extends StatefulWidget {
   const SuperTooltip({
-    Key key,
-    @required this.content,
+    Key? key,
+    required this.content,
     this.preferredDirection = PreferredDirection.down,
     this.controller,
     this.onLongPress,
@@ -101,27 +101,27 @@ class SuperTooltip extends StatefulWidget {
 
   final Widget content;
   final PreferredDirection preferredDirection;
-  final SuperTooltipController controller;
-  final void Function() onLongPress;
-  final void Function() onShow;
-  final void Function() onHide;
+  final SuperTooltipController? controller;
+  final void Function()? onLongPress;
+  final void Function()? onShow;
+  final void Function()? onHide;
   final bool snapsFarAwayVertically;
   final bool snapsFarAwayHorizontally;
-  final bool hasShadow;
-  final Color shadowColor;
-  final double shadowBlurRadius;
-  final double shadowSpreadRadius;
-  final double top, right, bottom, left;
-  final ShowCloseButton showCloseButton;
-  final Color closeButtonColor;
-  final double closeButtonSize;
+  final bool? hasShadow;
+  final Color? shadowColor;
+  final double? shadowBlurRadius;
+  final double? shadowSpreadRadius;
+  final double? top, right, bottom, left;
+  final ShowCloseButton? showCloseButton;
+  final Color? closeButtonColor;
+  final double? closeButtonSize;
   final double minimumOutsideMargin;
   final double verticalOffset;
-  final Widget child;
+  final Widget? child;
   final Color borderColor;
   final BoxConstraints constraints;
-  final Color backgroundColor;
-  final Decoration decoration;
+  final Color? backgroundColor;
+  final Decoration? decoration;
   final double elevation;
   final Duration fadeInDuration;
   final Duration fadeOutDuration;
@@ -130,33 +130,33 @@ class SuperTooltip extends StatefulWidget {
   final double arrowTipDistance;
   final double borderRadius;
   final double borderWidth;
-  final bool showBarrier;
-  final Color barrierColor;
-  final Rect touchThrougArea;
+  final bool? showBarrier;
+  final Color? barrierColor;
+  final Rect? touchThrougArea;
   final ClipAreaShape touchThroughAreaShape;
   final double touchThroughAreaCornerRadius;
 
   @override
-  _ExtendedTooltipState createState() => _ExtendedTooltipState();
+  State createState() => _ExtendedTooltipState();
 }
 
 class _ExtendedTooltipState extends State<SuperTooltip>
     with SingleTickerProviderStateMixin {
   final LayerLink _layerLink = LayerLink();
-  AnimationController _animationController;
-  SuperTooltipController _superTooltipController;
-  OverlayEntry _entry;
-  OverlayEntry _barrierEntry;
+  late AnimationController _animationController;
+  SuperTooltipController? _superTooltipController;
+  OverlayEntry? _entry;
+  OverlayEntry? _barrierEntry;
 
-  ShowCloseButton showCloseButton;
-  Color closeButtonColor;
-  double closeButtonSize;
-  bool showBarrier;
-  Color barrierColor;
-  bool hasShadow;
-  Color shadowColor;
-  double shadowBlurRadius;
-  double shadowSpreadRadius;
+  ShowCloseButton? showCloseButton;
+  Color? closeButtonColor;
+  double? closeButtonSize;
+  late bool showBarrier;
+  Color? barrierColor;
+  late bool hasShadow;
+  late Color shadowColor;
+  late double shadowBlurRadius;
+  late double shadowSpreadRadius;
 
   @override
   void initState() {
@@ -166,7 +166,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       vsync: this,
     );
     _superTooltipController = widget.controller ?? SuperTooltipController();
-    _superTooltipController.addListener(_onChangeNotifier);
+    _superTooltipController!.addListener(_onChangeNotifier);
 
     // TD: Mouse stuff
     super.initState();
@@ -175,17 +175,18 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   @override
   void didUpdateWidget(SuperTooltip oldWidget) {
     if (_superTooltipController != widget.controller) {
-      _superTooltipController.removeListener(_onChangeNotifier);
+      _superTooltipController!.removeListener(_onChangeNotifier);
       _superTooltipController = widget.controller ?? SuperTooltipController();
-      _superTooltipController.addListener(_onChangeNotifier);
+      _superTooltipController!.addListener(_onChangeNotifier);
     }
     super.didUpdateWidget(oldWidget);
   }
 
+  // @override
   @override
   void dispose() {
     if (_entry != null) _removeEntries();
-    _superTooltipController.removeListener(_onChangeNotifier);
+    _superTooltipController?.removeListener(_onChangeNotifier);
     _animationController.dispose();
     super.dispose();
   }
@@ -205,7 +206,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     return CompositedTransformTarget(
       link: _layerLink,
       child: GestureDetector(
-        onTap: _superTooltipController.showTooltip,
+        onTap: _superTooltipController!.showTooltip,
         onLongPress: widget.onLongPress,
         child: widget.child,
       ),
@@ -213,11 +214,11 @@ class _ExtendedTooltipState extends State<SuperTooltip>
   }
 
   void _onChangeNotifier() {
-    switch (_superTooltipController.event) {
-      case _Event.show:
+    switch (_superTooltipController!.event) {
+      case Event.show:
         _showTooltip();
         break;
-      case _Event.hide:
+      case Event.hide:
         _hideTooltip();
         break;
     }
@@ -225,7 +226,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
   void _createOverlayEntries() {
     final renderBox = context.findRenderObject() as RenderBox;
-    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox?;
     final size = renderBox.size;
     final target = renderBox.localToGlobal(size.center(Offset.zero));
     final animation = CurvedAnimation(
@@ -250,7 +252,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       constraints = constraints.copyWith(maxHeight: null);
       left = right = 0.0;
 
-      if (target.dy > overlay.size.center(Offset.zero).dy) {
+      if (target.dy > overlay!.size.center(Offset.zero).dy) {
         preferredDirection = PreferredDirection.up;
         top = 0.0;
       } else {
@@ -261,7 +263,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       constraints = constraints.copyWith(maxHeight: null);
       top = bottom = 0.0;
 
-      if (target.dx < overlay.size.center(Offset.zero).dx) {
+      if (target.dx < overlay!.size.center(Offset.zero).dx) {
         preferredDirection = PreferredDirection.right;
         right = 0.0;
       } else {
@@ -275,7 +277,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
             builder: (context) => FadeTransition(
               opacity: animation,
               child: GestureDetector(
-                onTap: _superTooltipController.hideTooltip,
+                onTap: _superTooltipController!.hideTooltip,
                 child: Container(
                   key: SuperTooltip.barrierKey,
                   decoration: ShapeDecoration(
@@ -374,8 +376,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     );
 
     Overlay.of(context).insertAll([
-      if (showBarrier) _barrierEntry,
-      _entry,
+      if (showBarrier) _barrierEntry!,
+      _entry!,
     ]);
   }
 
@@ -388,7 +390,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
     await _animationController
         .forward()
-        .whenComplete(_superTooltipController.complete);
+        .whenComplete(_superTooltipController!.complete);
   }
 
   _removeEntries() {
@@ -402,17 +404,17 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     widget.onHide?.call();
     await _animationController
         .reverse()
-        .whenComplete(_superTooltipController.complete);
+        .whenComplete(_superTooltipController!.complete);
 
     _removeEntries();
   }
 
   Widget _buildCloseButton() {
-    const internalClickAreaPadding = 2.0;
+    // const internalClickAreaPadding = 2.0;
 
     //
     if (showCloseButton == ShowCloseButton.none) {
-      return SizedBox();
+      return const SizedBox();
     }
 
     // ---
@@ -429,8 +431,9 @@ class _ExtendedTooltipState extends State<SuperTooltip>
           top = 2.0;
         } else if (showCloseButton == ShowCloseButton.outside) {
           top = 0.0;
-        } else
+        } else {
           throw AssertionError(showCloseButton);
+        }
         break;
 
       // RIGHT/UP: ---------------------------------
@@ -441,8 +444,9 @@ class _ExtendedTooltipState extends State<SuperTooltip>
           top = 2.0;
         } else if (showCloseButton == ShowCloseButton.outside) {
           top = 0.0;
-        } else
+        } else {
           throw AssertionError(showCloseButton);
+        }
         break;
 
       // DOWN: -------------------------------------
@@ -454,8 +458,9 @@ class _ExtendedTooltipState extends State<SuperTooltip>
           top = widget.arrowLength + widget.arrowTipDistance + 2.0;
         } else if (showCloseButton == ShowCloseButton.outside) {
           top = 0.0;
-        } else
+        } else {
           throw AssertionError(showCloseButton);
+        }
         break;
 
       // ---------------------------------------------
@@ -480,7 +485,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
             size: closeButtonSize,
             color: closeButtonColor,
           ),
-          onPressed: () async => await widget.controller.hideTooltip(),
+          onPressed: () async => await widget.controller!.hideTooltip(),
         ),
       ),
     );
@@ -489,19 +494,19 @@ class _ExtendedTooltipState extends State<SuperTooltip>
 
 class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
   _TooltipPositionDelegate({
-    @required this.snapsFarAwayVertically,
-    @required this.snapsFarAwayHorizontally,
-    @required this.preferredDirection,
-    @required this.constraints,
-    @required this.margin,
-    @required this.top,
-    @required this.bottom,
-    @required this.left,
-    @required this.right,
-    @required this.target,
+    required this.snapsFarAwayVertically,
+    required this.snapsFarAwayHorizontally,
+    required this.preferredDirection,
+    required this.constraints,
+    required this.margin,
+    required this.top,
+    required this.bottom,
+    required this.left,
+    required this.right,
+    required this.target,
     // @required this.verticalOffset,
-    @required this.overlay,
-  }) : assert(target != null);
+    required this.overlay,
+  });
   // assert(verticalOffset != null);
 
   final bool snapsFarAwayVertically;
@@ -510,11 +515,11 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
   final double margin;
   final Offset target;
   // final double verticalOffset;
-  final RenderBox overlay;
+  final RenderBox? overlay;
   final BoxConstraints constraints;
 
   final PreferredDirection preferredDirection;
-  final double top, bottom, left, right;
+  final double? top, bottom, left, right;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -623,17 +628,17 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
 
 class _BubbleShape extends ShapeBorder {
   const _BubbleShape({
-    @required this.preferredDirection,
-    @required this.target,
-    @required this.borderRadius,
-    @required this.arrowBaseWidth,
-    @required this.arrowTipDistance,
-    @required this.borderColor,
-    @required this.borderWidth,
-    @required this.left,
-    @required this.top,
-    @required this.right,
-    @required this.bottom,
+    required this.preferredDirection,
+    required this.target,
+    required this.borderRadius,
+    required this.arrowBaseWidth,
+    required this.arrowTipDistance,
+    required this.borderColor,
+    required this.borderWidth,
+    required this.left,
+    required this.top,
+    required this.right,
+    required this.bottom,
   });
 
   final Offset target;
@@ -642,23 +647,26 @@ class _BubbleShape extends ShapeBorder {
   final double borderRadius;
   final Color borderColor;
   final double borderWidth;
-  final double left, top, right, bottom;
+  final double? left, top, right, bottom;
   final PreferredDirection preferredDirection;
 
   @override
-  EdgeInsetsGeometry get dimensions => EdgeInsets.all(10.0);
+  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) => Path()
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path()
     ..fillType = PathFillType.evenOdd
     ..addPath(getOuterPath(rect), Offset.zero);
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     //
-    double topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius;
+    late double topLeftRadius,
+        topRightRadius,
+        bottomLeftRadius,
+        bottomRightRadius;
 
-    Path _getLeftTopPath(Rect rect) => Path()
+    Path getLeftTopPath(Rect rect) => Path()
       ..moveTo(rect.left, rect.bottom - bottomLeftRadius)
       ..lineTo(rect.left, rect.top + topLeftRadius)
       ..arcToPoint(
@@ -672,7 +680,7 @@ class _BubbleShape extends ShapeBorder {
         clockwise: true,
       );
 
-    Path _getBottomRightPath(Rect rect) => Path()
+    Path getBottomRightPath(Rect rect) => Path()
       ..moveTo(rect.left + bottomLeftRadius, rect.bottom)
       ..lineTo(rect.right - bottomRightRadius, rect.bottom)
       ..arcToPoint(
@@ -694,7 +702,7 @@ class _BubbleShape extends ShapeBorder {
 
     switch (preferredDirection) {
       case PreferredDirection.down:
-        return _getBottomRightPath(rect)
+        return getBottomRightPath(rect)
           ..lineTo(
             min(
               max(
@@ -731,7 +739,7 @@ class _BubbleShape extends ShapeBorder {
           );
 
       case PreferredDirection.up:
-        return _getLeftTopPath(rect)
+        return getLeftTopPath(rect)
           ..lineTo(rect.right, rect.bottom - bottomRightRadius)
           ..arcToPoint(Offset(rect.right - bottomRightRadius, rect.bottom),
               radius: Radius.circular(bottomRightRadius), clockwise: true)
@@ -760,7 +768,7 @@ class _BubbleShape extends ShapeBorder {
               radius: Radius.circular(topLeftRadius), clockwise: true);
 
       case PreferredDirection.left:
-        return _getLeftTopPath(rect)
+        return getLeftTopPath(rect)
           ..lineTo(
               rect.right,
               max(
@@ -782,7 +790,7 @@ class _BubbleShape extends ShapeBorder {
               radius: Radius.circular(bottomLeftRadius), clockwise: true);
 
       case PreferredDirection.right:
-        return _getBottomRightPath(rect)
+        return getBottomRightPath(rect)
           ..lineTo(rect.left + topLeftRadius, rect.top)
           ..arcToPoint(Offset(rect.left, rect.top + topLeftRadius),
               radius: Radius.circular(topLeftRadius), clockwise: false)
@@ -811,7 +819,7 @@ class _BubbleShape extends ShapeBorder {
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     var paint = Paint()
       ..color = borderColor
       ..style = PaintingStyle.stroke
@@ -914,26 +922,26 @@ class _BubbleShape extends ShapeBorder {
 
 class _ShapeOverlay extends ShapeBorder {
   const _ShapeOverlay({
-    @required this.clipRect,
-    @required this.clipAreaShape,
-    @required this.clipAreaCornerRadius,
-    @required this.barrierColor,
+    required this.clipRect,
+    required this.clipAreaShape,
+    required this.clipAreaCornerRadius,
+    required this.barrierColor,
   });
 
-  final Rect clipRect;
+  final Rect? clipRect;
   final ClipAreaShape clipAreaShape;
   final double clipAreaCornerRadius;
-  final Color barrierColor;
+  final Color? barrierColor;
 
   @override
-  EdgeInsetsGeometry get dimensions => EdgeInsets.all(10.0);
+  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) =>
-      Path()..addOval(clipRect);
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
+      Path()..addOval(clipRect!);
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     var outer = Path()..addRect(rect);
 
     if (clipRect == null) return outer;
@@ -941,28 +949,28 @@ class _ShapeOverlay extends ShapeBorder {
     Path exclusion;
 
     if (clipAreaShape == ClipAreaShape.oval) {
-      exclusion = Path()..addOval(clipRect);
+      exclusion = Path()..addOval(clipRect!);
     } else {
       exclusion = Path()
-        ..moveTo(clipRect.left + clipAreaCornerRadius, clipRect.top)
-        ..lineTo(clipRect.right - clipAreaCornerRadius, clipRect.top)
+        ..moveTo(clipRect!.left + clipAreaCornerRadius, clipRect!.top)
+        ..lineTo(clipRect!.right - clipAreaCornerRadius, clipRect!.top)
         ..arcToPoint(
-          Offset(clipRect.right, clipRect.top + clipAreaCornerRadius),
+          Offset(clipRect!.right, clipRect!.top + clipAreaCornerRadius),
           radius: Radius.circular(clipAreaCornerRadius),
         )
-        ..lineTo(clipRect.right, clipRect.bottom - clipAreaCornerRadius)
+        ..lineTo(clipRect!.right, clipRect!.bottom - clipAreaCornerRadius)
         ..arcToPoint(
-          Offset(clipRect.right - clipAreaCornerRadius, clipRect.bottom),
+          Offset(clipRect!.right - clipAreaCornerRadius, clipRect!.bottom),
           radius: Radius.circular(clipAreaCornerRadius),
         )
-        ..lineTo(clipRect.left + clipAreaCornerRadius, clipRect.bottom)
+        ..lineTo(clipRect!.left + clipAreaCornerRadius, clipRect!.bottom)
         ..arcToPoint(
-          Offset(clipRect.left, clipRect.bottom - clipAreaCornerRadius),
+          Offset(clipRect!.left, clipRect!.bottom - clipAreaCornerRadius),
           radius: Radius.circular(clipAreaCornerRadius),
         )
-        ..lineTo(clipRect.left, clipRect.top + clipAreaCornerRadius)
+        ..lineTo(clipRect!.left, clipRect!.top + clipAreaCornerRadius)
         ..arcToPoint(
-          Offset(clipRect.left + clipAreaCornerRadius, clipRect.top),
+          Offset(clipRect!.left + clipAreaCornerRadius, clipRect!.top),
           radius: Radius.circular(clipAreaCornerRadius),
         )
         ..close();
@@ -972,10 +980,10 @@ class _ShapeOverlay extends ShapeBorder {
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) =>
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) =>
       canvas.drawPath(
         getOuterPath(rect),
-        Paint()..color = barrierColor,
+        Paint()..color = barrierColor!,
       );
 
   @override
@@ -990,14 +998,15 @@ class _ShapeOverlay extends ShapeBorder {
 }
 
 EdgeInsets _getTooltipMargin({
-  @required ShowCloseButton showCloseButton,
-  @required double closeButtonSize,
-  @required double arrowTipDistance,
-  @required double arrowLength,
-  @required PreferredDirection preferredDirection,
+  required ShowCloseButton? showCloseButton,
+  required double? closeButtonSize,
+  required double arrowTipDistance,
+  required double arrowLength,
+  required PreferredDirection preferredDirection,
 }) {
-  final top =
-      (showCloseButton == ShowCloseButton.outside) ? closeButtonSize + 12 : 0.0;
+  final top = (showCloseButton == ShowCloseButton.outside)
+      ? closeButtonSize! + 12
+      : 0.0;
 
   switch (preferredDirection) {
     case PreferredDirection.down:
@@ -1018,21 +1027,21 @@ EdgeInsets _getTooltipMargin({
 }
 
 EdgeInsets _getTooltipPadding({
-  @required ShowCloseButton showCloseButton,
-  @required double closeButtonSize,
+  required ShowCloseButton? showCloseButton,
+  required double? closeButtonSize,
 }) {
   final top =
-      (showCloseButton == ShowCloseButton.inside) ? closeButtonSize : 0.0;
+      (showCloseButton == ShowCloseButton.inside) ? closeButtonSize! : 0.0;
   return EdgeInsets.only(top: top);
 }
 
 double _leftMostXtoTarget({
-  @required double left,
-  @required double right,
-  @required double margin,
-  @required Size size,
-  @required Size childSize,
-  @required Offset target,
+  required double? left,
+  required double? right,
+  required double margin,
+  required Size size,
+  required Size childSize,
+  required Offset target,
 }) {
   double leftMostXtoTarget;
 
@@ -1068,12 +1077,12 @@ double _leftMostXtoTarget({
 }
 
 double _topMostYtoTarget({
-  @required double top,
-  @required double bottom,
-  @required double margin,
-  @required Offset target,
-  @required Size size,
-  @required Size childSize,
+  required double? top,
+  required double? bottom,
+  required double margin,
+  required Offset target,
+  required Size size,
+  required Size childSize,
 }) {
   double topmostYtoTarget;
 
@@ -1098,106 +1107,106 @@ double _topMostYtoTarget({
 }
 
 BoxConstraints _horizontalConstraints({
-  @required BoxConstraints constraints,
-  @required double top,
-  @required double bottom,
-  @required double right,
-  @required double left,
-  @required double margin,
-  @required bool isRight,
-  @required Offset target,
+  required BoxConstraints constraints,
+  required double? top,
+  required double? bottom,
+  required double? right,
+  required double? left,
+  required double margin,
+  required bool isRight,
+  required Offset target,
 }) {
-  var _maxHeight = constraints.maxHeight;
-  var _minWidth = constraints.minWidth;
-  var _maxWidth = constraints.maxWidth;
+  var maxHeight = constraints.maxHeight;
+  var minWidth = constraints.minWidth;
+  var maxWidth = constraints.maxWidth;
 
   if (top != null && bottom != null) {
-    _maxHeight = _maxHeight - (top + bottom);
+    maxHeight = maxHeight - (top + bottom);
   } else if ((top != null && bottom == null) ||
       (top == null && bottom != null)) {
     // make sure that the sum of top, bottom + _maxHeight isn't bigger than the screen Height.
     final sideDelta = (top ?? 0.0) + (bottom ?? 0.0) + margin;
 
-    if (_maxHeight > _maxHeight - sideDelta) {
-      _maxHeight = _maxHeight - sideDelta;
+    if (maxHeight > maxHeight - sideDelta) {
+      maxHeight = maxHeight - sideDelta;
     }
   } else {
-    if (_maxHeight > _maxHeight - 2 * margin) {
-      _maxHeight = _maxHeight - 2 * margin;
+    if (maxHeight > maxHeight - 2 * margin) {
+      maxHeight = maxHeight - 2 * margin;
     }
   }
 
   if (isRight) {
     if (right != null) {
-      _minWidth = _maxWidth = _maxWidth - right - target.dx;
+      minWidth = maxWidth = maxWidth - right - target.dx;
     } else {
-      _maxWidth = min(_maxWidth, _maxWidth - target.dx) - margin;
+      maxWidth = min(maxWidth, maxWidth - target.dx) - margin;
     }
   } else {
     if (left != null) {
-      _minWidth = _maxWidth = target.dx - left;
+      minWidth = maxWidth = target.dx - left;
     } else {
-      _maxWidth = min(_maxWidth, target.dx) - margin;
+      maxWidth = min(maxWidth, target.dx) - margin;
     }
   }
 
   return constraints.copyWith(
-    maxHeight: _maxHeight,
-    minWidth: _minWidth,
-    maxWidth: _maxWidth,
+    maxHeight: maxHeight,
+    minWidth: minWidth,
+    maxWidth: maxWidth,
   );
 }
 
 BoxConstraints _verticalConstraints({
-  @required BoxConstraints constraints,
-  @required double margin,
-  @required bool isUp,
-  @required double top,
-  @required double left,
-  @required double right,
-  @required double bottom,
-  @required Offset target,
+  required BoxConstraints constraints,
+  required double margin,
+  required bool isUp,
+  required double? top,
+  required double? left,
+  required double? right,
+  required double? bottom,
+  required Offset target,
 }) {
-  var _minHeight = constraints.minHeight;
-  var _maxHeight = constraints.maxHeight;
-  var _maxWidth = constraints.maxWidth;
+  var minHeight = constraints.minHeight;
+  var maxHeight = constraints.maxHeight;
+  var maxWidth = constraints.maxWidth;
 
   if (left != null && right != null) {
-    _maxWidth = _maxWidth - (left + right);
+    maxWidth = maxWidth - (left + right);
   } else if ((left != null && right == null) ||
       (left == null && right != null)) {
     // make sure that the sum of left, right + maxwidth isn't bigger than the screen width.
     final sideDelta = (left ?? 0.0) + (right ?? 0.0) + margin;
 
-    if (_maxWidth > _maxWidth - sideDelta) {
-      _maxWidth = _maxWidth - sideDelta;
+    if (maxWidth > maxWidth - sideDelta) {
+      maxWidth = maxWidth - sideDelta;
     }
   } else {
-    if (_maxWidth > _maxWidth - 2 * margin) {
-      _maxWidth = _maxWidth - 2 * margin;
+    if (maxWidth > maxWidth - 2 * margin) {
+      maxWidth = maxWidth - 2 * margin;
     }
   }
 
   if (isUp) {
     if (top != null) {
-      _minHeight = _maxHeight = target.dy - top;
+      minHeight = maxHeight = target.dy - top;
     } else {
-      _maxHeight = min(_maxHeight, target.dy) - margin;
+      maxHeight = min(maxHeight, target.dy) - margin;
       // TD: clamp minheight
     }
   } else {
     if (bottom != null) {
-      _minHeight = _maxHeight = _maxHeight - bottom - target.dy;
+      minHeight = maxHeight = maxHeight - bottom - target.dy;
     } else {
-      _maxHeight = min(_maxHeight, _maxHeight - target.dy) - margin;
+      maxHeight = min(maxHeight, maxHeight - target.dy) - margin;
       // TD: clamp minheight
     }
   }
 
   return constraints.copyWith(
-    minHeight: _minHeight,
-    maxHeight: _maxHeight,
-    maxWidth: _maxWidth,
+    minHeight: minHeight,
+    maxHeight: maxHeight,
+    maxWidth: maxWidth,
   );
 }
 

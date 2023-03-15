@@ -6,20 +6,20 @@ const Key targetWidgetKey = Key('targetWidget');
 
 class HomePage extends StatefulWidget {
   const HomePage({
-    Key key,
+    Key? key,
     this.hasShadow,
     this.shadowColor,
     this.shadowBlurRadius,
     this.shadowSpreadRadius,
   }) : super(key: key);
 
-  final bool hasShadow;
-  final Color shadowColor;
-  final double shadowBlurRadius;
-  final double shadowSpreadRadius;
+  final bool? hasShadow;
+  final Color? shadowColor;
+  final double? shadowBlurRadius;
+  final double? shadowSpreadRadius;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -41,7 +41,8 @@ class _HomePageState extends State<HomePage> {
             key: targetWidgetKey,
             width: 40.0,
             height: 40.0,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+            decoration:
+                const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
           ),
         ),
       ),
@@ -53,7 +54,7 @@ void main() {
   testWidgets(
     'SuperTooltip should handle null options gracefully',
     (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: HomePage(
           hasShadow: null,
           shadowColor: null,
@@ -75,7 +76,7 @@ void main() {
     testWidgets(
       'shadow should be displayed by default',
       (WidgetTester tester) async {
-        await tester.pumpWidget(MaterialApp(home: HomePage()));
+        await tester.pumpWidget(const MaterialApp(home: HomePage()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(targetWidgetKey));
@@ -94,7 +95,8 @@ void main() {
     testWidgets(
       'shadow should be not displayed if hasShadow is false',
       (WidgetTester tester) async {
-        await tester.pumpWidget(MaterialApp(home: HomePage(hasShadow: false)));
+        await tester
+            .pumpWidget(const MaterialApp(home: HomePage(hasShadow: false)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(targetWidgetKey));
@@ -114,7 +116,8 @@ void main() {
       testWidgets(
         'shadow-color should be black by default',
         (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(home: HomePage(hasShadow: true)));
+          await tester
+              .pumpWidget(const MaterialApp(home: HomePage(hasShadow: true)));
           await tester.pumpAndSettle();
 
           await tester.tap(find.byKey(targetWidgetKey));
@@ -125,7 +128,7 @@ void main() {
 
           final container = tester.widget<Container>(tooltipBubble);
           final decoration = container.decoration as ShapeDecoration;
-          final shadows = decoration.shadows;
+          final shadows = decoration.shadows!;
           expect(shadows[0].color, equals(Colors.black54));
         },
       );
@@ -133,7 +136,7 @@ void main() {
       testWidgets(
         'shadow-color should be equal to given color',
         (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(
+          await tester.pumpWidget(const MaterialApp(
             home: HomePage(
               hasShadow: true,
               shadowColor: Colors.green,
@@ -149,7 +152,7 @@ void main() {
 
           final container = tester.widget<Container>(tooltipBubble);
           final decoration = container.decoration as ShapeDecoration;
-          final shadows = decoration.shadows;
+          final shadows = decoration.shadows!;
           expect(shadows[0].color, equals(Colors.green));
         },
       );
@@ -159,7 +162,8 @@ void main() {
       testWidgets(
         'Blur-radius should be equal to 10.0 by default',
         (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(home: HomePage(hasShadow: true)));
+          await tester
+              .pumpWidget(const MaterialApp(home: HomePage(hasShadow: true)));
           await tester.pumpAndSettle();
 
           await tester.tap(find.byKey(targetWidgetKey));
@@ -170,7 +174,7 @@ void main() {
 
           final container = tester.widget<Container>(tooltipBubble);
           final decoration = container.decoration as ShapeDecoration;
-          final shadows = decoration.shadows;
+          final shadows = decoration.shadows!;
           expect(shadows[0].blurRadius, equals(10.0));
         },
       );
@@ -178,7 +182,7 @@ void main() {
       testWidgets(
         'Blur-radius should be equal to given value',
         (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(
+          await tester.pumpWidget(const MaterialApp(
             home: HomePage(
               hasShadow: true,
               shadowBlurRadius: 20.0,
@@ -194,7 +198,7 @@ void main() {
 
           final container = tester.widget<Container>(tooltipBubble);
           final decoration = container.decoration as ShapeDecoration;
-          final shadows = decoration.shadows;
+          final shadows = decoration.shadows!;
           expect(shadows[0].blurRadius, equals(20.0));
         },
       );
@@ -204,7 +208,8 @@ void main() {
       testWidgets(
         'Spread-radius should be equal to 5.0 by default',
         (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(home: HomePage(hasShadow: true)));
+          await tester
+              .pumpWidget(const MaterialApp(home: HomePage(hasShadow: true)));
           await tester.pumpAndSettle();
 
           await tester.tap(find.byKey(targetWidgetKey));
@@ -215,7 +220,7 @@ void main() {
 
           final container = tester.widget<Container>(tooltipBubble);
           final decoration = container.decoration as ShapeDecoration;
-          final shadows = decoration.shadows;
+          final shadows = decoration.shadows!;
           expect(shadows[0].spreadRadius, equals(5.0));
         },
       );
@@ -223,7 +228,7 @@ void main() {
       testWidgets(
         'Spread-radius should be equal to given value',
         (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(
+          await tester.pumpWidget(const MaterialApp(
             home: HomePage(
               hasShadow: true,
               shadowSpreadRadius: 10.0,
@@ -239,7 +244,7 @@ void main() {
 
           final container = tester.widget<Container>(tooltipBubble);
           final decoration = container.decoration as ShapeDecoration;
-          final shadows = decoration.shadows;
+          final shadows = decoration.shadows!;
           expect(shadows[0].spreadRadius, equals(10.0));
         },
       );
