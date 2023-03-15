@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-enum PreferredDirection { up, down, left, right }
+enum TooltipDirection { up, down, left, right }
 
 enum ShowCloseButton { inside, outside, none }
 
@@ -44,7 +44,7 @@ class SuperTooltip extends StatefulWidget {
   const SuperTooltip({
     Key? key,
     required this.content,
-    this.preferredDirection = PreferredDirection.down,
+    this.popupDirection = TooltipDirection.down,
     this.controller,
     this.onLongPress,
     this.onShow,
@@ -100,7 +100,7 @@ class SuperTooltip extends StatefulWidget {
   static Key bubbleKey = const Key("bubbleKey");
 
   final Widget content;
-  final PreferredDirection preferredDirection;
+  final TooltipDirection popupDirection;
   final SuperTooltipController? controller;
   final void Function()? onLongPress;
   final void Function()? onShow;
@@ -242,7 +242,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
         widget.backgroundColor ?? Theme.of(context).cardColor;
 
     var constraints = widget.constraints;
-    var preferredDirection = widget.preferredDirection;
+    var preferredDirection = widget.popupDirection;
     var left = widget.left;
     var right = widget.right;
     var top = widget.top;
@@ -253,10 +253,10 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       left = right = 0.0;
 
       if (target.dy > overlay!.size.center(Offset.zero).dy) {
-        preferredDirection = PreferredDirection.up;
+        preferredDirection = TooltipDirection.up;
         top = 0.0;
       } else {
-        preferredDirection = PreferredDirection.down;
+        preferredDirection = TooltipDirection.down;
         bottom = 0.0;
       }
     } else if (widget.snapsFarAwayHorizontally) {
@@ -264,10 +264,10 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       top = bottom = 0.0;
 
       if (target.dx < overlay!.size.center(Offset.zero).dx) {
-        preferredDirection = PreferredDirection.right;
+        preferredDirection = TooltipDirection.right;
         right = 0.0;
       } else {
-        preferredDirection = PreferredDirection.left;
+        preferredDirection = TooltipDirection.left;
         left = 0.0;
       }
     }
@@ -422,10 +422,10 @@ class _ExtendedTooltipState extends State<SuperTooltip>
     double right;
     double top;
 
-    switch (widget.preferredDirection) {
+    switch (widget.popupDirection) {
       //
       // LEFT: -------------------------------------
-      case PreferredDirection.left:
+      case TooltipDirection.left:
         right = widget.arrowLength + widget.arrowTipDistance + 3.0;
         if (showCloseButton == ShowCloseButton.inside) {
           top = 2.0;
@@ -437,8 +437,8 @@ class _ExtendedTooltipState extends State<SuperTooltip>
         break;
 
       // RIGHT/UP: ---------------------------------
-      case PreferredDirection.right:
-      case PreferredDirection.up:
+      case TooltipDirection.right:
+      case TooltipDirection.up:
         right = 5.0;
         if (showCloseButton == ShowCloseButton.inside) {
           top = 2.0;
@@ -450,7 +450,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
         break;
 
       // DOWN: -------------------------------------
-      case PreferredDirection.down:
+      case TooltipDirection.down:
         // If this value gets negative the Shadow gets clipped. The problem occurs is arrowlength + arrowTipDistance
         // is smaller than _outSideCloseButtonPadding which would mean arrowLength would need to be increased if the button is ouside.
         right = 2.0;
@@ -466,7 +466,7 @@ class _ExtendedTooltipState extends State<SuperTooltip>
       // ---------------------------------------------
 
       default:
-        throw AssertionError(widget.preferredDirection);
+        throw AssertionError(widget.popupDirection);
     }
 
     // ---
@@ -518,7 +518,7 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
   final RenderBox? overlay;
   final BoxConstraints constraints;
 
-  final PreferredDirection preferredDirection;
+  final TooltipDirection preferredDirection;
   final double? top, bottom, left, right;
 
   @override
@@ -529,26 +529,26 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
     var newConstraints = constraints;
 
     switch (preferredDirection) {
-      case PreferredDirection.up:
-      case PreferredDirection.down:
+      case TooltipDirection.up:
+      case TooltipDirection.down:
         newConstraints = _verticalConstraints(
           constraints: newConstraints,
           margin: margin,
           bottom: bottom,
-          isUp: preferredDirection == PreferredDirection.up,
+          isUp: preferredDirection == TooltipDirection.up,
           target: target,
           top: top,
           left: left,
           right: right,
         );
         break;
-      case PreferredDirection.right:
-      case PreferredDirection.left:
+      case TooltipDirection.right:
+      case TooltipDirection.left:
         newConstraints = _horizontalConstraints(
           constraints: newConstraints,
           margin: margin,
           bottom: bottom,
-          isRight: preferredDirection == PreferredDirection.right,
+          isRight: preferredDirection == TooltipDirection.right,
           target: target,
           top: top,
           left: left,
@@ -583,9 +583,9 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
     //   );
 
     switch (preferredDirection) {
-      case PreferredDirection.up:
-      case PreferredDirection.down:
-        final topOffset = preferredDirection == PreferredDirection.up
+      case TooltipDirection.up:
+      case TooltipDirection.down:
+        final topOffset = preferredDirection == TooltipDirection.up
             ? top ?? target.dy - childSize.height
             : target.dy;
 
@@ -601,9 +601,9 @@ class _TooltipPositionDelegate extends SingleChildLayoutDelegate {
           topOffset,
         );
 
-      case PreferredDirection.right:
-      case PreferredDirection.left:
-        final leftOffset = preferredDirection == PreferredDirection.left
+      case TooltipDirection.right:
+      case TooltipDirection.left:
+        final leftOffset = preferredDirection == TooltipDirection.left
             ? left ?? target.dx - childSize.width
             : target.dx;
         return Offset(
@@ -648,7 +648,7 @@ class _BubbleShape extends ShapeBorder {
   final Color borderColor;
   final double borderWidth;
   final double? left, top, right, bottom;
-  final PreferredDirection preferredDirection;
+  final TooltipDirection preferredDirection;
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
@@ -701,7 +701,7 @@ class _BubbleShape extends ShapeBorder {
     bottomRightRadius = (right == 0 || bottom == 0) ? 0.0 : borderRadius;
 
     switch (preferredDirection) {
-      case PreferredDirection.down:
+      case TooltipDirection.down:
         return getBottomRightPath(rect)
           ..lineTo(
             min(
@@ -738,7 +738,7 @@ class _BubbleShape extends ShapeBorder {
             clockwise: false,
           );
 
-      case PreferredDirection.up:
+      case TooltipDirection.up:
         return getLeftTopPath(rect)
           ..lineTo(rect.right, rect.bottom - bottomRightRadius)
           ..arcToPoint(Offset(rect.right - bottomRightRadius, rect.bottom),
@@ -767,7 +767,7 @@ class _BubbleShape extends ShapeBorder {
           ..arcToPoint(Offset(rect.left + topLeftRadius, rect.top),
               radius: Radius.circular(topLeftRadius), clockwise: true);
 
-      case PreferredDirection.left:
+      case TooltipDirection.left:
         return getLeftTopPath(rect)
           ..lineTo(
               rect.right,
@@ -789,7 +789,7 @@ class _BubbleShape extends ShapeBorder {
           ..arcToPoint(Offset(rect.left, rect.bottom - bottomLeftRadius),
               radius: Radius.circular(bottomLeftRadius), clockwise: true);
 
-      case PreferredDirection.right:
+      case TooltipDirection.right:
         return getBottomRightPath(rect)
           ..lineTo(rect.left + topLeftRadius, rect.top)
           ..arcToPoint(Offset(rect.left, rect.top + topLeftRadius),
@@ -1002,23 +1002,23 @@ EdgeInsets _getTooltipMargin({
   required double? closeButtonSize,
   required double arrowTipDistance,
   required double arrowLength,
-  required PreferredDirection preferredDirection,
+  required TooltipDirection preferredDirection,
 }) {
   final top = (showCloseButton == ShowCloseButton.outside)
       ? closeButtonSize! + 12
       : 0.0;
 
   switch (preferredDirection) {
-    case PreferredDirection.down:
+    case TooltipDirection.down:
       return EdgeInsets.only(top: arrowTipDistance + arrowLength);
 
-    case PreferredDirection.up:
+    case TooltipDirection.up:
       return EdgeInsets.only(bottom: arrowTipDistance + arrowLength, top: top);
 
-    case PreferredDirection.left:
+    case TooltipDirection.left:
       return EdgeInsets.only(right: arrowTipDistance + arrowLength, top: top);
 
-    case PreferredDirection.right:
+    case TooltipDirection.right:
       return EdgeInsets.only(left: arrowTipDistance + arrowLength, top: top);
 
     default:

@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: SuperTooltip(
           controller: _controller,
-          preferredDirection: PreferredDirection.down,
+          popupDirection: TooltipDirection.down,
           showCloseButton: widget.showCloseButton,
           closeButtonColor: widget.closeButtonColor,
           closeButtonSize: widget.closeButtonSize,

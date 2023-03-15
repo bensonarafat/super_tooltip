@@ -68,8 +68,9 @@ class _TargetWidgetState extends State<TargetWidget> {
           await _controller.showTooltip();
         },
         child: SuperTooltip(
+          showBarrier: false,
           controller: _controller,
-          preferredDirection: PreferredDirection.up,
+          popupDirection: TooltipDirection.up,
           left: 30, right: 30,
           arrowTipDistance: 15.0,
           arrowBaseWidth: 20.0,

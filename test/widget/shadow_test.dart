@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: SuperTooltip(
           controller: _controller,
-          preferredDirection: PreferredDirection.down,
+          popupDirection: TooltipDirection.down,
           hasShadow: widget.hasShadow,
           shadowColor: widget.shadowColor,
           shadowBlurRadius: widget.shadowBlurRadius,

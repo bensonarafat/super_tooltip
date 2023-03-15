@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: SuperTooltip(
           controller: _controller,
-          preferredDirection: PreferredDirection.down,
+          popupDirection: TooltipDirection.down,
           showBarrier: widget.showBarrier,
           barrierColor: widget.barrierColor,
           content: const Material(child: Text('Lorem ipsum...')),
