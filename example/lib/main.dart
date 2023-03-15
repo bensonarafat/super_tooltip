@@ -6,7 +6,7 @@ import 'package:super_tooltip/super_tooltip.dart';
 void main() => runApp(const MainApp());
 
 class MainApp extends StatelessWidget {
-  const MainApp({Key key}) : super(key: key);
+  const MainApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
 
 class ExamplePage extends StatefulWidget {
   const ExamplePage({
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   State createState() => _ExamplePageState();
@@ -48,7 +48,6 @@ class TargetWidget extends StatefulWidget {
 
 class _TargetWidgetState extends State<TargetWidget> {
   final _controller = SuperTooltipController();
-  SuperTooltip tooltip;
 
   Future<bool> _willPopCallback() async {
     // If the tooltip is open we don't pop the page on a backbutton press
@@ -62,12 +61,6 @@ class _TargetWidgetState extends State<TargetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // var renderBox = context.findRenderObject() as RenderBox;
-    // final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-
-    // var targetGlobalCenter =
-    //     renderBox.localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
-
     return WillPopScope(
       onWillPop: _willPopCallback,
       child: GestureDetector(
@@ -77,7 +70,7 @@ class _TargetWidgetState extends State<TargetWidget> {
         child: SuperTooltip(
           controller: _controller,
           preferredDirection: PreferredDirection.up,
-          left: 0,
+          left: 30, right: 30,
           arrowTipDistance: 15.0,
           arrowBaseWidth: 20.0,
           arrowLength: 20.0,
