@@ -3,18 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -24,17 +24,19 @@ class MyHomePage extends StatefulWidget {
     Key? key,
   }) : super(key: key);
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      backgroundColor: Colors.red,
-      body: new Center(child: TargetWidget()),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => null,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Super Tooltip Example"),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: TargetWidget(),
       ),
     );
   }
@@ -44,7 +46,7 @@ class TargetWidget extends StatefulWidget {
   const TargetWidget({Key? key}) : super(key: key);
 
   @override
-  _TargetWidgetState createState() => new _TargetWidgetState();
+  _TargetWidgetState createState() => _TargetWidgetState();
 }
 
 class _TargetWidgetState extends State<TargetWidget> {
@@ -68,7 +70,7 @@ class _TargetWidgetState extends State<TargetWidget> {
 
     var renderBox = context.findRenderObject() as RenderBox;
     final overlay =
-        Overlay.of(context)!.context.findRenderObject() as RenderBox?;
+        Overlay.of(context).context.findRenderObject() as RenderBox?;
 
     var targetGlobalCenter = renderBox
         .localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
@@ -85,10 +87,10 @@ class _TargetWidgetState extends State<TargetWidget> {
       showCloseButton: ShowCloseButton.inside,
       hasShadow: true,
       shadowOffset: Offset(10, 10),
-      touchThrougArea: new Rect.fromLTWH(targetGlobalCenter.dx - 100,
+      touchThrougArea: Rect.fromLTWH(targetGlobalCenter.dx - 100,
           targetGlobalCenter.dy - 100, 200.0, 160.0),
       touchThroughAreaShape: ClipAreaShape.rectangle,
-      content: new Material(
+      content: Material(
           child: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Text(
@@ -107,15 +109,15 @@ class _TargetWidgetState extends State<TargetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
+    return WillPopScope(
       onWillPop: _willPopCallback,
-      child: new GestureDetector(
+      child: GestureDetector(
         onTap: onTap,
         child: Container(
           margin: EdgeInsets.only(top: 300.0),
           width: 20.0,
           height: 20.0,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.blue,
           ),
