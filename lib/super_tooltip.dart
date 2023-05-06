@@ -165,6 +165,14 @@ class SuperTooltip {
   /// The parameter show the title in the tooltip
   final String title;
 
+  ///
+  /// The param for [_ShapeOverlay]
+  EdgeInsetsGeometry overlayDimensions;
+
+  ///
+  /// The param for [_BubbleShape]
+  EdgeInsetsGeometry bubbleDimensions;
+
   Offset? _targetCenter;
   OverlayEntry? _backGroundOverlay;
   OverlayEntry? _ballonOverlay;
@@ -211,6 +219,8 @@ class SuperTooltip {
     this.blockOutsidePointerEvents = true,
     this.containsBackgroundOverlay = true,
     this.automaticallyVerticalDirection = false,
+    this.overlayDimensions = const EdgeInsets.all(10),
+    this.bubbleDimensions = const EdgeInsets.all(10),
   })  : assert(
           (maxWidth ?? double.infinity) >= (minWidth ?? 0.0),
           "Invalid maxWidth",
@@ -257,6 +267,7 @@ class SuperTooltip {
         touchThroughAreaShape,
         touchThroughAreaCornerRadius,
         outsideBackgroundColor,
+        overlayDimensions,
       );
       final DecoratedBox backgroundDecoration =
           DecoratedBox(decoration: ShapeDecoration(shape: shapeOverlay));
@@ -408,6 +419,7 @@ class SuperTooltip {
             top,
             right,
             bottom,
+            bubbleDimensions,
           ),
         ),
         margin: _getBallonContainerMargin(),
@@ -749,6 +761,7 @@ class _BubbleShape extends ShapeBorder {
   final double borderWidth;
   final double? left, top, right, bottom;
   final TooltipDirection popupDirection;
+  final EdgeInsetsGeometry customDimensions;
 
   const _BubbleShape(
     this.popupDirection,
@@ -762,10 +775,11 @@ class _BubbleShape extends ShapeBorder {
     this.top,
     this.right,
     this.bottom,
+    this.customDimensions,
   );
 
   @override
-  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
+  EdgeInsetsGeometry get dimensions => customDimensions;
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
@@ -1082,6 +1096,7 @@ class _BubbleShape extends ShapeBorder {
       top,
       right,
       bottom,
+      dimensions,
     );
   }
 }
@@ -1093,16 +1108,18 @@ class _ShapeOverlay extends ShapeBorder {
   final Color outsideBackgroundColor;
   final ClipAreaShape clipAreaShape;
   final double clipAreaCornerRadius;
+  final EdgeInsetsGeometry customDimensions;
 
   const _ShapeOverlay(
     this.clipRect,
     this.clipAreaShape,
     this.clipAreaCornerRadius,
     this.outsideBackgroundColor,
+    this.customDimensions,
   );
 
   @override
-  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
+  EdgeInsetsGeometry get dimensions => customDimensions;
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
@@ -1170,6 +1187,7 @@ class _ShapeOverlay extends ShapeBorder {
       clipAreaShape,
       clipAreaCornerRadius,
       outsideBackgroundColor,
+      dimensions,
     );
   }
 }
