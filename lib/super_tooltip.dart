@@ -249,7 +249,7 @@ class SuperTooltip {
   /// Uses [overlay] to show tooltip or [targetContext]'s overlay if [overlay] is null
   void show(BuildContext targetContext, {OverlayState? overlay}) {
     final RenderBox? renderBox = targetContext.findRenderObject() as RenderBox?;
-    overlay ??= Overlay.of(targetContext)!;
+    overlay ??= Overlay.of(targetContext);
     final RenderBox? overlayRenderBox =
         overlay.context.findRenderObject() as RenderBox?;
 
