@@ -18,7 +18,7 @@ jobs:
         distribution: temurin
     - uses: subosito/flutter-action@v2.10.0
       with:
-        flutter-version: '3.3.6'
+        flutter-version: '3.7'
         cache: true
 
     - name: Install dependencies for super_tooltip
