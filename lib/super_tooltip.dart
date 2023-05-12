@@ -248,10 +248,9 @@ class SuperTooltip {
   ///
   /// Uses [overlay] to show tooltip or [targetContext]'s overlay if [overlay] is null
   void show(BuildContext targetContext, {OverlayState? overlay}) {
-    final RenderBox? renderBox = targetContext.findRenderObject() as RenderBox?;
-    overlay ??= Overlay.of(targetContext)!;
-    final RenderBox? overlayRenderBox =
-        overlay.context.findRenderObject() as RenderBox?;
+    final renderBox = targetContext.findRenderObject() as RenderBox?;
+    overlay ??= Overlay.of(targetContext);
+    final overlayRenderBox = overlay.context.findRenderObject() as RenderBox?;
 
     _targetCenter = renderBox?.localToGlobal(
       renderBox.size.center(Offset.zero),
@@ -262,14 +261,14 @@ class SuperTooltip {
     if (containsBackgroundOverlay) {
       Widget background;
 
-      final _ShapeOverlay shapeOverlay = _ShapeOverlay(
+      final shapeOverlay = _ShapeOverlay(
         touchThrougArea,
         touchThroughAreaShape,
         touchThroughAreaCornerRadius,
         outsideBackgroundColor,
         overlayDimensions,
       );
-      final DecoratedBox backgroundDecoration =
+      final backgroundDecoration =
           DecoratedBox(decoration: ShapeDecoration(shape: shapeOverlay));
 
       if (dismissOnTapOutside && blockOutsidePointerEvents) {
@@ -380,7 +379,7 @@ class SuperTooltip {
       ),
     );
 
-    final List<OverlayEntry> overlays = <OverlayEntry>[];
+    final overlays = <OverlayEntry>[];
 
     if (containsBackgroundOverlay) {
       overlays.add(_backGroundOverlay!);
@@ -429,7 +428,7 @@ class SuperTooltip {
   }
 
   Widget _buildCloseButton() {
-    const double internalClickAreaPadding = 2.0;
+    const internalClickAreaPadding = 2.0;
 
     //
     if (showCloseButton == ShowCloseButton.none) {
@@ -501,7 +500,7 @@ class SuperTooltip {
   }
 
   EdgeInsets _getBallonContainerMargin() {
-    final double top = (showCloseButton == ShowCloseButton.outside)
+    final top = (showCloseButton == ShowCloseButton.outside)
         ? closeButtonSize + 5
         : 0.0;
 
@@ -624,11 +623,11 @@ class _PopupBallonLayoutDelegate extends SingleChildLayoutDelegate {
         return Offset(calcLeftMostXtoTarget()!, _targetCenter!.dy);
 
       case TooltipDirection.up:
-        final double top = _top ?? _targetCenter!.dy - childSize.height;
+        final top = _top ?? _targetCenter!.dy - childSize.height;
         return Offset(calcLeftMostXtoTarget()!, top);
 
       case TooltipDirection.left:
-        final double left = _left ?? _targetCenter!.dx - childSize.width;
+        final left = _left ?? _targetCenter!.dx - childSize.width;
         return Offset(left, calcTopMostYtoTarget()!);
 
       case TooltipDirection.right:
@@ -641,10 +640,10 @@ class _PopupBallonLayoutDelegate extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double calcMinWidth = _minWidth ?? 0.0;
-    double calcMaxWidth = _maxWidth ?? double.infinity;
-    double calcMinHeight = _minHeight ?? 0.0;
-    double calcMaxHeight = _maxHeight ?? double.infinity;
+    var calcMinWidth = _minWidth ?? 0.0;
+    var calcMaxWidth = _maxWidth ?? double.infinity;
+    var calcMinHeight = _minHeight ?? 0.0;
+    var calcMaxHeight = _maxHeight ?? double.infinity;
 
     void calcMinMaxWidth() {
       if (_left != null && _right != null) {
@@ -652,8 +651,7 @@ class _PopupBallonLayoutDelegate extends SingleChildLayoutDelegate {
       } else if ((_left != null && _right == null) ||
           (_left == null && _right != null)) {
         // make sure that the sum of left, right + maxwidth isn't bigger than the screen width.
-        final double sideDelta =
-            (_left ?? 0.0) + (_right ?? 0.0) + _outSidePadding;
+        final sideDelta = (_left ?? 0.0) + (_right ?? 0.0) + _outSidePadding;
         if (calcMaxWidth > constraints.maxWidth - sideDelta) {
           calcMaxWidth = constraints.maxWidth - sideDelta;
         }
@@ -670,8 +668,7 @@ class _PopupBallonLayoutDelegate extends SingleChildLayoutDelegate {
       } else if ((_top != null && _bottom == null) ||
           (_top == null && _bottom != null)) {
         // make sure that the sum of top, bottom + maxHeight isn't bigger than the screen Height.
-        final double sideDelta =
-            (_top ?? 0.0) + (_bottom ?? 0.0) + _outSidePadding;
+        final sideDelta = (_top ?? 0.0) + (_bottom ?? 0.0) + _outSidePadding;
         if (calcMaxHeight > constraints.maxHeight - sideDelta) {
           calcMaxHeight = constraints.maxHeight - sideDelta;
         }
@@ -1001,7 +998,7 @@ class _BubbleShape extends ShapeBorder {
 
   @override
   void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
-    ui.Paint paint = Paint()
+    var paint = Paint()
       ..color = borderColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = borderWidth;
@@ -1128,9 +1125,9 @@ class _ShapeOverlay extends ShapeBorder {
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    final ui.Path outer = Path()..addRect(rect);
+    var outer = Path()..addRect(rect);
 
-    final ui.Path? exclusion = _getExclusion();
+    var exclusion = _getExclusion();
     if (exclusion == null) {
       return outer;
     } else {
