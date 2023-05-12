@@ -1,3 +1,5 @@
+## [2.0.0] - 2023 
+* Release of version 2
 ## [1.0.1] - 15.3.2021
 
 * Allow to change the icon of the close button
