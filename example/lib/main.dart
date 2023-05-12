@@ -3,41 +3,38 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MainApp());
 
-class MyApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
+  const MainApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Super Tooltip Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const ExamplePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({
+class ExamplePage extends StatefulWidget {
+  const ExamplePage({
     Key? key,
   }) : super(key: key);
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State createState() => _ExamplePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Super Tooltip Example"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: TargetWidget(),
-      ),
+    return const Scaffold(
+      backgroundColor: Colors.red,
+      body: Center(child: TargetWidget()),
     );
   }
 }
@@ -46,65 +43,20 @@ class TargetWidget extends StatefulWidget {
   const TargetWidget({Key? key}) : super(key: key);
 
   @override
-  _TargetWidgetState createState() => _TargetWidgetState();
+  State createState() => _TargetWidgetState();
 }
 
 class _TargetWidgetState extends State<TargetWidget> {
-  SuperTooltip? tooltip;
+  final _controller = SuperTooltipController();
 
   Future<bool> _willPopCallback() async {
     // If the tooltip is open we don't pop the page on a backbutton press
     // but close the ToolTip
-    if (tooltip!.isOpen) {
-      tooltip!.close();
+    if (_controller.isVisible) {
+      await _controller.hideTooltip();
       return false;
     }
     return true;
-  }
-
-  void onTap() {
-    if (tooltip != null && tooltip!.isOpen) {
-      tooltip!.close();
-      return;
-    }
-
-    var renderBox = context.findRenderObject() as RenderBox;
-    final overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox?;
-
-    var targetGlobalCenter = renderBox
-        .localToGlobal(renderBox.size.center(Offset.zero), ancestor: overlay);
-
-    // We create the tooltip on the first use
-    tooltip = SuperTooltip(
-      popupDirection: TooltipDirection.left,
-      snapsFarAwayVertically: false,
-      arrowTipDistance: 15.0,
-      arrowBaseWidth: 40.0,
-      arrowLength: 40.0,
-      borderColor: Colors.green,
-      borderWidth: 5.0,
-      showCloseButton: ShowCloseButton.inside,
-      hasShadow: true,
-      shadowOffset: Offset(10, 10),
-      touchThrougArea: Rect.fromLTWH(targetGlobalCenter.dx - 100,
-          targetGlobalCenter.dy - 100, 200.0, 160.0),
-      touchThroughAreaShape: ClipAreaShape.rectangle,
-      content: Material(
-          child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Text(
-          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-          "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
-          "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
-          softWrap: true,
-        ),
-      )),
-      containsBackgroundOverlay: true,
-      outsideBackgroundColor: Colors.yellow,
-      touchThroughAreaCornerRadius: 30,
-    );
-    tooltip!.show(context);
   }
 
   @override
@@ -112,14 +64,45 @@ class _TargetWidgetState extends State<TargetWidget> {
     return WillPopScope(
       onWillPop: _willPopCallback,
       child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          margin: EdgeInsets.only(top: 300.0),
-          width: 20.0,
-          height: 20.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.blue,
+        onTap: () async {
+          await _controller.showTooltip();
+        },
+        child: SuperTooltip(
+          showBarrier: false,
+          controller: _controller,
+          popupDirection: TooltipDirection.up,
+          left: 30, right: 30,
+          arrowTipDistance: 15.0,
+          arrowBaseWidth: 20.0,
+          arrowLength: 20.0,
+          borderColor: Colors.green,
+          borderWidth: 2.0,
+          constraints: const BoxConstraints(
+            minHeight: 0.0,
+            maxHeight: 100,
+            minWidth: 0.0,
+            maxWidth: 100,
+          ),
+          // snapsFarAwayVertically: true,
+          showCloseButton: ShowCloseButton.inside,
+          // hasShadow: false,
+          // touchThrougArea: Rect.fromLTWH(
+          //     targetGlobalCenter.dx - 100, targetGlobalCenter.dy - 100, 200.0, 160.0),
+          touchThroughAreaShape: ClipAreaShape.rectangle,
+          content: const Text(
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
+            "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
+            "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
+            softWrap: true,
+          ),
+
+          child: Container(
+            width: 40.0,
+            height: 40.0,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
