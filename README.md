@@ -152,3 +152,6 @@ tooltip = SuperTooltip(
      softWrap: true,
    ),
 ```
+
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
