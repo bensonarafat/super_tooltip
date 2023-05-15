@@ -88,7 +88,7 @@ class _TargetWidgetState extends State<TargetWidget> {
           // hasShadow: false,
           // touchThrougArea: Rect.fromLTWH(
           //     targetGlobalCenter.dx - 100, targetGlobalCenter.dy - 100, 200.0, 160.0),
-          touchThroughAreaShape: ClipAreaShape.rectangle,
+          touchThroughAreaShape: ClipAreaShape.oval,
           content: const Text(
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
             "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
