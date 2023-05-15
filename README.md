@@ -3,16 +3,6 @@
 `SuperTooltip` is derived from a widget I wrote for a client. It is super flexible and allows you to display ToolTips in the overlay of the screen. The whole screen gets covered with a typically translucent background color. Tapping on the background closes the Tooltip.
 
 
->AUTHOR
->
->Developed by Thomas Burkhart.
-> 
->Concept and Copyright by Marcelo Glasberg.
->
->LICENSE
->
->MIT
-
 
 ![](https://github.com/escamoteur/super_tooltip/blob/master/screenshots/default_parameters.PNG)
 
