@@ -3,7 +3,7 @@
 `SuperTooltip` It is super flexible and allows you to display ToolTips in the overlay of the screen. It gives you more flexibility over the Flutter standard ```Tooltip```. You have the option to make the whole screen covered with a background color. Tapping on the background closes the Tooltip. 
 
 
-<img src="screenshots/screenshot1.gif" width="200"/>
+<img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/screenshot1.gif?raw=true" width="250"/>
 
 
 ## Installing 
@@ -117,7 +117,7 @@ SuperTooltip(
     //... 
 )
 ```
-<img src="screenshots/screenshot2.png" width="200"/>
+<img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/screenshot2.png?raw=true" width="250"/>
 
 ## Barrier 
 

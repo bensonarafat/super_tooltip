@@ -1,4 +1,8 @@
 
+# [2.0.1] - 25.05.2023
+
+* Update Screenshot path on doc
+  
 # [2.0.0] - 25.05.2023
 
 * Release of version 2
