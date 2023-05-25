@@ -1,4 +1,8 @@
 
+# [2.0.2] - 25.05.2023
+
+* Update LICENSE
+* 
 # [2.0.1] - 25.05.2023
 
 * Update Screenshot path on doc
