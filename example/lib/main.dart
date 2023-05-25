@@ -71,7 +71,8 @@ class _TargetWidgetState extends State<TargetWidget> {
           showBarrier: false,
           controller: _controller,
           popupDirection: TooltipDirection.up,
-          left: 30, right: 30,
+          left: 30,
+          right: 30,
           arrowTipDistance: 15.0,
           arrowBaseWidth: 20.0,
           arrowLength: 20.0,
@@ -83,11 +84,7 @@ class _TargetWidgetState extends State<TargetWidget> {
             minWidth: 0.0,
             maxWidth: 100,
           ),
-          // snapsFarAwayVertically: true,
           showCloseButton: ShowCloseButton.inside,
-          // hasShadow: false,
-          // touchThrougArea: Rect.fromLTWH(
-          //     targetGlobalCenter.dx - 100, targetGlobalCenter.dy - 100, 200.0, 160.0),
           touchThroughAreaShape: ClipAreaShape.oval,
           content: const Text(
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
@@ -95,7 +92,6 @@ class _TargetWidgetState extends State<TargetWidget> {
             "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
             softWrap: true,
           ),
-
           child: Container(
             width: 40.0,
             height: 40.0,
