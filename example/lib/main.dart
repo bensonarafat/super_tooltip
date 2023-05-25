@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
@@ -33,7 +31,7 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
       body: Center(child: TargetWidget()),
     );
   }
@@ -48,7 +46,6 @@ class TargetWidget extends StatefulWidget {
 
 class _TargetWidgetState extends State<TargetWidget> {
   final _controller = SuperTooltipController();
-
   Future<bool> _willPopCallback() async {
     // If the tooltip is open we don't pop the page on a backbutton press
     // but close the ToolTip
@@ -68,15 +65,15 @@ class _TargetWidgetState extends State<TargetWidget> {
           await _controller.showTooltip();
         },
         child: SuperTooltip(
-          showBarrier: false,
+          showBarrier: true,
           controller: _controller,
-          popupDirection: TooltipDirection.up,
+          popupDirection: TooltipDirection.right,
+          backgroundColor: Color(0xff2f2d2f),
           left: 30,
           right: 30,
           arrowTipDistance: 15.0,
           arrowBaseWidth: 20.0,
           arrowLength: 20.0,
-          borderColor: Colors.green,
           borderWidth: 2.0,
           constraints: const BoxConstraints(
             minHeight: 0.0,
@@ -84,13 +81,18 @@ class _TargetWidgetState extends State<TargetWidget> {
             minWidth: 0.0,
             maxWidth: 100,
           ),
-          showCloseButton: ShowCloseButton.inside,
-          touchThroughAreaShape: ClipAreaShape.oval,
+          showCloseButton: ShowCloseButton.none,
+          touchThroughAreaShape: ClipAreaShape.rectangle,
+          touchThroughAreaCornerRadius: 30,
+          barrierColor: Color.fromARGB(26, 47, 45, 47),
           content: const Text(
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
             "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
             "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
             softWrap: true,
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
           child: Container(
             width: 40.0,
@@ -99,9 +101,17 @@ class _TargetWidgetState extends State<TargetWidget> {
               shape: BoxShape.circle,
               color: Colors.blue,
             ),
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void makeTooltip() {
+    _controller.showTooltip();
   }
 }
