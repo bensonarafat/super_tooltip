@@ -448,7 +448,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               ? SuperTooltip.insideCloseButtonKey
               : SuperTooltip.outsideCloseButtonKey,
           icon: Icon(
-            Icons.close,
+            Icons.close_outlined,
             size: closeButtonSize,
             color: closeButtonColor,
           ),
