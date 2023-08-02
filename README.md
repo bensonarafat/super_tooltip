@@ -177,6 +177,9 @@ Create a callback function to dismiss
 
 Find the example app [here](https://github.com/escamoteur/super_tooltip/tree/master/example).
 
+## Author 
+Credit to [escamoteur](https://github.com/escamoteur) as the creator of the package
+
 ## Contributing
 
 Contributions are welcome.
