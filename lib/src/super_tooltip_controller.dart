@@ -6,7 +6,7 @@ import 'enums.dart';
 
 class SuperTooltipController extends ChangeNotifier {
   late Completer _completer;
-  bool _isVisible = true;
+  bool _isVisible = false;
   bool get isVisible => _isVisible;
 
   late Event event;
