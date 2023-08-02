@@ -67,7 +67,7 @@ class _TargetWidgetState extends State<TargetWidget> {
         child: SuperTooltip(
           showBarrier: true,
           controller: _controller,
-          popupDirection: TooltipDirection.right,
+          popupDirection: TooltipDirection.down,
           backgroundColor: Color(0xff2f2d2f),
           left: 30,
           right: 30,
@@ -86,10 +86,9 @@ class _TargetWidgetState extends State<TargetWidget> {
           touchThroughAreaCornerRadius: 30,
           barrierColor: Color.fromARGB(26, 47, 45, 47),
           content: const Text(
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-            "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
-            "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
             softWrap: true,
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
             ),
