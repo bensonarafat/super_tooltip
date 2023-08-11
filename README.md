@@ -133,6 +133,20 @@ SuperTooltip(
 )
 ```
 
+## Blur  
+If you'd like to also show blur behind the pop up, you can do that by making the `showDropBoxFilter`  to `true` you must also enable `showBarrier` then set `sigmaX` and `sigmaY`
+
+```dart
+SuperTooltip(
+    showBarrier: true,
+    showDropBoxFilter: true,
+    sigmaX: 10, 
+    sigmaY: 10,
+    //...
+)
+```
+<img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/screenshot3.gif?raw=true" width="250"/>
+
 If you'd like to simply react to open or close states, you can pass through `onHide` or `onShow` callbacks to the default constructor.
 
 ```dart

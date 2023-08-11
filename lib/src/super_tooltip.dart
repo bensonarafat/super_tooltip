@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/src/utils.dart';
 
@@ -8,7 +10,51 @@ import 'super_tooltip_controller.dart';
 import 'tooltip_position_delegate.dart';
 
 class SuperTooltip extends StatefulWidget {
-  const SuperTooltip({
+  final Widget content;
+  final TooltipDirection popupDirection;
+  final SuperTooltipController? controller;
+  final void Function()? onLongPress;
+  final void Function()? onShow;
+  final void Function()? onHide;
+  final bool snapsFarAwayVertically;
+  final bool snapsFarAwayHorizontally;
+  final bool? hasShadow;
+  final Color? shadowColor;
+  final double? shadowBlurRadius;
+  final double? shadowSpreadRadius;
+  final double? top, right, bottom, left;
+  final ShowCloseButton? showCloseButton;
+  final Color? closeButtonColor;
+  final double? closeButtonSize;
+  final double minimumOutsideMargin;
+  final double verticalOffset;
+  final Widget? child;
+  final Color borderColor;
+  final BoxConstraints constraints;
+  final Color? backgroundColor;
+  final Decoration? decoration;
+  final double elevation;
+  final Duration fadeInDuration;
+  final Duration fadeOutDuration;
+  final double arrowLength;
+  final double arrowBaseWidth;
+  final double arrowTipDistance;
+  final double borderRadius;
+  final double borderWidth;
+  final bool? showBarrier;
+  final Color? barrierColor;
+  final Rect? touchThrougArea;
+  final ClipAreaShape touchThroughAreaShape;
+  final double touchThroughAreaCornerRadius;
+  final EdgeInsetsGeometry overlayDimensions;
+  final EdgeInsetsGeometry bubbleDimensions;
+
+  //filter
+  final bool showDropBoxFilter;
+  final double sigmaX;
+  final double sigmaY;
+
+  SuperTooltip({
     Key? key,
     required this.content,
     this.popupDirection = TooltipDirection.down,
@@ -61,51 +107,16 @@ class SuperTooltip extends StatefulWidget {
     this.borderRadius = 10.0,
     this.overlayDimensions = const EdgeInsets.all(10),
     this.bubbleDimensions = const EdgeInsets.all(10),
-  }) : super(key: key);
+    this.sigmaX = 5.0,
+    this.sigmaY = 5.0,
+    this.showDropBoxFilter = false,
+  })  : assert(showDropBoxFilter ? showBarrier ?? false : true),
+        super(key: key);
 
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
   static Key outsideCloseButtonKey = const Key("OutsideCloseButtonKey");
   static Key barrierKey = const Key("barrierKey");
   static Key bubbleKey = const Key("bubbleKey");
-
-  final Widget content;
-  final TooltipDirection popupDirection;
-  final SuperTooltipController? controller;
-  final void Function()? onLongPress;
-  final void Function()? onShow;
-  final void Function()? onHide;
-  final bool snapsFarAwayVertically;
-  final bool snapsFarAwayHorizontally;
-  final bool? hasShadow;
-  final Color? shadowColor;
-  final double? shadowBlurRadius;
-  final double? shadowSpreadRadius;
-  final double? top, right, bottom, left;
-  final ShowCloseButton? showCloseButton;
-  final Color? closeButtonColor;
-  final double? closeButtonSize;
-  final double minimumOutsideMargin;
-  final double verticalOffset;
-  final Widget? child;
-  final Color borderColor;
-  final BoxConstraints constraints;
-  final Color? backgroundColor;
-  final Decoration? decoration;
-  final double elevation;
-  final Duration fadeInDuration;
-  final Duration fadeOutDuration;
-  final double arrowLength;
-  final double arrowBaseWidth;
-  final double arrowTipDistance;
-  final double borderRadius;
-  final double borderWidth;
-  final bool? showBarrier;
-  final Color? barrierColor;
-  final Rect? touchThrougArea;
-  final ClipAreaShape touchThroughAreaShape;
-  final double touchThroughAreaCornerRadius;
-  final EdgeInsetsGeometry overlayDimensions;
-  final EdgeInsetsGeometry bubbleDimensions;
 
   @override
   State createState() => _SuperTooltipState();
@@ -118,6 +129,7 @@ class _SuperTooltipState extends State<SuperTooltip>
   SuperTooltipController? _superTooltipController;
   OverlayEntry? _entry;
   OverlayEntry? _barrierEntry;
+  OverlayEntry? blur;
 
   ShowCloseButton? showCloseButton;
   Color? closeButtonColor;
@@ -128,6 +140,7 @@ class _SuperTooltipState extends State<SuperTooltip>
   late Color shadowColor;
   late double shadowBlurRadius;
   late double shadowSpreadRadius;
+  late bool showBlur;
 
   @override
   void initState() {
@@ -173,6 +186,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     shadowColor = widget.shadowColor ?? Colors.black54;
     shadowBlurRadius = widget.shadowBlurRadius ?? 10.0;
     shadowSpreadRadius = widget.shadowSpreadRadius ?? 5.0;
+    showBlur = widget.showDropBoxFilter;
 
     return CompositedTransformTarget(
       link: _layerLink,
@@ -199,6 +213,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     final renderBox = context.findRenderObject() as RenderBox;
     final overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox?;
+
     final size = renderBox.size;
     final target = renderBox.localToGlobal(size.center(Offset.zero));
     final animation = CurvedAnimation(
@@ -266,6 +281,23 @@ class _SuperTooltipState extends State<SuperTooltip>
           )
         : null;
 
+    blur = showBlur
+        ? OverlayEntry(
+            builder: (BuildContext context) => FadeTransition(
+              opacity: animation,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: widget.sigmaX,
+                  sigmaY: widget.sigmaY,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              ),
+            ),
+          )
+        : null;
     _entry = OverlayEntry(
       builder: (BuildContext context) => FadeTransition(
         opacity: animation,
@@ -349,6 +381,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     );
 
     Overlay.of(context).insertAll([
+      if (showBlur) blur!,
       if (showBarrier) _barrierEntry!,
       _entry!,
     ]);

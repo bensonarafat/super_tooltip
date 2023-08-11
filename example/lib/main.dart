@@ -30,9 +30,11 @@ class ExamplePage extends StatefulWidget {
 class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: TargetWidget()),
+      body: Center(
+        child: TargetWidget(),
+      ),
     );
   }
 }
