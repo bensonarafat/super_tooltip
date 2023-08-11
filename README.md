@@ -1,4 +1,6 @@
 # super_tooltip
+[![Static code analysis](https://github.com/bensonarafat/super_tooltip/actions/workflows/dart.yml/badge.svg)](https://github.com/bensonarafat/super_tooltip/actions/workflows/dart.yml)
+
 
 `SuperTooltip` It is super flexible and allows you to display ToolTips in the overlay of the screen. It gives you more flexibility over the Flutter standard ```Tooltip```. You have the option to make the whole screen covered with a background color. Tapping on the background closes the Tooltip. 
 
