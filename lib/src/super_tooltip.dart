@@ -211,6 +211,7 @@ class _SuperTooltipState extends State<SuperTooltip>
 
   void _createOverlayEntries() {
     final renderBox = context.findRenderObject() as RenderBox;
+
     final overlay =
         Overlay.of(context)?.context.findRenderObject() as RenderBox?;
 
@@ -405,6 +406,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     _entry = null;
     _barrierEntry?.remove();
     _entry = null;
+    blur?.remove();
   }
 
   _hideTooltip() async {
