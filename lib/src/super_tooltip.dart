@@ -212,7 +212,7 @@ class _SuperTooltipState extends State<SuperTooltip>
   void _createOverlayEntries() {
     final renderBox = context.findRenderObject() as RenderBox;
     final overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox?;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox?;
 
     final size = renderBox.size;
     final target = renderBox.localToGlobal(size.center(Offset.zero));
@@ -380,7 +380,7 @@ class _SuperTooltipState extends State<SuperTooltip>
       ),
     );
 
-    Overlay.of(context).insertAll([
+    Overlay.of(context)?.insertAll([
       if (showBlur) blur!,
       if (showBarrier) _barrierEntry!,
       _entry!,
