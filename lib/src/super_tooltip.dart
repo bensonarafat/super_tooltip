@@ -43,7 +43,7 @@ class SuperTooltip extends StatefulWidget {
   final double borderWidth;
   final bool? showBarrier;
   final Color? barrierColor;
-  final Rect? touchThrougArea;
+  final Rect? touchThroughArea;
   final ClipAreaShape touchThroughAreaShape;
   final double touchThroughAreaCornerRadius;
   final EdgeInsetsGeometry overlayDimensions;
@@ -103,7 +103,7 @@ class SuperTooltip extends StatefulWidget {
     this.arrowTipDistance = 2.0,
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
-    this.touchThrougArea,
+    this.touchThroughArea,
     this.borderWidth = 0.0,
     this.borderRadius = 10.0,
     this.overlayDimensions = const EdgeInsets.all(10),
@@ -272,7 +272,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                     shape: ShapeOverlay(
                       clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
                       clipAreaShape: widget.touchThroughAreaShape,
-                      clipRect: widget.touchThrougArea,
+                      clipRect: widget.touchThroughArea,
                       barrierColor: barrierColor,
                       overlayDimensions: widget.overlayDimensions,
                     ),
