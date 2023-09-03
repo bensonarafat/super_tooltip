@@ -211,8 +211,14 @@ class _SuperTooltipState extends State<SuperTooltip>
 
   void _createOverlayEntries() {
     final renderBox = context.findRenderObject() as RenderBox;
-    final overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox?;
+
+    final overlayState = Overlay.of(context);
+    RenderBox? overlay;
+
+    // ignore: unnecessary_null_comparison
+    if (overlayState != null) {
+      overlay = overlayState.context.findRenderObject() as RenderBox?;
+    }
 
     final size = renderBox.size;
     final target = renderBox.localToGlobal(size.center(Offset.zero));
@@ -238,10 +244,16 @@ class _SuperTooltipState extends State<SuperTooltip>
       constraints = constraints.copyWith(maxHeight: null);
       left = right = 0.0;
 
-      if (target.dy > overlay!.size.center(Offset.zero).dy) {
-        preferredDirection = TooltipDirection.up;
-        top = 0.0;
+      if (overlay != null) {
+        if (target.dy > overlay.size.center(Offset.zero).dy) {
+          preferredDirection = TooltipDirection.up;
+          top = 0.0;
+        } else {
+          preferredDirection = TooltipDirection.down;
+          bottom = 0.0;
+        }
       } else {
+        // overlay is null - set default values
         preferredDirection = TooltipDirection.down;
         bottom = 0.0;
       }
@@ -249,10 +261,16 @@ class _SuperTooltipState extends State<SuperTooltip>
       constraints = constraints.copyWith(maxHeight: null);
       top = bottom = 0.0;
 
-      if (target.dx < overlay!.size.center(Offset.zero).dx) {
-        preferredDirection = TooltipDirection.right;
-        right = 0.0;
+      if (overlay != null) {
+        if (target.dx < overlay.size.center(Offset.zero).dx) {
+          preferredDirection = TooltipDirection.right;
+          right = 0.0;
+        } else {
+          preferredDirection = TooltipDirection.left;
+          left = 0.0;
+        }
       } else {
+        // overlay is null - set default values
         preferredDirection = TooltipDirection.left;
         left = 0.0;
       }
@@ -380,11 +398,14 @@ class _SuperTooltipState extends State<SuperTooltip>
       ),
     );
 
-    Overlay.of(context).insertAll([
-      if (showBlur) blur!,
-      if (showBarrier) _barrierEntry!,
-      _entry!,
-    ]);
+    // ignore: unnecessary_null_comparison
+    if (overlayState != null) {
+      overlayState.insertAll([
+        if (showBlur) blur!,
+        if (showBarrier) _barrierEntry!,
+        _entry!,
+      ]);
+    }
   }
 
   _showTooltip() async {
@@ -405,6 +426,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     _entry = null;
     _barrierEntry?.remove();
     _entry = null;
+    blur?.remove();
   }
 
   _hideTooltip() async {
