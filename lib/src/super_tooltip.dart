@@ -43,11 +43,12 @@ class SuperTooltip extends StatefulWidget {
   final double borderWidth;
   final bool? showBarrier;
   final Color? barrierColor;
-  final Rect? touchThrougArea;
+  final Rect? touchThroughArea;
   final ClipAreaShape touchThroughAreaShape;
   final double touchThroughAreaCornerRadius;
   final EdgeInsetsGeometry overlayDimensions;
   final EdgeInsetsGeometry bubbleDimensions;
+  final bool hideTooltipOnTap;
 
   //filter
   final bool showDropBoxFilter;
@@ -102,11 +103,12 @@ class SuperTooltip extends StatefulWidget {
     this.arrowTipDistance = 2.0,
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
-    this.touchThrougArea,
+    this.touchThroughArea,
     this.borderWidth = 0.0,
     this.borderRadius = 10.0,
     this.overlayDimensions = const EdgeInsets.all(10),
     this.bubbleDimensions = const EdgeInsets.all(10),
+    this.hideTooltipOnTap = false,
     this.sigmaX = 5.0,
     this.sigmaY = 5.0,
     this.showDropBoxFilter = false,
@@ -288,7 +290,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                     shape: ShapeOverlay(
                       clipAreaCornerRadius: widget.touchThroughAreaCornerRadius,
                       clipAreaShape: widget.touchThroughAreaShape,
-                      clipRect: widget.touchThrougArea,
+                      clipRect: widget.touchThroughArea,
                       barrierColor: barrierColor,
                       overlayDimensions: widget.overlayDimensions,
                     ),
@@ -347,46 +349,52 @@ class _SuperTooltipState extends State<SuperTooltip>
                 children: <Widget>[
                   Material(
                     color: Colors.transparent,
-                    child: Container(
-                      key: SuperTooltip.bubbleKey,
-                      margin: SuperUtils.getTooltipMargin(
-                        arrowLength: widget.arrowLength,
-                        arrowTipDistance: widget.arrowTipDistance,
-                        closeButtonSize: closeButtonSize,
-                        preferredDirection: preferredDirection,
-                        showCloseButton: showCloseButton,
-                      ),
-                      padding: SuperUtils.getTooltipPadding(
-                        closeButtonSize: closeButtonSize,
-                        showCloseButton: showCloseButton,
-                      ),
-                      decoration: ShapeDecoration(
-                        color: backgroundColor,
-                        shadows: hasShadow
-                            ? <BoxShadow>[
-                                BoxShadow(
-                                  blurRadius: shadowBlurRadius,
-                                  spreadRadius: shadowSpreadRadius,
-                                  color: shadowColor,
-                                ),
-                              ]
-                            : null,
-                        shape: BubbleShape(
-                          arrowBaseWidth: widget.arrowBaseWidth,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (widget.hideTooltipOnTap)
+                          _superTooltipController!.hideTooltip();
+                      },
+                      child: Container(
+                        key: SuperTooltip.bubbleKey,
+                        margin: SuperUtils.getTooltipMargin(
+                          arrowLength: widget.arrowLength,
                           arrowTipDistance: widget.arrowTipDistance,
-                          borderColor: widget.borderColor,
-                          borderRadius: widget.borderRadius,
-                          borderWidth: widget.borderWidth,
-                          bottom: bottom,
-                          left: left,
+                          closeButtonSize: closeButtonSize,
                           preferredDirection: preferredDirection,
-                          right: right,
-                          target: target,
-                          top: top,
-                          bubbleDimensions: widget.bubbleDimensions,
+                          showCloseButton: showCloseButton,
                         ),
+                        padding: SuperUtils.getTooltipPadding(
+                          closeButtonSize: closeButtonSize,
+                          showCloseButton: showCloseButton,
+                        ),
+                        decoration: ShapeDecoration(
+                          color: backgroundColor,
+                          shadows: hasShadow
+                              ? <BoxShadow>[
+                                  BoxShadow(
+                                    blurRadius: shadowBlurRadius,
+                                    spreadRadius: shadowSpreadRadius,
+                                    color: shadowColor,
+                                  ),
+                                ]
+                              : null,
+                          shape: BubbleShape(
+                            arrowBaseWidth: widget.arrowBaseWidth,
+                            arrowTipDistance: widget.arrowTipDistance,
+                            borderColor: widget.borderColor,
+                            borderRadius: widget.borderRadius,
+                            borderWidth: widget.borderWidth,
+                            bottom: bottom,
+                            left: left,
+                            preferredDirection: preferredDirection,
+                            right: right,
+                            target: target,
+                            top: top,
+                            bubbleDimensions: widget.bubbleDimensions,
+                          ),
+                        ),
+                        child: widget.content,
                       ),
-                      child: widget.content,
                     ),
                   ),
                   _buildCloseButton(),
