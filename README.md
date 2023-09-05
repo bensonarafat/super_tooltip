@@ -5,7 +5,7 @@
 `SuperTooltip` It is super flexible and allows you to display ToolTips in the overlay of the screen. It gives you more flexibility over the Flutter standard ```Tooltip```. You have the option to make the whole screen covered with a background color. Tapping on the background closes the Tooltip. 
 
 
-<img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/screenshot1.gif?raw=true" width="250"/>
+<img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot1.gif?raw=true" width="250"/>
 
 
 ## Installing 
@@ -121,7 +121,7 @@ SuperTooltip(
     //... 
 )
 ```
-<img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/screenshot2.png?raw=true" width="250"/>
+<img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot2.png?raw=true" width="250"/>
 
 ## Barrier 
 
@@ -147,7 +147,7 @@ SuperTooltip(
     //...
 )
 ```
-<img src="https://github.com/escamoteur/super_tooltip/blob/master/screenshots/screenshot3.gif?raw=true" width="250"/>
+<img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot3.gif?raw=true" width="250"/>
 
 If you'd like to simply react to open or close states, you can pass through `onHide` or `onShow` callbacks to the default constructor.
 
@@ -191,7 +191,7 @@ Create a callback function to dismiss
 
 ## Example app
 
-Find the example app [here](https://github.com/escamoteur/super_tooltip/tree/master/example).
+Find the example app [here](https://github.com/bensonarafat/super_tooltip/tree/master/example).
 
 ## Author 
 Credit to [escamoteur](https://github.com/escamoteur) as the creator of the package
@@ -199,9 +199,9 @@ Credit to [escamoteur](https://github.com/escamoteur) as the creator of the pack
 ## Contributing
 
 Contributions are welcome.
-In case of any problems look at [existing issues](https://github.com/escamoteur/super_tooltip/issues), if you cannot find anything related to your problem then open an issue.
-Create an issue before opening a [pull request](https://github.com/escamoteur/super_tooltip/pulls) for non trivial fixes.
-In case of trivial fixes open a [pull request](https://github.com/escamoteur/super_tooltip/pulls) directly.
+In case of any problems look at [existing issues](https://github.com/bensonarafat/super_tooltip/issues), if you cannot find anything related to your problem then open an issue.
+Create an issue before opening a [pull request](https://github.com/bensonarafat/super_tooltip/pulls) for non trivial fixes.
+In case of trivial fixes open a [pull request](https://github.com/bensonarafat/super_tooltip/pulls) directly.
 
 <!-- readme: contributors -start -->
 <!-- readme: contributors -end -->
