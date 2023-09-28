@@ -1,4 +1,7 @@
 
+
+# [2.0.7] - 28.09.2023
+* Fix custom decoration
 # [2.0.6] - 28.09.2023
 * Fix custom decoration and hide tooltip on tab
 
