@@ -86,6 +86,10 @@ class SuperTooltip extends StatefulWidget {
     // need just offset, since it's 4 way directional
     // this.verticalOffset = 24.0,
     this.backgroundColor,
+
+    //
+    //
+    //
     this.decoration,
     this.child,
     this.borderColor = Colors.black,
@@ -360,32 +364,33 @@ class _SuperTooltipState extends State<SuperTooltip>
                         closeButtonSize: closeButtonSize,
                         showCloseButton: showCloseButton,
                       ),
-                      decoration: ShapeDecoration(
-                        color: backgroundColor,
-                        shadows: hasShadow
-                            ? <BoxShadow>[
-                                BoxShadow(
-                                  blurRadius: shadowBlurRadius,
-                                  spreadRadius: shadowSpreadRadius,
-                                  color: shadowColor,
-                                ),
-                              ]
-                            : null,
-                        shape: BubbleShape(
-                          arrowBaseWidth: widget.arrowBaseWidth,
-                          arrowTipDistance: widget.arrowTipDistance,
-                          borderColor: widget.borderColor,
-                          borderRadius: widget.borderRadius,
-                          borderWidth: widget.borderWidth,
-                          bottom: bottom,
-                          left: left,
-                          preferredDirection: preferredDirection,
-                          right: right,
-                          target: target,
-                          top: top,
-                          bubbleDimensions: widget.bubbleDimensions,
-                        ),
-                      ),
+                      decoration: widget.decoration ??
+                          ShapeDecoration(
+                            color: backgroundColor,
+                            shadows: hasShadow
+                                ? <BoxShadow>[
+                                    BoxShadow(
+                                      blurRadius: shadowBlurRadius,
+                                      spreadRadius: shadowSpreadRadius,
+                                      color: shadowColor,
+                                    ),
+                                  ]
+                                : null,
+                            shape: BubbleShape(
+                              arrowBaseWidth: widget.arrowBaseWidth,
+                              arrowTipDistance: widget.arrowTipDistance,
+                              borderColor: widget.borderColor,
+                              borderRadius: widget.borderRadius,
+                              borderWidth: widget.borderWidth,
+                              bottom: bottom,
+                              left: left,
+                              preferredDirection: preferredDirection,
+                              right: right,
+                              target: target,
+                              top: top,
+                              bubbleDimensions: widget.bubbleDimensions,
+                            ),
+                          ),
                       child: widget.content,
                     ),
                   ),
