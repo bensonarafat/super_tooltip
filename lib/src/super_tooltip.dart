@@ -87,6 +87,10 @@ class SuperTooltip extends StatefulWidget {
     // need just offset, since it's 4 way directional
     // this.verticalOffset = 24.0,
     this.backgroundColor,
+
+    //
+    //
+    //
     this.decoration,
     this.child,
     this.borderColor = Colors.black,
