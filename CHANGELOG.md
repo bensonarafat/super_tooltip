@@ -1,4 +1,7 @@
 
+# [2.0.6] - 28.09.2023
+* Fix custom decoration and hide tooltip on tab
+
 # [2.0.5] - 10.08.2023
 * Feature - add blur (imageFilter)
 # [2.0.4] - 28.06.2023
