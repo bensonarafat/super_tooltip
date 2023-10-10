@@ -19,7 +19,7 @@ class ShapeOverlay extends ShapeBorder {
   final EdgeInsetsGeometry overlayDimensions;
 
   @override
-  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
+  EdgeInsetsGeometry get dimensions => overlayDimensions;
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
