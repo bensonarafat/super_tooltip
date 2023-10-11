@@ -31,7 +31,7 @@ class BubbleShape extends ShapeBorder {
   final EdgeInsetsGeometry bubbleDimensions;
 
   @override
-  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10.0);
+  EdgeInsetsGeometry get dimensions => bubbleDimensions;
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path()
