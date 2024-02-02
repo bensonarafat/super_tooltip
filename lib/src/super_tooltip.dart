@@ -22,6 +22,7 @@ class SuperTooltip extends StatefulWidget {
   final Color? shadowColor;
   final double? shadowBlurRadius;
   final double? shadowSpreadRadius;
+  final Offset? shadowOffset;
   final double? top, right, bottom, left;
   final ShowCloseButton? showCloseButton;
   final Color? closeButtonColor;
@@ -74,6 +75,7 @@ class SuperTooltip extends StatefulWidget {
     this.shadowColor,
     this.shadowBlurRadius,
     this.shadowSpreadRadius,
+    this.shadowOffset,
     this.top,
     this.right,
     this.bottom,
@@ -146,6 +148,7 @@ class _SuperTooltipState extends State<SuperTooltip>
   late Color shadowColor;
   late double shadowBlurRadius;
   late double shadowSpreadRadius;
+  late Offset shadowOffset;
   late bool showBlur;
 
   @override
@@ -192,6 +195,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     shadowColor = widget.shadowColor ?? Colors.black54;
     shadowBlurRadius = widget.shadowBlurRadius ?? 10.0;
     shadowSpreadRadius = widget.shadowSpreadRadius ?? 5.0;
+    shadowOffset = widget.shadowOffset ?? Offset.zero;
     showBlur = widget.showDropBoxFilter;
 
     return CompositedTransformTarget(
@@ -380,6 +384,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                                         blurRadius: shadowBlurRadius,
                                         spreadRadius: shadowSpreadRadius,
                                         color: shadowColor,
+                                        offset: shadowOffset,
                                       ),
                                     ]
                                   : null,
