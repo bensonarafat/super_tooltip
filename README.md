@@ -193,8 +193,11 @@ Create a callback function to dismiss
 
 Find the example app [here](https://github.com/bensonarafat/super_tooltip/tree/master/example).
 
-## Author 
-Credit to [escamoteur](https://github.com/escamoteur) as the creator of the package
+<a href="https://github.com/bensonarafat/super_tooltip/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bensonarafat/super_tooltip" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
 
 ## Contributing
 
