@@ -50,6 +50,7 @@ class SuperTooltip extends StatefulWidget {
   final EdgeInsetsGeometry overlayDimensions;
   final EdgeInsetsGeometry bubbleDimensions;
   final bool hideTooltipOnTap;
+  final TooltipOrigin tooltipOrigin;
 
   //filter
   final bool showDropBoxFilter;
@@ -118,6 +119,7 @@ class SuperTooltip extends StatefulWidget {
     this.sigmaX = 5.0,
     this.sigmaY = 5.0,
     this.showDropBoxFilter = false,
+    this.tooltipOrigin = TooltipOrigin.center,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true),
         super(key: key);
 
@@ -219,6 +221,26 @@ class _SuperTooltipState extends State<SuperTooltip>
     }
   }
 
+  Offset _getOffsetToTarget(Size size, Offset target) {
+    switch (widget.tooltipOrigin) {
+      case TooltipOrigin.topCenter:
+        return Offset(
+          -target.dx + size.width / 2,
+          -target.dy,
+        );
+      case TooltipOrigin.center:
+        return Offset(
+          -target.dx + size.width / 2,
+          -target.dy + size.height / 2,
+        );
+      case TooltipOrigin.bottomCenter:
+        return Offset(
+          -target.dx + size.width / 2,
+          -target.dy + size.height,
+        );
+    }
+  }
+
   void _createOverlayEntries() {
     final renderBox = context.findRenderObject() as RenderBox;
 
@@ -236,10 +258,7 @@ class _SuperTooltipState extends State<SuperTooltip>
       parent: _animationController,
       curve: Curves.fastOutSlowIn,
     );
-    final offsetToTarget = Offset(
-      -target.dx + size.width / 2,
-      -target.dy + size.height / 2,
-    );
+    final offsetToTarget = _getOffsetToTarget(size, target);
     final backgroundColor =
         widget.backgroundColor ?? Theme.of(context).cardColor;
 
@@ -537,4 +556,10 @@ class _SuperTooltipState extends State<SuperTooltip>
       ),
     );
   }
+}
+
+enum TooltipOrigin {
+  topCenter,
+  center,
+  bottomCenter,
 }
