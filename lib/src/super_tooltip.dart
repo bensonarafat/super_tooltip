@@ -50,6 +50,7 @@ class SuperTooltip extends StatefulWidget {
   final EdgeInsetsGeometry overlayDimensions;
   final EdgeInsetsGeometry bubbleDimensions;
   final bool hideTooltipOnTap;
+  final bool hideTooltipOnBarrierTap;
 
   //filter
   final bool showDropBoxFilter;
@@ -118,6 +119,7 @@ class SuperTooltip extends StatefulWidget {
     this.sigmaX = 5.0,
     this.sigmaY = 5.0,
     this.showDropBoxFilter = false,
+    this.hideTooltipOnBarrierTap = true,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true),
         super(key: key);
 
@@ -291,7 +293,9 @@ class _SuperTooltipState extends State<SuperTooltip>
             builder: (context) => FadeTransition(
               opacity: animation,
               child: GestureDetector(
-                onTap: _superTooltipController!.hideTooltip,
+                onTap: widget.hideTooltipOnBarrierTap
+                    ? _superTooltipController!.hideTooltip
+                    : null,
                 child: Container(
                   key: SuperTooltip.barrierKey,
                   decoration: ShapeDecoration(
