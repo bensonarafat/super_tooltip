@@ -24,7 +24,8 @@ class SuperTooltip extends StatefulWidget {
   final double? shadowSpreadRadius;
   final Offset? shadowOffset;
   final double? top, right, bottom, left;
-  final ShowCloseButton? showCloseButton;
+  final bool showCloseButton;
+  final CloseButtonType closeButtonType;
   final Color? closeButtonColor;
   final double? closeButtonSize;
   final double minimumOutsideMargin;
@@ -65,7 +66,12 @@ class SuperTooltip extends StatefulWidget {
     this.onLongPress,
     this.onShow,
     this.onHide,
-    this.showCloseButton,
+    /**
+     * showCloseButton 
+     * This will enable the closeButton 
+     */
+    this.showCloseButton = false,
+    this.closeButtonType = CloseButtonType.inside,
     this.closeButtonColor,
     this.closeButtonSize,
     this.showBarrier,
@@ -120,7 +126,8 @@ class SuperTooltip extends StatefulWidget {
     this.sigmaY = 5.0,
     this.showDropBoxFilter = false,
     this.hideTooltipOnBarrierTap = true,
-  })  : assert(showDropBoxFilter ? showBarrier ?? false : true),
+  })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
+            'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
 
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
@@ -141,7 +148,8 @@ class _SuperTooltipState extends State<SuperTooltip>
   OverlayEntry? _barrierEntry;
   OverlayEntry? blur;
 
-  ShowCloseButton? showCloseButton;
+  bool showCloseButton = false;
+  CloseButtonType closeButtonType = CloseButtonType.inside;
   Color? closeButtonColor;
   double? closeButtonSize;
   late bool showBarrier;
@@ -188,7 +196,8 @@ class _SuperTooltipState extends State<SuperTooltip>
 
   @override
   Widget build(BuildContext context) {
-    showCloseButton = widget.showCloseButton ?? ShowCloseButton.none;
+    showCloseButton = widget.showCloseButton;
+    closeButtonType = widget.closeButtonType;
     closeButtonColor = widget.closeButtonColor ?? Colors.black;
     closeButtonSize = widget.closeButtonSize ?? 30.0;
     showBarrier = widget.showBarrier ?? true;
@@ -373,10 +382,12 @@ class _SuperTooltipState extends State<SuperTooltip>
                           arrowTipDistance: widget.arrowTipDistance,
                           closeButtonSize: closeButtonSize,
                           preferredDirection: preferredDirection,
+                          closeButtonType: closeButtonType,
                           showCloseButton: showCloseButton,
                         ),
                         padding: SuperUtils.getTooltipPadding(
                           closeButtonSize: closeButtonSize,
+                          closeButtonType: closeButtonType,
                           showCloseButton: showCloseButton,
                         ),
                         decoration: widget.decoration ??
@@ -461,14 +472,12 @@ class _SuperTooltipState extends State<SuperTooltip>
   }
 
   Widget _buildCloseButton() {
-    // const internalClickAreaPadding = 2.0;
-
-    //
-    if (showCloseButton == ShowCloseButton.none) {
-      return const SizedBox();
+    /**
+     * return Sizebox.shrizk if showCloseButton is false
+     */
+    if (!showCloseButton) {
+      return const SizedBox.shrink();
     }
-
-    // ---
 
     double right;
     double top;
@@ -478,12 +487,12 @@ class _SuperTooltipState extends State<SuperTooltip>
       // LEFT: -------------------------------------
       case TooltipDirection.left:
         right = widget.arrowLength + widget.arrowTipDistance + 3.0;
-        if (showCloseButton == ShowCloseButton.inside) {
+        if (closeButtonType == CloseButtonType.inside) {
           top = 2.0;
-        } else if (showCloseButton == ShowCloseButton.outside) {
+        } else if (closeButtonType == CloseButtonType.outside) {
           top = 0.0;
         } else {
-          throw AssertionError(showCloseButton);
+          throw AssertionError(closeButtonType);
         }
         break;
 
@@ -491,12 +500,12 @@ class _SuperTooltipState extends State<SuperTooltip>
       case TooltipDirection.right:
       case TooltipDirection.up:
         right = 5.0;
-        if (showCloseButton == ShowCloseButton.inside) {
+        if (closeButtonType == CloseButtonType.inside) {
           top = 2.0;
-        } else if (showCloseButton == ShowCloseButton.outside) {
+        } else if (closeButtonType == CloseButtonType.outside) {
           top = 0.0;
         } else {
-          throw AssertionError(showCloseButton);
+          throw AssertionError(closeButtonType);
         }
         break;
 
@@ -505,12 +514,12 @@ class _SuperTooltipState extends State<SuperTooltip>
         // If this value gets negative the Shadow gets clipped. The problem occurs is arrowlength + arrowTipDistance
         // is smaller than _outSideCloseButtonPadding which would mean arrowLength would need to be increased if the button is ouside.
         right = 2.0;
-        if (showCloseButton == ShowCloseButton.inside) {
+        if (closeButtonType == CloseButtonType.inside) {
           top = widget.arrowLength + widget.arrowTipDistance + 2.0;
-        } else if (showCloseButton == ShowCloseButton.outside) {
+        } else if (closeButtonType == CloseButtonType.outside) {
           top = 0.0;
         } else {
-          throw AssertionError(showCloseButton);
+          throw AssertionError(closeButtonType);
         }
         break;
 
@@ -528,7 +537,7 @@ class _SuperTooltipState extends State<SuperTooltip>
       child: Material(
         color: Colors.transparent,
         child: IconButton(
-          key: showCloseButton == ShowCloseButton.inside
+          key: closeButtonType == CloseButtonType.inside
               ? SuperTooltip.insideCloseButtonKey
               : SuperTooltip.outsideCloseButtonKey,
           icon: Icon(
