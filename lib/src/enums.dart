@@ -1,6 +1,6 @@
 enum TooltipDirection { up, down, left, right }
 
-enum ShowCloseButton { inside, outside, none }
+enum CloseButtonType { inside, outside }
 
 enum ClipAreaShape { oval, rectangle }
 

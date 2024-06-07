@@ -5,15 +5,18 @@ import 'enums.dart';
 
 class SuperUtils {
   static EdgeInsets getTooltipMargin({
-    required ShowCloseButton? showCloseButton,
+    required CloseButtonType? closeButtonType,
     required double? closeButtonSize,
     required double arrowTipDistance,
     required double arrowLength,
     required TooltipDirection preferredDirection,
+    required bool showCloseButton,
   }) {
-    final top = (showCloseButton == ShowCloseButton.outside)
-        ? closeButtonSize! + 12
-        : 0.0;
+    final top = !showCloseButton
+        ? 0.0
+        : (closeButtonType == CloseButtonType.outside)
+            ? closeButtonSize! + 12
+            : 0.0;
 
     switch (preferredDirection) {
       case TooltipDirection.down:
@@ -35,11 +38,15 @@ class SuperUtils {
   }
 
   static EdgeInsets getTooltipPadding({
-    required ShowCloseButton? showCloseButton,
+    required CloseButtonType? closeButtonType,
     required double? closeButtonSize,
+    required bool showCloseButton,
   }) {
-    final top =
-        (showCloseButton == ShowCloseButton.inside) ? closeButtonSize! : 0.0;
+    final top = !showCloseButton
+        ? 0.0
+        : (closeButtonType == CloseButtonType.inside)
+            ? closeButtonSize!
+            : 0.0;
     return EdgeInsets.only(top: top);
   }
 
