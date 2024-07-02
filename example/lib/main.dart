@@ -110,8 +110,4 @@ class _TargetWidgetState extends State<TargetWidget> {
       ),
     );
   }
-
-  void makeTooltip() {
-    _controller.showTooltip();
-  }
 }
