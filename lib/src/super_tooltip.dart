@@ -52,6 +52,7 @@ class SuperTooltip extends StatefulWidget {
   final EdgeInsetsGeometry bubbleDimensions;
   final bool hideTooltipOnTap;
   final bool hideTooltipOnBarrierTap;
+  final bool toggleOnTap;
 
   //filter
   final bool showDropBoxFilter;
