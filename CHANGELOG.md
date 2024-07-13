@@ -1,4 +1,9 @@
 
+# [2.0.8] - 13.07.2024
+- Added toggleOnTap option to toggle tooltip 
+- Remove un-use method 
+- Fix showClosButton and hideToolTip on Barrier Tap 
+- expose showowOffset 
 
 # [2.0.7] - 28.09.2023
 * Fix custom decoration
