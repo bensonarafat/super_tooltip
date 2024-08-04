@@ -58,6 +58,7 @@ class SuperTooltip extends StatefulWidget {
   final bool showDropBoxFilter;
   final double sigmaX;
   final double sigmaY;
+  final List<BoxShadow>? boxShadows;
 
   SuperTooltip({
     Key? key,
@@ -128,6 +129,7 @@ class SuperTooltip extends StatefulWidget {
     this.showDropBoxFilter = false,
     this.hideTooltipOnBarrierTap = true,
     this.toggleOnTap = false,
+    this.boxShadows,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
@@ -216,7 +218,7 @@ class _SuperTooltipState extends State<SuperTooltip>
       child: GestureDetector(
         onTap: () {
           if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-           _superTooltipController!.hideTooltip(); 
+            _superTooltipController!.hideTooltip();
           } else {
             _superTooltipController!.showTooltip();
           }
@@ -402,14 +404,15 @@ class _SuperTooltipState extends State<SuperTooltip>
                             ShapeDecoration(
                               color: backgroundColor,
                               shadows: hasShadow
-                                  ? <BoxShadow>[
-                                      BoxShadow(
-                                        blurRadius: shadowBlurRadius,
-                                        spreadRadius: shadowSpreadRadius,
-                                        color: shadowColor,
-                                        offset: shadowOffset,
-                                      ),
-                                    ]
+                                  ? widget.boxShadows ??
+                                      <BoxShadow>[
+                                        BoxShadow(
+                                          blurRadius: shadowBlurRadius,
+                                          spreadRadius: shadowSpreadRadius,
+                                          color: shadowColor,
+                                          offset: shadowOffset,
+                                        ),
+                                      ]
                                   : null,
                               shape: BubbleShape(
                                 arrowBaseWidth: widget.arrowBaseWidth,
