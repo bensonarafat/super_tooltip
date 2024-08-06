@@ -38,8 +38,6 @@ class SuperTooltip extends StatefulWidget {
   final Color borderColor;
   final BoxConstraints constraints;
   final Color? backgroundColor;
-  @Deprecated('Use decorationBuilder instead')
-  final Decoration? decoration;
   final DecorationBuilder? decorationBuilder;
   final double elevation;
   final Duration fadeInDuration;
@@ -108,8 +106,6 @@ class SuperTooltip extends StatefulWidget {
     //
     //
     //
-    // TD: Deprecate this in favor of decorationBuilder
-    this.decoration,
     this.decorationBuilder,
     this.child,
     this.borderColor = Colors.black,
