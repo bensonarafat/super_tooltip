@@ -179,7 +179,7 @@ class SuperTooltip extends StatefulWidget {
   ///   minWidth: 0.0,
   ///   maxWidth: double.infinity,
   /// )
-  /// ``
+  /// ```
   final BoxConstraints constraints;
 
   /// The background color of the tooltip.
