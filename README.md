@@ -124,14 +124,17 @@ SuperTooltip(
     //...
 )
 ```
+<img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot2.png?raw=true" width="250"/>
 
-For passing custom shape for popup or pass custom decoration,you can use the `decorationBuilder` which will give you access target property
+## DecorationBuilder
+
+To customize the shape of the popup or apply your own decoration, you can utilize the `decorationBuilder` property. This allows you to access the `target` property and define a custom shape or decoration for the tooltip.
 
 ```dart
 SuperTooltip(
     decorationBuilder:(target){
       return ShapeDecoration(
-        //...
+          //...
         shape: CustomShape(
           //...
           target: target,
@@ -142,7 +145,6 @@ SuperTooltip(
 )
 ```
 
-<img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot2.png?raw=true" width="250"/>
 
 ## Barrier
 
