@@ -9,6 +9,10 @@ import 'shape_overlay.dart';
 import 'super_tooltip_controller.dart';
 import 'tooltip_position_delegate.dart';
 
+typedef DecorationBuilder = Decoration Function(
+  Offset target,
+);
+
 class SuperTooltip extends StatefulWidget {
   final Widget content;
   final TooltipDirection popupDirection;
@@ -34,7 +38,7 @@ class SuperTooltip extends StatefulWidget {
   final Color borderColor;
   final BoxConstraints constraints;
   final Color? backgroundColor;
-  final Decoration? decoration;
+  final DecorationBuilder? decorationBuilder;
   final double elevation;
   final Duration fadeInDuration;
   final Duration fadeOutDuration;
@@ -102,7 +106,7 @@ class SuperTooltip extends StatefulWidget {
     //
     //
     //
-    this.decoration,
+    this.decorationBuilder,
     this.child,
     this.borderColor = Colors.black,
     this.constraints = const BoxConstraints(
@@ -400,35 +404,36 @@ class _SuperTooltipState extends State<SuperTooltip>
                           closeButtonType: closeButtonType,
                           showCloseButton: showCloseButton,
                         ),
-                        decoration: widget.decoration ??
-                            ShapeDecoration(
-                              color: backgroundColor,
-                              shadows: hasShadow
-                                  ? widget.boxShadows ??
-                                      <BoxShadow>[
-                                        BoxShadow(
-                                          blurRadius: shadowBlurRadius,
-                                          spreadRadius: shadowSpreadRadius,
-                                          color: shadowColor,
-                                          offset: shadowOffset,
-                                        ),
-                                      ]
-                                  : null,
-                              shape: BubbleShape(
-                                arrowBaseWidth: widget.arrowBaseWidth,
-                                arrowTipDistance: widget.arrowTipDistance,
-                                borderColor: widget.borderColor,
-                                borderRadius: widget.borderRadius,
-                                borderWidth: widget.borderWidth,
-                                bottom: bottom,
-                                left: left,
-                                preferredDirection: preferredDirection,
-                                right: right,
-                                target: target,
-                                top: top,
-                                bubbleDimensions: widget.bubbleDimensions,
+                        decoration: widget.decorationBuilder != null
+                            ? widget.decorationBuilder!(target)
+                            : ShapeDecoration(
+                                color: backgroundColor,
+                                shadows: hasShadow
+                                    ? widget.boxShadows ??
+                                        <BoxShadow>[
+                                          BoxShadow(
+                                            blurRadius: shadowBlurRadius,
+                                            spreadRadius: shadowSpreadRadius,
+                                            color: shadowColor,
+                                            offset: shadowOffset,
+                                          ),
+                                        ]
+                                    : null,
+                                shape: BubbleShape(
+                                  arrowBaseWidth: widget.arrowBaseWidth,
+                                  arrowTipDistance: widget.arrowTipDistance,
+                                  borderColor: widget.borderColor,
+                                  borderRadius: widget.borderRadius,
+                                  borderWidth: widget.borderWidth,
+                                  bottom: bottom,
+                                  left: left,
+                                  preferredDirection: preferredDirection,
+                                  right: right,
+                                  target: target,
+                                  top: top,
+                                  bubbleDimensions: widget.bubbleDimensions,
+                                ),
                               ),
-                            ),
                         child: widget.content,
                       ),
                     ),
