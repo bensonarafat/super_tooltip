@@ -9,7 +9,7 @@ class SuperTooltipController extends ChangeNotifier {
   bool _isVisible = false;
   bool get isVisible => _isVisible;
   // External control flag
-  bool externalControlOnly = false;
+  bool externalControlOnly = true;
 
   late Event event;
 
@@ -21,7 +21,8 @@ class SuperTooltipController extends ChangeNotifier {
     return _completer.future.whenComplete(() => _isVisible = true);
   }
 
-  Future<void> hideTooltip() {
+  Future<void> hideTooltip({bool external = false}) {
+    externalControlOnly = external;
     event = Event.hide;
     _completer = Completer();
     notifyListeners();

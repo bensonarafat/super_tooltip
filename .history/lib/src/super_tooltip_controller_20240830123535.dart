@@ -9,7 +9,7 @@ class SuperTooltipController extends ChangeNotifier {
   bool _isVisible = false;
   bool get isVisible => _isVisible;
   // External control flag
-  bool externalControlOnly = false;
+  bool externalControlOnly = true;
 
   late Event event;
 

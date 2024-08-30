@@ -481,13 +481,17 @@ class _SuperTooltipState extends State<SuperTooltip>
     blur?.remove();
   }
 
-  _hideTooltip() async {
-    widget.onHide?.call();
-    await _animationController
-        .reverse()
-        .whenComplete(_superTooltipController!.complete);
+void _hideTooltip() async {
+    // If externalControl is true, don't proceed with hiding tooltip based on tap
+    if (!_superTooltipController!.externalControlOnly) {
+      widget.onHide?.call();
 
-    _removeEntries();
+      await _animationController
+          .reverse()
+          .whenComplete(_superTooltipController!.complete);
+
+      _removeEntries();
+    }
   }
 
   Widget _buildCloseButton() {

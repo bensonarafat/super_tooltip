@@ -457,20 +457,17 @@ class _SuperTooltipState extends State<SuperTooltip>
     }
   }
 
-  void _showTooltip() async {
-    // If externalControl is true, don't proceed with showing tooltip based on tap
-    if (!_superTooltipController!.externalControlOnly) {
-      widget.onShow?.call();
+  _showTooltip() async {
+    widget.onShow?.call();
 
-      // Already visible.
-      if (_entry != null) return;
+    // Already visible.
+    if (_entry != null) return;
 
-      _createOverlayEntries();
+    _createOverlayEntries();
 
-      await _animationController
-          .forward()
-          .whenComplete(_superTooltipController!.complete);
-    }
+    await _animationController
+        .forward()
+        .whenComplete(_superTooltipController!.complete);
   }
 
   _removeEntries() {
