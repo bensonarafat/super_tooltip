@@ -9,9 +9,13 @@ class SuperTooltipController extends ChangeNotifier {
   bool _isVisible = false;
   bool get isVisible => _isVisible;
 
+  // External control flag
+  bool externalControlOnly = false;
+
   late Event event;
 
-  Future<void> showTooltip() {
+  Future<void> showTooltip({bool external = false}) {
+    externalControlOnly = external; // Set the flag based on external trigger
     event = Event.show;
     _completer = Completer();
     notifyListeners();

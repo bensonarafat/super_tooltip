@@ -223,13 +223,13 @@ class _SuperTooltipState extends State<SuperTooltip>
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
+          if (widget.showOnTap) {
             if (widget.toggleOnTap && _superTooltipController!.isVisible) {
               _superTooltipController!.hideTooltip();
             } else {
-              if (widget.showOnTap) {
-                _superTooltipController!.showTooltip();
-                }
+              _superTooltipController!.showTooltip();
             }
+          }
         },
         onLongPress: widget.onLongPress,
         child: widget.child,

@@ -57,7 +57,6 @@ class SuperTooltip extends StatefulWidget {
   final bool hideTooltipOnTap;
   final bool hideTooltipOnBarrierTap;
   final bool toggleOnTap;
-  final bool showOnTap;
 
   //filter
   final bool showDropBoxFilter;
@@ -134,7 +133,6 @@ class SuperTooltip extends StatefulWidget {
     this.showDropBoxFilter = false,
     this.hideTooltipOnBarrierTap = true,
     this.toggleOnTap = false,
-    this.showOnTap = true,
     this.boxShadows,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
@@ -223,13 +221,11 @@ class _SuperTooltipState extends State<SuperTooltip>
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
-            if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-              _superTooltipController!.hideTooltip();
-            } else {
-              if (widget.showOnTap) {
-                _superTooltipController!.showTooltip();
-                }
-            }
+          if (widget.toggleOnTap && _superTooltipController!.isVisible) {
+            _superTooltipController!.hideTooltip();
+          } else {
+            _superTooltipController!.showTooltip();
+          }
         },
         onLongPress: widget.onLongPress,
         child: widget.child,
@@ -461,7 +457,22 @@ class _SuperTooltipState extends State<SuperTooltip>
     }
   }
 
-  _showTooltip() async {
+void _showTooltip() async {
+  // If externalControlOnly is true, proceed with showing tooltip only if triggered externally
+  if (_superTooltipController!.externalControlOnly) {
+    // Tooltip should only be shown if externalControlOnly is set to true and is triggered externally
+    widget.onShow?.call();
+
+    // Already visible.
+    if (_entry != null) return;
+
+    _createOverlayEntries();
+
+    await _animationController
+        .forward()
+        .whenComplete(_superTooltipController!.complete);
+  } else {
+    // When externalControlOnly is false, show the tooltip normally (e.g., on tap)
     widget.onShow?.call();
 
     // Already visible.
@@ -473,6 +484,8 @@ class _SuperTooltipState extends State<SuperTooltip>
         .forward()
         .whenComplete(_superTooltipController!.complete);
   }
+}
+
 
   _removeEntries() {
     _entry?.remove();

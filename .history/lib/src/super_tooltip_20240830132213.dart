@@ -57,7 +57,6 @@ class SuperTooltip extends StatefulWidget {
   final bool hideTooltipOnTap;
   final bool hideTooltipOnBarrierTap;
   final bool toggleOnTap;
-  final bool showOnTap;
 
   //filter
   final bool showDropBoxFilter;
@@ -134,7 +133,6 @@ class SuperTooltip extends StatefulWidget {
     this.showDropBoxFilter = false,
     this.hideTooltipOnBarrierTap = true,
     this.toggleOnTap = false,
-    this.showOnTap = true,
     this.boxShadows,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
@@ -223,13 +221,14 @@ class _SuperTooltipState extends State<SuperTooltip>
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
+           // Only show the tooltip on tap if externalControlOnly is false
+          if (!widget.controller!.externalControlOnly) {
             if (widget.toggleOnTap && _superTooltipController!.isVisible) {
               _superTooltipController!.hideTooltip();
             } else {
-              if (widget.showOnTap) {
-                _superTooltipController!.showTooltip();
-                }
+              _superTooltipController!.showTooltip();
             }
+          }
         },
         onLongPress: widget.onLongPress,
         child: widget.child,
@@ -240,7 +239,10 @@ class _SuperTooltipState extends State<SuperTooltip>
   void _onChangeNotifier() {
     switch (_superTooltipController!.event) {
       case Event.show:
-        _showTooltip();
+       // Show the tooltip if either externalControlOnly is true or the tap logic allows it
+        if (_superTooltipController!.externalControlOnly || !_superTooltipController!.isVisible) {
+          _showTooltip();
+        }
         break;
       case Event.hide:
         _hideTooltip();
@@ -461,17 +463,20 @@ class _SuperTooltipState extends State<SuperTooltip>
     }
   }
 
-  _showTooltip() async {
-    widget.onShow?.call();
+  void _showTooltip() async {
+    // If externalControlOnly is true, don't proceed with showing tooltip based on internal events
+    if (!_superTooltipController!.externalControlOnly || _superTooltipController!.event == Event.show) {
+      widget.onShow?.call();
 
-    // Already visible.
-    if (_entry != null) return;
+      // Already visible.
+      if (_entry != null) return;
 
-    _createOverlayEntries();
+      _createOverlayEntries();
 
-    await _animationController
-        .forward()
-        .whenComplete(_superTooltipController!.complete);
+      await _animationController
+          .forward()
+          .whenComplete(_superTooltipController!.complete);
+    }
   }
 
   _removeEntries() {
