@@ -57,6 +57,7 @@ class SuperTooltip extends StatefulWidget {
   final bool hideTooltipOnTap;
   final bool hideTooltipOnBarrierTap;
   final bool toggleOnTap;
+  final bool showOnTap;
 
   //filter
   final bool showDropBoxFilter;
@@ -133,6 +134,7 @@ class SuperTooltip extends StatefulWidget {
     this.showDropBoxFilter = false,
     this.hideTooltipOnBarrierTap = true,
     this.toggleOnTap = false,
+    this.showOnTap = true,
     this.boxShadows,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
@@ -221,11 +223,13 @@ class _SuperTooltipState extends State<SuperTooltip>
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
-          if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-            _superTooltipController!.hideTooltip();
-          } else {
-            _superTooltipController!.showTooltip();
-          }
+            if (widget.toggleOnTap && _superTooltipController!.isVisible) {
+              _superTooltipController!.hideTooltip();
+            } else {
+              if (widget.showOnTap) {
+                _superTooltipController!.showTooltip();
+                }
+            }
         },
         onLongPress: widget.onLongPress,
         child: widget.child,
