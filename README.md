@@ -1,22 +1,22 @@
 # super_tooltip
+
 [![Static code analysis](https://github.com/bensonarafat/super_tooltip/actions/workflows/dart.yml/badge.svg)](https://github.com/bensonarafat/super_tooltip/actions/workflows/dart.yml)
-[![pub package](https://img.shields.io/pub/v/super_tooltip.svg)](https://pub.dartlang.org/packages/super_tooltip) 
+[![pub package](https://img.shields.io/pub/v/super_tooltip.svg)](https://pub.dartlang.org/packages/super_tooltip)
 
-
-`SuperTooltip` It is super flexible and allows you to display ToolTips in the overlay of the screen. It gives you more flexibility over the Flutter standard ```Tooltip```. You have the option to make the whole screen covered with a background color. Tapping on the background closes the Tooltip. 
-
+`SuperTooltip` It is super flexible and allows you to display ToolTips in the overlay of the screen. It gives you more flexibility over the Flutter standard `Tooltip`. You have the option to make the whole screen covered with a background color. Tapping on the background closes the Tooltip.
 
 <img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot1.gif?raw=true" width="250"/>
 
-
-## Installing 
+## Installing
 
 Run this command:
 
 With Flutter:
+
 ```
  flutter pub add super_tooltip
 ```
+
 This will add a line like this to your package's pubspec.yaml (and run an implicit flutter pub get):
 
 ```
@@ -31,7 +31,8 @@ Now in your Dart code, you can use:
 ```
 import 'package:super_tooltip/super_tooltip.dart';
 ```
-# Getting Started 
+
+# Getting Started
 
 You have to make your Widget a `StatefulWidget` and you just need to create a controller to manage state of tooltips, you can do so by defining an instance of a `SuperTooltipController` and pass it through to constructor.
 
@@ -47,7 +48,6 @@ You have to make your Widget a `StatefulWidget` and you just need to create a co
         _controller.showTooltip();
     }
 ```
-
 
 You need to wrap `SuperTooltip` with a `GestureDetector`, `MouseRegion` or `InkWell` that is responsible for showing and hiding the content. Further handling of the tooltip state can be managed explicitly through a controller
 
@@ -115,16 +115,38 @@ SuperTooltip(
     //....
 ),
 ```
+
 Change Popup direction to `TooltipDirection.right`, `TooltipDirection.left`, `TooltipDirection.bottom` and `TooltipDirection.up`
+
 ```dart
 SuperTooltip(
     popupDirection: TooltipDirection.right,
-    //... 
+    //...
 )
 ```
 <img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot2.png?raw=true" width="250"/>
 
-## Barrier 
+## DecorationBuilder
+
+To customize the shape of the popup or apply your own decoration, you can utilize the `decorationBuilder` property. This allows you to access the `target` property and define a custom shape or decoration for the tooltip.
+
+```dart
+SuperTooltip(
+    decorationBuilder:(target){
+      return ShapeDecoration(
+          //...
+        shape: CustomShape(
+          //...
+          target: target,
+        ),
+      );
+    }
+    //...
+)
+```
+
+
+## Barrier
 
 If you'd like to keep the user from dismissing the tooltip by clicking on the barrier, you can change `showBarrier` to `true` which means pressing on the scrim area will not immediately hide the tooltip.
 
@@ -136,18 +158,20 @@ SuperTooltip(
 )
 ```
 
-## Blur  
-If you'd like to also show blur behind the pop up, you can do that by making the `showDropBoxFilter`  to `true` you must also enable `showBarrier` then set `sigmaX` and `sigmaY`
+## Blur
+
+If you'd like to also show blur behind the pop up, you can do that by making the `showDropBoxFilter` to `true` you must also enable `showBarrier` then set `sigmaX` and `sigmaY`
 
 ```dart
 SuperTooltip(
     showBarrier: true,
     showDropBoxFilter: true,
-    sigmaX: 10, 
+    sigmaX: 10,
     sigmaY: 10,
     //...
 )
 ```
+
 <img src="https://github.com/bensonarafat/super_tooltip/blob/master/screenshots/screenshot3.gif?raw=true" width="250"/>
 
 If you'd like to simply react to open or close states, you can pass through `onHide` or `onShow` callbacks to the default constructor.
@@ -163,7 +187,7 @@ SuperTooltip(
 ),
 ```
 
-To hide the tooltip when the user tap the back button. Wrap your `GestureDetector` widget with `WillPopScope` widget passing a callback function to `onWillPop` like the example below 
+To hide the tooltip when the user tap the back button. Wrap your `GestureDetector` widget with `WillPopScope` widget passing a callback function to `onWillPop` like the example below
 
 ```dart
     return WillPopScope(
@@ -177,7 +201,8 @@ To hide the tooltip when the user tap the back button. Wrap your `GestureDetecto
     );
 ```
 
-Create a callback function to dismiss 
+Create a callback function to dismiss
+
 ```dart
   Future<bool> _willPopCallback() async {
     // If the tooltip is open we don't pop the page on a backbutton press

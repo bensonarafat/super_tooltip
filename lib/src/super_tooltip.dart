@@ -11,6 +11,10 @@ import 'shape_overlay.dart';
 import 'super_tooltip_controller.dart';
 import 'tooltip_position_delegate.dart';
 
+typedef DecorationBuilder = Decoration Function(
+  Offset target,
+);
+
 /// A powerful and customizable tooltip widget for Flutter.
 ///
 /// `SuperTooltip` provides a flexible and feature-rich way to display tooltips
@@ -51,6 +55,7 @@ import 'tooltip_position_delegate.dart';
 ///   ),
 /// )
 /// ```
+
 class SuperTooltip extends StatefulWidget {
   // Creates a `SuperTooltip` widget.
   ///
@@ -191,7 +196,9 @@ class SuperTooltip extends StatefulWidget {
   ///
   /// If not provided, the default decoration will be used.
   final Decoration? decoration;
-
+  
+  final DecorationBuilder? decorationBuilder;
+  
   /// The elevation of the tooltip.
   ///
   /// Defaults to `0.0`.
@@ -283,6 +290,7 @@ class SuperTooltip extends StatefulWidget {
   ///
   /// Defaults to `false`.
   final bool toggleOnTap;
+  final bool showOnTap;
 
   /// Whether to show a blur filter behind the tooltip.
   ///
@@ -344,7 +352,7 @@ class SuperTooltip extends StatefulWidget {
     //
     //
     //
-    this.decoration,
+    this.decorationBuilder,
     this.child,
     this.borderColor = Colors.black,
     this.constraints = const BoxConstraints(
@@ -371,6 +379,7 @@ class SuperTooltip extends StatefulWidget {
     this.showDropBoxFilter = false,
     this.hideTooltipOnBarrierTap = true,
     this.toggleOnTap = false,
+    this.showOnTap = true,
     this.boxShadows,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
@@ -466,11 +475,13 @@ class _SuperTooltipState extends State<SuperTooltip>
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
-          if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-            _superTooltipController!.hideTooltip();
-          } else {
-            _superTooltipController!.showTooltip();
-          }
+            if (widget.toggleOnTap && _superTooltipController!.isVisible) {
+              _superTooltipController!.hideTooltip();
+            } else {
+              if (widget.showOnTap) {
+                _superTooltipController!.showTooltip();
+                }
+            }
         },
         onLongPress: widget.onLongPress,
         child: widget.child,
@@ -668,35 +679,36 @@ class _SuperTooltipState extends State<SuperTooltip>
                           closeButtonType: closeButtonType,
                           showCloseButton: showCloseButton,
                         ),
-                        decoration: widget.decoration ??
-                            ShapeDecoration(
-                              color: backgroundColor,
-                              shadows: hasShadow
-                                  ? widget.boxShadows ??
-                                      <BoxShadow>[
-                                        BoxShadow(
-                                          blurRadius: shadowBlurRadius,
-                                          spreadRadius: shadowSpreadRadius,
-                                          color: shadowColor,
-                                          offset: shadowOffset,
-                                        ),
-                                      ]
-                                  : null,
-                              shape: BubbleShape(
-                                arrowBaseWidth: widget.arrowBaseWidth,
-                                arrowTipDistance: widget.arrowTipDistance,
-                                borderColor: widget.borderColor,
-                                borderRadius: widget.borderRadius,
-                                borderWidth: widget.borderWidth,
-                                bottom: bottom,
-                                left: left,
-                                preferredDirection: preferredDirection,
-                                right: right,
-                                target: target,
-                                top: top,
-                                bubbleDimensions: widget.bubbleDimensions,
+                        decoration: widget.decorationBuilder != null
+                            ? widget.decorationBuilder!(target)
+                            : ShapeDecoration(
+                                color: backgroundColor,
+                                shadows: hasShadow
+                                    ? widget.boxShadows ??
+                                        <BoxShadow>[
+                                          BoxShadow(
+                                            blurRadius: shadowBlurRadius,
+                                            spreadRadius: shadowSpreadRadius,
+                                            color: shadowColor,
+                                            offset: shadowOffset,
+                                          ),
+                                        ]
+                                    : null,
+                                shape: BubbleShape(
+                                  arrowBaseWidth: widget.arrowBaseWidth,
+                                  arrowTipDistance: widget.arrowTipDistance,
+                                  borderColor: widget.borderColor,
+                                  borderRadius: widget.borderRadius,
+                                  borderWidth: widget.borderWidth,
+                                  bottom: bottom,
+                                  left: left,
+                                  preferredDirection: preferredDirection,
+                                  right: right,
+                                  target: target,
+                                  top: top,
+                                  bubbleDimensions: widget.bubbleDimensions,
+                                ),
                               ),
-                            ),
                         child: widget.content,
                       ),
                     ),
