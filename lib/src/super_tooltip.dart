@@ -44,6 +44,7 @@ class SuperTooltip extends StatefulWidget {
   final Duration fadeOutDuration;
   final double arrowLength;
   final double arrowBaseWidth;
+  final double arrowTipRadius;
   final double arrowTipDistance;
   final double borderRadius;
   final double borderWidth;
@@ -120,6 +121,7 @@ class SuperTooltip extends StatefulWidget {
     this.fadeOutDuration = const Duration(milliseconds: 0),
     this.arrowLength = 20.0,
     this.arrowBaseWidth = 20.0,
+    this.arrowTipRadius = 0.0,
     this.arrowTipDistance = 2.0,
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
@@ -426,6 +428,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                                 shape: BubbleShape(
                                   arrowBaseWidth: widget.arrowBaseWidth,
                                   arrowTipDistance: widget.arrowTipDistance,
+                                  arrowTipRadius: widget.arrowTipRadius,
                                   borderColor: widget.borderColor,
                                   borderRadius: widget.borderRadius,
                                   borderWidth: widget.borderWidth,
