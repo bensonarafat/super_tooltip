@@ -9,6 +9,7 @@ class BubbleShape extends ShapeBorder {
     required this.preferredDirection,
     required this.target,
     required this.borderRadius,
+    required this.arrowTipRadius,
     required this.arrowBaseWidth,
     required this.arrowTipDistance,
     required this.borderColor,
@@ -24,6 +25,7 @@ class BubbleShape extends ShapeBorder {
   final double arrowBaseWidth;
   final double arrowTipDistance;
   final double borderRadius;
+  final double arrowTipRadius;
   final Color borderColor;
   final double borderWidth;
   final double? left, top, right, bottom;
@@ -93,7 +95,24 @@ class BubbleShape extends ShapeBorder {
             ),
             rect.top,
           )
-          ..lineTo(target.dx, target.dy + arrowTipDistance) // up to arrow tip
+          // up to arrow tip where the curve starts
+          ..lineTo(
+              target.dx + arrowTipRadius / sqrt(2), //sin and cos 45 = 1/root(2)
+              target.dy +
+                  arrowTipDistance -
+                  (arrowTipRadius - arrowTipRadius / sqrt(2)))
+
+          //arc for the tip
+          ..arcToPoint(
+              Offset(
+                  target.dx - arrowTipRadius / sqrt(2),
+                  target.dy +
+                      arrowTipDistance -
+                      (arrowTipRadius - arrowTipRadius / sqrt(2))),
+              radius: Radius.circular(arrowTipRadius),
+              clockwise: false)
+
+          //  down /
           ..lineTo(
             max(
               min(
@@ -103,8 +122,7 @@ class BubbleShape extends ShapeBorder {
               rect.left + topLeftRadius,
             ),
             rect.top,
-          ) //  down /
-
+          )
           ..lineTo(rect.left + topLeftRadius, rect.top)
           ..arcToPoint(
             Offset(rect.left, rect.top + topLeftRadius),
@@ -130,10 +148,23 @@ class BubbleShape extends ShapeBorder {
                   rect.right - bottomRightRadius),
               rect.bottom)
 
-          // up to arrow tip   \
-          ..lineTo(target.dx, target.dy - arrowTipDistance)
+          // down to arrow tip curvature start\
+          ..lineTo(
+              target.dx + arrowTipRadius / sqrt(2), //sin and cos 45 = 1/root(2)
+              target.dy -
+                  arrowTipDistance +
+                  (arrowTipRadius - arrowTipRadius / sqrt(2)))
 
-          //  down /
+          //arc for the tip
+          ..arcToPoint(
+              Offset(
+                  target.dx - arrowTipRadius / sqrt(2),
+                  target.dy -
+                      arrowTipDistance +
+                      (arrowTipRadius - arrowTipRadius / sqrt(2))),
+              radius: Radius.circular(arrowTipRadius))
+
+          //  up /
           ..lineTo(
               max(
                   min(target.dx - arrowBaseWidth / 2,
@@ -155,8 +186,25 @@ class BubbleShape extends ShapeBorder {
                   min(target.dy - arrowBaseWidth / 2,
                       rect.bottom - bottomRightRadius - arrowBaseWidth),
                   rect.top + topRightRadius))
+
+          // right to arrow tip to the start point of the arc \
           ..lineTo(
-              target.dx - arrowTipDistance, target.dy) // right to arrow tip   \
+              target.dx -
+                  arrowTipDistance +
+                  (arrowTipRadius - arrowTipRadius / sqrt(2)),
+              target.dy - arrowTipRadius / sqrt(2))
+
+          //arc for the tip
+          ..arcToPoint(
+            Offset(
+              target.dx -
+                  arrowTipDistance +
+                  (arrowTipRadius - arrowTipRadius / sqrt(2)),
+              target.dy + arrowTipRadius / sqrt(2),
+            ),
+            radius: Radius.circular(arrowTipRadius),
+          )
+
           //  left /
           ..lineTo(
               rect.right,
@@ -181,8 +229,23 @@ class BubbleShape extends ShapeBorder {
                       rect.bottom - bottomLeftRadius - arrowBaseWidth),
                   rect.top + topLeftRadius))
 
-          //left to arrow tip   /
-          ..lineTo(target.dx + arrowTipDistance, target.dy)
+          //left to arrow tip till curve start/
+
+          ..lineTo(
+              target.dx +
+                  arrowTipDistance -
+                  (arrowTipRadius - arrowTipRadius / sqrt(2)),
+              target.dy - arrowTipRadius / sqrt(2))
+
+          //arc for the tip
+          ..arcToPoint(
+              Offset(
+                  target.dx +
+                      arrowTipDistance -
+                      (arrowTipRadius - arrowTipRadius / sqrt(2)),
+                  target.dy + arrowTipRadius / sqrt(2)),
+              radius: Radius.circular(arrowTipRadius),
+              clockwise: false)
 
           //  right \
           ..lineTo(
@@ -288,6 +351,7 @@ class BubbleShape extends ShapeBorder {
       preferredDirection: preferredDirection,
       target: target,
       borderRadius: borderRadius,
+      arrowTipRadius: arrowTipRadius,
       arrowBaseWidth: arrowBaseWidth,
       arrowTipDistance: arrowTipDistance,
       borderColor: borderColor,
