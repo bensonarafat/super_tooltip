@@ -227,6 +227,8 @@ class SuperTooltip extends StatefulWidget {
   /// The distance between the arrow tip and the target widget.
   ///
   /// Defaults to `2.0`.
+  final double arrowTipRadius;
+  
   final double arrowTipDistance;
 
   /// The border radius of the tooltip.
@@ -365,6 +367,7 @@ class SuperTooltip extends StatefulWidget {
     this.fadeOutDuration = const Duration(milliseconds: 0),
     this.arrowLength = 20.0,
     this.arrowBaseWidth = 20.0,
+    this.arrowTipRadius = 0.0,
     this.arrowTipDistance = 2.0,
     this.touchThroughAreaShape = ClipAreaShape.oval,
     this.touchThroughAreaCornerRadius = 5.0,
@@ -475,13 +478,13 @@ class _SuperTooltipState extends State<SuperTooltip>
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
-            if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-              _superTooltipController!.hideTooltip();
-            } else {
-              if (widget.showOnTap) {
-                _superTooltipController!.showTooltip();
-                }
+          if (widget.toggleOnTap && _superTooltipController!.isVisible) {
+            _superTooltipController!.hideTooltip();
+          } else {
+            if (widget.showOnTap) {
+              _superTooltipController!.showTooltip();
             }
+          }
         },
         onLongPress: widget.onLongPress,
         child: widget.child,
@@ -660,6 +663,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                   Material(
                     color: Colors.transparent,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
                         if (widget.hideTooltipOnTap)
                           _superTooltipController!.hideTooltip();
@@ -697,6 +701,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                                 shape: BubbleShape(
                                   arrowBaseWidth: widget.arrowBaseWidth,
                                   arrowTipDistance: widget.arrowTipDistance,
+                                  arrowTipRadius: widget.arrowTipRadius,
                                   borderColor: widget.borderColor,
                                   borderRadius: widget.borderRadius,
                                   borderWidth: widget.borderWidth,
