@@ -195,10 +195,8 @@ class SuperTooltip extends StatefulWidget {
   /// A custom decoration for the tooltip.
   ///
   /// If not provided, the default decoration will be used.
-  final Decoration? decoration;
-  
   final DecorationBuilder? decorationBuilder;
-  
+
   /// The elevation of the tooltip.
   ///
   /// Defaults to `0.0`.
@@ -228,7 +226,7 @@ class SuperTooltip extends StatefulWidget {
   ///
   /// Defaults to `2.0`.
   final double arrowTipRadius;
-  
+
   final double arrowTipDistance;
 
   /// The border radius of the tooltip.
