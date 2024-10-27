@@ -61,19 +61,21 @@ class _TargetWidgetState extends State<TargetWidget> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) => _willPopCallback,
+      onPopInvokedWithResult: (didPop, result) => _willPopCallback,
       child: GestureDetector(
         onTap: () async {
           await _controller.showTooltip();
         },
         child: SuperTooltip(
-          showBarrier: true,
           controller: _controller,
           popupDirection: TooltipDirection.down,
           backgroundColor: Color(0xff2f2d2f),
+          showCloseButton: true,
           left: 30,
           right: 30,
-          arrowTipDistance: 15.0,
+          bottom: 200,
+          arrowTipDistance: 20.0,
+          minimumOutsideMargin: 120,
           arrowBaseWidth: 20.0,
           arrowLength: 20.0,
           borderWidth: 2.0,
@@ -87,7 +89,7 @@ class _TargetWidgetState extends State<TargetWidget> {
           touchThroughAreaCornerRadius: 30,
           barrierColor: Color.fromARGB(26, 47, 45, 47),
           content: const Text(
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
             softWrap: true,
             textAlign: TextAlign.center,
             style: TextStyle(

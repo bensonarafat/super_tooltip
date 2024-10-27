@@ -1,3 +1,5 @@
+// ignore_for_file: comment_references
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -13,57 +15,299 @@ typedef DecorationBuilder = Decoration Function(
   Offset target,
 );
 
+/// A powerful and customizable tooltip widget for Flutter.
+///
+/// `SuperTooltip` provides a flexible and feature-rich way to display tooltips
+/// in your Flutter applications. It offers several advantages over the standard
+/// Flutter `Tooltip` widget, including:
+///
+/// * **Flexible Positioning:** Control the tooltip's position relative to its
+///   target widget using the `popupDirection`, `top`, `right`, `bottom`, and
+///   `left` parameters.
+/// * **Customizable Appearance:** Customize the tooltip's background color,
+///   border, shadow, and more using the `backgroundColor`, `decoration`,
+///   `borderColor`, and other styling parameters.
+/// * **Barrier and Blur:** Optionally display a barrier (scrim) and blur effect
+///   behind the tooltip using the `showBarrier`, `barrierColor`,
+///   `showDropBoxFilter`, `sigmaX`, and `sigmaY` parameters.
+/// * **Close Button:** Add a close button to allow users to manually dismiss the
+///   tooltip using the `showCloseButton` and `closeButtonType` parameters.
+/// * **Animation:** Smooth fade-in and fade-out animations for a visually
+///   appealing experience.
+/// * **Event Callbacks:** Trigger actions when the tooltip is shown or hidden
+///   using the `onShow` and `onHide` callbacks.
+/// * **Touch-Through Area:** Define an area that allows touch events to pass
+///   through the barrier using the `touchThroughArea` parameter.
+///
+/// To use `SuperTooltip`, wrap your target widget with a `GestureDetector`,
+/// `MouseRegion`, or `InkWell` and use the `controller` to manage the
+/// tooltip's visibility.
+///
+/// ```dart
+/// final _controller = SuperTooltipController();
+///
+/// GestureDetector(
+///   onTap: () => _controller.showTooltip(),
+///   child: SuperTooltip(
+///     controller: _controller,
+///     content: const Text('This is a tooltip!'),
+///     child: const Icon(Icons.info),
+///   ),
+/// )
+/// ```
+
 class SuperTooltip extends StatefulWidget {
+  // Creates a `SuperTooltip` widget.
+  ///
+  /// The `content` parameter is required and specifies the widget to be
+  /// displayed inside the tooltip.
   final Widget content;
+
+  /// The direction in which the tooltip should appear relative to its
+  /// target widget.
+  ///
+  /// Defaults to [TooltipDirection.down].
+  ///
+  /// See also:
+  ///
+  /// * [TooltipDirection], which defines the possible tooltip directions.
   final TooltipDirection popupDirection;
+
+  /// A [SuperTooltipController] to manage the tooltip's visibility and state.
+  ///
+  /// If not provided, a new [SuperTooltipController] will be created
+  /// internally.
   final SuperTooltipController? controller;
+
+  /// Called when the user long presses the target widget.
   final void Function()? onLongPress;
+
+  /// Called when the tooltip is shown.
   final void Function()? onShow;
+
+  /// Called when the tooltip is hidden.
   final void Function()? onHide;
+
+  /// Whether the tooltip should snap to the top or bottom of the screen
+  /// if there's not enough space in the preferred direction.
+  ///
+  /// Defaults to `false`.
   final bool snapsFarAwayVertically;
+
+  /// Whether the tooltip should snap to the left or right of the screen
+  /// if there's not enough space in the preferred direction.
+  ///
+  /// Defaults to `false`.
   final bool snapsFarAwayHorizontally;
+
+  /// Whether the tooltip should have a shadow.
+  ///
+  /// Defaults to `true`.
   final bool? hasShadow;
+
+  /// The color of the shadow.
+  ///
+  /// If not provided, the default color will be used.
   final Color? shadowColor;
+
+  /// The blur radius of the shadow.
+  ///
+  /// If not provided, the default blur radius will be used.
   final double? shadowBlurRadius;
+
+  /// The spread radius of the shadow.
+  ///
+  /// If not provided, the default spread radius will be used.
   final double? shadowSpreadRadius;
+
+  /// The offset of the shadow.
+  ///
+  /// If not provided, the default offset will be used.
   final Offset? shadowOffset;
+
+  /// [top], [right], [bottom], [left] define the distance between the respective
+  /// edges of the tooltip and the corresponding edges of the screen.
+  ///
+  /// If not provided, the tooltip will be positioned as close as possible
+  /// to the specified edge, respecting the `minimumOutsideMargin`.
   final double? top, right, bottom, left;
+
+  /// Whether to display a close button inside the tooltip.
+  ///
+  /// Defaults to `false`.
   final bool showCloseButton;
+
+  /// The type of close button to display.
+  ///
+  /// Defaults to [CloseButtonType.inside].
+  ///
+  /// See also:
+  ///
+  /// * [CloseButtonType], which defines the possible close button types.
   final CloseButtonType closeButtonType;
+
+  /// The color of the close button.
+  ///
+  /// If not provided, the default color will be used.
   final Color? closeButtonColor;
+
+  /// The size of the close button.
+  ///
+  /// If not provided, the default size will be used.
   final double? closeButtonSize;
+
+  /// The minimum margin between the tooltip and the edges of the screen.
+  ///
+  /// Defaults to `20.0`.
   final double minimumOutsideMargin;
+
+  /// The vertical offset of the tooltip from its target widget.
+  ///
+  /// Defaults to `0.0`.
   final double verticalOffset;
+
+  /// The target widget to which the tooltip is attached.
   final Widget? child;
+
+  /// The border color of the tooltip.
+  ///
+  /// Defaults to `Colors.black`.
   final Color borderColor;
+
+  /// Box constraints for the tooltip's size.
+  ///
+  /// Defaults to:
+  /// ```dart
+  /// const BoxConstraints(
+  ///   minHeight: 0.0,
+  ///   maxHeight: double.infinity,
+  ///   minWidth: 0.0,
+  ///   maxWidth: double.infinity,
+  /// )
+  /// ```
   final BoxConstraints constraints;
+
+  /// The background color of the tooltip.
+  ///
+  /// If not provided, the default background color will be used.
   final Color? backgroundColor;
+
+  /// A custom decoration for the tooltip.
+  ///
+  /// If not provided, the default decoration will be used.
   final DecorationBuilder? decorationBuilder;
+
+  /// The elevation of the tooltip.
+  ///
+  /// Defaults to `0.0`.
   final double elevation;
+
+  /// The duration of the fade-in animation.
+  ///
+  /// Defaults to `const Duration(milliseconds: 150)`.
   final Duration fadeInDuration;
+
+  /// The duration of the fade-out animation.
+  ///
+  /// Defaults to `const Duration(milliseconds: 0)`.
   final Duration fadeOutDuration;
+
+  /// The length of the tooltip's arrow.
+  ///
+  /// Defaults to `20.0`.
   final double arrowLength;
+
+  /// The width of the tooltip's arrow base.
+  ///
+  /// Defaults to `20.0`.
   final double arrowBaseWidth;
+
+  /// The distance between the arrow tip and the target widget.
+  ///
+  /// Defaults to `2.0`.
   final double arrowTipRadius;
+
   final double arrowTipDistance;
+
+  /// The border radius of the tooltip.
+  ///
+  /// Defaults to `10.0`.
   final double borderRadius;
+
+  /// The width of the tooltip's border.
+  ///
+  /// Defaults to `0.0`.
   final double borderWidth;
+
+  /// Whether to display a barrier (scrim) behind the tooltip.
+  ///
+  /// Defaults to `true`.
   final bool? showBarrier;
+
+  /// The color of the barrier.
+  ///
+  /// If not provided, the default color will be used.
   final Color? barrierColor;
+
+  /// A rectangular area that allows touch events to pass through the barrier.
   final Rect? touchThroughArea;
+
+  /// The shape of the touch-through area.
+  ///
+  /// Defaults to [ClipAreaShape.oval].
+  ///
+  /// See also:
+  ///
+  /// * [ClipAreaShape], which defines the possible touch-through area shapes.
   final ClipAreaShape touchThroughAreaShape;
+
+  /// The corner radius of the touch-through area.
+  ///
+  /// Defaults to `5.0`.
   final double touchThroughAreaCornerRadius;
+
+  /// EdgeInsetsGeometry for the overlay.
+  ///
+  /// Defaults to `const EdgeInsets.all(10)`.
   final EdgeInsetsGeometry overlayDimensions;
+
+  /// EdgeInsetsGeometry for the bubble.
+  ///
+  /// Defaults to `const EdgeInsets.all(10)`.
   final EdgeInsetsGeometry bubbleDimensions;
+
+  /// Whether to hide the tooltip when tapped.
+  ///
+  /// Defaults to `false`.
   final bool hideTooltipOnTap;
+
+  /// Whether to hide the tooltip when the barrier is tapped.
+  ///
+  /// Defaults to `true`.
   final bool hideTooltipOnBarrierTap;
+
+  /// Whether to toggle the tooltip's visibility when tapped.
+  ///
+  /// Defaults to `false`.
   final bool toggleOnTap;
   final bool showOnTap;
 
-  //filter
+  /// Whether to show a blur filter behind the tooltip.
+  ///
+  /// Defaults to `false`.
   final bool showDropBoxFilter;
+
+  /// The sigmaX value for the blur filter (if `showDropBoxFilter` is `true`).
+  ///
+  /// Defaults to `5.0`.
   final double sigmaX;
+
+  /// The sigmaY value for the blur filter (if `showDropBoxFilter` is `true`).
+  ///
+  /// Defaults to `5.0`.
   final double sigmaY;
+
+  /// A list of box shadows to apply to the tooltip.
   final List<BoxShadow>? boxShadows;
 
   SuperTooltip({
@@ -142,9 +386,16 @@ class SuperTooltip extends StatefulWidget {
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
 
+  /// Key used to identify the inside close button.
   static Key insideCloseButtonKey = const Key("InsideCloseButtonKey");
+
+  /// Key used to identify the outside close button.
   static Key outsideCloseButtonKey = const Key("OutsideCloseButtonKey");
+
+  /// Key used to identify the barrier.
   static Key barrierKey = const Key("barrierKey");
+
+  /// Key used to identify the bubble.
   static Key bubbleKey = const Key("bubbleKey");
 
   @override
@@ -239,21 +490,37 @@ class _SuperTooltipState extends State<SuperTooltip>
     );
   }
 
+  /// Called when the [_superTooltipController] notifies its listeners.
+  ///
+  /// This method is used to show or hide the tooltip based on the event type.
+  /// If the event is [Event.show], the [_showTooltip] method is called. If the
+  /// event is [Event.hide], the [_hideTooltip] method is called.
   void _onChangeNotifier() {
     switch (_superTooltipController!.event) {
+      // Show the tooltip.
       case Event.show:
         _showTooltip();
         break;
+
+      // Hide the tooltip.
       case Event.hide:
         _hideTooltip();
         break;
     }
   }
 
+  /// Creates the overlay entries for the tooltip, barrier, and blur filter (if enabled).
+  ///
+  /// The overlay entries are inserted into the [Overlay] using the [OverlayState.insertAll] method.
+  /// The order of insertion is: blur filter overlay entry, barrier overlay entry, and tooltip overlay entry.
   void _createOverlayEntries() {
+    // Find the render box of the widget.
     final renderBox = context.findRenderObject() as RenderBox;
 
+    // Find the overlay state.
     final overlayState = Overlay.of(context);
+
+    // Find the overlay render box (if available).
     RenderBox? overlay;
 
     // ignore: unnecessary_null_comparison
@@ -261,7 +528,10 @@ class _SuperTooltipState extends State<SuperTooltip>
       overlay = overlayState.context.findRenderObject() as RenderBox?;
     }
 
+    // Calculate the size of the widget.
     final size = renderBox.size;
+
+    // Calculate the target position relative to the global coordinate system.
     final target = renderBox.localToGlobal(size.center(Offset.zero));
     final animation = CurvedAnimation(
       parent: _animationController,
@@ -457,52 +727,105 @@ class _SuperTooltipState extends State<SuperTooltip>
 
     // ignore: unnecessary_null_comparison
     if (overlayState != null) {
+      // Insert the overlay entries for the tooltip, barrier, and blur filter
+      // (if enabled).
       overlayState.insertAll([
+        // Insert the blur filter overlay entry if enabled.
         if (showBlur) blur!,
+
+        // Insert the barrier overlay entry if enabled.
         if (showBarrier) _barrierEntry!,
+
+        // Insert the tooltip overlay entry.
         _entry!,
       ]);
     }
   }
 
-  _showTooltip() async {
+  /// Shows the tooltip.
+  ///
+  /// This method starts the fade-in animation and adds the overlay entries for
+  /// the tooltip, barrier, and blur filter (if enabled).
+  ///
+  /// The [onShow] callback is called before the animation starts. After the
+  /// animation completes, the [SuperTooltipController.complete] method is called
+  /// to complete the show operation.
+  ///
+  /// If the tooltip is already visible, this method does nothing.
+  Future<void> _showTooltip() async {
+    // Call the onShow callback before the animation starts.
     widget.onShow?.call();
 
     // Already visible.
     if (_entry != null) return;
 
+    // Create the overlay entries for the tooltip, barrier, and blur filter.
     _createOverlayEntries();
 
+    // Start the fade-in animation and wait for it to complete.
     await _animationController
         .forward()
         .whenComplete(_superTooltipController!.complete);
   }
 
-  _removeEntries() {
+  /// Removes the overlay entries for the tooltip, barrier, and blur filter.
+  ///
+  /// This function removes the overlay entries for the tooltip, barrier, and
+  /// blur filter. It sets the [_entry], [_barrierEntry], and [blur] variables to
+  /// `null` after the removal.
+  void _removeEntries() {
+    // Remove the tooltip overlay entry.
     _entry?.remove();
     _entry = null;
+
+    // Remove the barrier overlay entry.
     _barrierEntry?.remove();
-    _entry = null;
+    _barrierEntry = null;
+
+    // Remove the blur filter overlay entry.
     blur?.remove();
+    blur = null;
   }
 
-  _hideTooltip() async {
+  /// Hides the tooltip.
+  ///
+  /// This method starts the fade-out animation and removes the overlay entries
+  /// for the tooltip, barrier, and blur filter (if enabled).
+  ///
+  /// The [onHide] callback is called before the animation starts. After the
+  /// animation completes, the [SuperTooltipController.complete] method is called
+  /// to complete the hide operation.
+  ///
+  /// Finally, the method removes the overlay entries for the tooltip, barrier, and
+  /// blur filter.
+  Future<void> _hideTooltip() async {
+    // Call the onHide callback before the animation starts.
     widget.onHide?.call();
+
+    // Start the fade-out animation and wait for it to complete.
     await _animationController
         .reverse()
         .whenComplete(_superTooltipController!.complete);
 
+    // Remove the overlay entries for the tooltip, barrier, and blur filter.
     _removeEntries();
   }
 
+  /// Builds the close button widget based on the tooltip's configuration and
+  /// the current [TooltipDirection].
+  ///
+  /// The position of the close button is calculated based on the
+  /// [closeButtonType] and the [TooltipDirection]. The close button is positioned
+  /// within the tooltip's content area.
+  ///
+  /// Returns the close button widget wrapped in a [Positioned] widget.
   Widget _buildCloseButton() {
-    /**
-     * return Sizebox.shrizk if showCloseButton is false
-     */
+    // Return an empty widget if close button is not enabled.
     if (!showCloseButton) {
       return const SizedBox.shrink();
     }
 
+    // Calculate the position of the close button based on the tooltip direction.
     double right;
     double top;
 
@@ -512,8 +835,10 @@ class _SuperTooltipState extends State<SuperTooltip>
       case TooltipDirection.left:
         right = widget.arrowLength + widget.arrowTipDistance + 3.0;
         if (closeButtonType == CloseButtonType.inside) {
+          // If the close button is inside the tooltip, position it at the top.
           top = 2.0;
         } else if (closeButtonType == CloseButtonType.outside) {
+          // If the close button is outside the tooltip, position it at the top.
           top = 0.0;
         } else {
           throw AssertionError(closeButtonType);
@@ -525,8 +850,10 @@ class _SuperTooltipState extends State<SuperTooltip>
       case TooltipDirection.up:
         right = 5.0;
         if (closeButtonType == CloseButtonType.inside) {
+          // If the close button is inside the tooltip, position it at the top.
           top = 2.0;
         } else if (closeButtonType == CloseButtonType.outside) {
+          // If the close button is outside the tooltip, position it at the top.
           top = 0.0;
         } else {
           throw AssertionError(closeButtonType);
@@ -535,12 +862,12 @@ class _SuperTooltipState extends State<SuperTooltip>
 
       // DOWN: -------------------------------------
       case TooltipDirection.down:
-        // If this value gets negative the Shadow gets clipped. The problem occurs is arrowlength + arrowTipDistance
-        // is smaller than _outSideCloseButtonPadding which would mean arrowLength would need to be increased if the button is ouside.
         right = 2.0;
         if (closeButtonType == CloseButtonType.inside) {
+          // If the close button is inside the tooltip, position it below the arrow.
           top = widget.arrowLength + widget.arrowTipDistance + 2.0;
         } else if (closeButtonType == CloseButtonType.outside) {
+          // If the close button is outside the tooltip, position it at the top.
           top = 0.0;
         } else {
           throw AssertionError(closeButtonType);
@@ -553,8 +880,8 @@ class _SuperTooltipState extends State<SuperTooltip>
         throw AssertionError(widget.popupDirection);
     }
 
-    // ---
-
+    // Wrap the close button in a [Positioned] widget to position it within
+    // the tooltip's content area.
     return Positioned(
       right: right,
       top: top,
