@@ -1,3 +1,7 @@
+# [2.0.9] - 27.10.2024
+- Fix hide tooltip doesn't work when tap arrow
+- Arrow tip radius
+- Update code base documentation
 
 # [2.0.8] - 13.07.2024
 - Added toggleOnTap option to toggle tooltip 

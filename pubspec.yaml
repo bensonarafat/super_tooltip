@@ -1,11 +1,11 @@
 name: super_tooltip
 description: Super flexible Tooltip class that gets opend in the screens overlay
-version: 2.0.8
+version: 2.0.9
 homepage: https://github.com/bensonarafat/super_tooltip
 
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: '>=2.18.6 <4.0.0'
 
 dependencies:
   flutter:
