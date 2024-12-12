@@ -663,8 +663,9 @@ class _SuperTooltipState extends State<SuperTooltip>
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        if (widget.hideTooltipOnTap)
+                        if (widget.hideTooltipOnTap) {
                           _superTooltipController!.hideTooltip();
+                        }
                       },
                       child: Container(
                         key: SuperTooltip.bubbleKey,
