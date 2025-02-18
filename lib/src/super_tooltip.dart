@@ -310,6 +310,11 @@ class SuperTooltip extends StatefulWidget {
   /// A list of box shadows to apply to the tooltip.
   final List<BoxShadow>? boxShadows;
 
+  /// Whether the tooltip should be click-through.
+  ///
+  /// Defaults to `false`.
+  final bool clickThrough;
+
   SuperTooltip({
     Key? key,
     required this.content,
@@ -382,6 +387,7 @@ class SuperTooltip extends StatefulWidget {
     this.toggleOnTap = false,
     this.showOnTap = true,
     this.boxShadows,
+    this.clickThrough = false,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
@@ -630,95 +636,98 @@ class _SuperTooltipState extends State<SuperTooltip>
           )
         : null;
     _entry = OverlayEntry(
-      builder: (BuildContext context) => FadeTransition(
-        opacity: animation,
-        child: Center(
-          child: CompositedTransformFollower(
-            link: _layerLink,
-            showWhenUnlinked: false,
-            offset: offsetToTarget,
-            child: CustomSingleChildLayout(
-              delegate: TooltipPositionDelegate(
-                preferredDirection: preferredDirection,
-                constraints: constraints,
-                top: top,
-                bottom: bottom,
-                left: left,
-                right: right,
-                target: target,
-                // verticalOffset: widget.verticalOffset,
-                overlay: overlay,
-                margin: widget.minimumOutsideMargin,
-                snapsFarAwayHorizontally: widget.snapsFarAwayHorizontally,
-                snapsFarAwayVertically: widget.snapsFarAwayVertically,
-              ),
-              // TD:  Text fields and such will need a material ancestor
-              // In order to function properly. Need to find more elegant way
-              // to add this.
-              child: Stack(
-                fit: StackFit.passthrough,
-                children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        if (widget.hideTooltipOnTap) {
-                          _superTooltipController!.hideTooltip();
-                        }
-                      },
-                      child: Container(
-                        key: SuperTooltip.bubbleKey,
-                        margin: SuperUtils.getTooltipMargin(
-                          arrowLength: widget.arrowLength,
-                          arrowTipDistance: widget.arrowTipDistance,
-                          closeButtonSize: closeButtonSize,
-                          preferredDirection: preferredDirection,
-                          closeButtonType: closeButtonType,
-                          showCloseButton: showCloseButton,
-                        ),
-                        padding: SuperUtils.getTooltipPadding(
-                          closeButtonSize: closeButtonSize,
-                          closeButtonType: closeButtonType,
-                          showCloseButton: showCloseButton,
-                        ),
-                        decoration: widget.decorationBuilder != null
-                            ? widget.decorationBuilder!(target)
-                            : ShapeDecoration(
-                                color: backgroundColor,
-                                shadows: hasShadow
-                                    ? widget.boxShadows ??
-                                        <BoxShadow>[
-                                          BoxShadow(
-                                            blurRadius: shadowBlurRadius,
-                                            spreadRadius: shadowSpreadRadius,
-                                            color: shadowColor,
-                                            offset: shadowOffset,
-                                          ),
-                                        ]
-                                    : null,
-                                shape: BubbleShape(
-                                  arrowBaseWidth: widget.arrowBaseWidth,
-                                  arrowTipDistance: widget.arrowTipDistance,
-                                  arrowTipRadius: widget.arrowTipRadius,
-                                  borderColor: widget.borderColor,
-                                  borderRadius: widget.borderRadius,
-                                  borderWidth: widget.borderWidth,
-                                  bottom: bottom,
-                                  left: left,
-                                  preferredDirection: preferredDirection,
-                                  right: right,
-                                  target: target,
-                                  top: top,
-                                  bubbleDimensions: widget.bubbleDimensions,
+      builder: (BuildContext context) => IgnorePointer(
+        ignoring: widget.clickThrough,
+        child: FadeTransition(
+          opacity: animation,
+          child: Center(
+            child: CompositedTransformFollower(
+              link: _layerLink,
+              showWhenUnlinked: false,
+              offset: offsetToTarget,
+              child: CustomSingleChildLayout(
+                delegate: TooltipPositionDelegate(
+                  preferredDirection: preferredDirection,
+                  constraints: constraints,
+                  top: top,
+                  bottom: bottom,
+                  left: left,
+                  right: right,
+                  target: target,
+                  // verticalOffset: widget.verticalOffset,
+                  overlay: overlay,
+                  margin: widget.minimumOutsideMargin,
+                  snapsFarAwayHorizontally: widget.snapsFarAwayHorizontally,
+                  snapsFarAwayVertically: widget.snapsFarAwayVertically,
+                ),
+                // TD:  Text fields and such will need a material ancestor
+                // In order to function properly. Need to find more elegant way
+                // to add this.
+                child: Stack(
+                  fit: StackFit.passthrough,
+                  children: <Widget>[
+                    Material(
+                      color: Colors.transparent,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          if (widget.hideTooltipOnTap) {
+                            _superTooltipController!.hideTooltip();
+                          }
+                        },
+                        child: Container(
+                          key: SuperTooltip.bubbleKey,
+                          margin: SuperUtils.getTooltipMargin(
+                            arrowLength: widget.arrowLength,
+                            arrowTipDistance: widget.arrowTipDistance,
+                            closeButtonSize: closeButtonSize,
+                            preferredDirection: preferredDirection,
+                            closeButtonType: closeButtonType,
+                            showCloseButton: showCloseButton,
+                          ),
+                          padding: SuperUtils.getTooltipPadding(
+                            closeButtonSize: closeButtonSize,
+                            closeButtonType: closeButtonType,
+                            showCloseButton: showCloseButton,
+                          ),
+                          decoration: widget.decorationBuilder != null
+                              ? widget.decorationBuilder!(target)
+                              : ShapeDecoration(
+                                  color: backgroundColor,
+                                  shadows: hasShadow
+                                      ? widget.boxShadows ??
+                                          <BoxShadow>[
+                                            BoxShadow(
+                                              blurRadius: shadowBlurRadius,
+                                              spreadRadius: shadowSpreadRadius,
+                                              color: shadowColor,
+                                              offset: shadowOffset,
+                                            ),
+                                          ]
+                                      : null,
+                                  shape: BubbleShape(
+                                    arrowBaseWidth: widget.arrowBaseWidth,
+                                    arrowTipDistance: widget.arrowTipDistance,
+                                    arrowTipRadius: widget.arrowTipRadius,
+                                    borderColor: widget.borderColor,
+                                    borderRadius: widget.borderRadius,
+                                    borderWidth: widget.borderWidth,
+                                    bottom: bottom,
+                                    left: left,
+                                    preferredDirection: preferredDirection,
+                                    right: right,
+                                    target: target,
+                                    top: top,
+                                    bubbleDimensions: widget.bubbleDimensions,
+                                  ),
                                 ),
-                              ),
-                        child: widget.content,
+                          child: widget.content,
+                        ),
                       ),
                     ),
-                  ),
-                  _buildCloseButton(),
-                ],
+                    _buildCloseButton(),
+                  ],
+                ),
               ),
             ),
           ),
