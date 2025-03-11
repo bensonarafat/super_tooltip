@@ -58,57 +58,85 @@ class _TargetWidgetState extends State<TargetWidget> {
     return true;
   }
 
+  TooltipDirection _tooltipDirection = TooltipDirection.left;
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvokedWithResult: (didPop, result) => _willPopCallback,
-      child: GestureDetector(
-        onTap: () async {
-          await _controller.showTooltip();
-        },
-        child: SuperTooltip(
-          controller: _controller,
-          popupDirection: TooltipDirection.down,
-          backgroundColor: Color(0xff2f2d2f),
-          showCloseButton: true,
-          left: 30,
-          right: 30,
-          bottom: 200,
-          arrowTipDistance: 20.0,
-          minimumOutsideMargin: 120,
-          arrowBaseWidth: 20.0,
-          arrowLength: 20.0,
-          borderWidth: 2.0,
-          constraints: const BoxConstraints(
-            minHeight: 0.0,
-            maxHeight: 100,
-            minWidth: 0.0,
-            maxWidth: 100,
-          ),
-          touchThroughAreaShape: ClipAreaShape.rectangle,
-          touchThroughAreaCornerRadius: 30,
-          barrierColor: Color.fromARGB(26, 47, 45, 47),
-          content: const Text(
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
-            softWrap: true,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SuperTooltip(
+            controller: _controller,
+            popupDirection: TooltipDirection.left,
+            popupDirectionBuilder: () {
+              return _tooltipDirection;
+            },
+            backgroundColor: Color(0xff2f2d2f),
+            showCloseButton: true,
+            left: 30,
+            right: 30,
+            bottom: 200,
+            arrowTipDistance: 20.0,
+            minimumOutsideMargin: 120,
+            arrowBaseWidth: 20.0,
+            arrowLength: 20.0,
+            borderWidth: 2.0,
+            constraints: const BoxConstraints(
+              minHeight: 0.0,
+              maxHeight: 100,
+              minWidth: 0.0,
+              maxWidth: 100,
+            ),
+            touchThroughAreaShape: ClipAreaShape.rectangle,
+            touchThroughAreaCornerRadius: 30,
+            barrierColor: Color.fromARGB(26, 47, 45, 47),
+            content: const Text(
+              "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+              softWrap: true,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            child: Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.blue,
+              ),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
           ),
-          child: Container(
-            width: 40.0,
-            height: 40.0,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blue,
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _tooltipDirection = TooltipDirection.left;
+                  },
+                  icon: Icon(
+                    Icons.arrow_left,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    _tooltipDirection = TooltipDirection.right;
+                  },
+                  icon: Icon(
+                    Icons.arrow_right,
+                  ),
+                ),
+              ],
             ),
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }

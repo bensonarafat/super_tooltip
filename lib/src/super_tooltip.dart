@@ -73,6 +73,16 @@ class SuperTooltip extends StatefulWidget {
   /// * [TooltipDirection], which defines the possible tooltip directions.
   final TooltipDirection popupDirection;
 
+  /// The direction in which the tooltip should appear relative to its
+  /// target widget.
+  ///
+  /// Defaults to [TooltipDirection.down].
+  ///
+  /// See also:
+  ///
+  /// * [TooltipDirection], which defines the possible tooltip directions.
+  final TooltipDirection Function()? popupDirectionBuilder;
+
   /// A [SuperTooltipController] to manage the tooltip's visibility and state.
   ///
   /// If not provided, a new [SuperTooltipController] will be created
@@ -323,6 +333,7 @@ class SuperTooltip extends StatefulWidget {
     this.onLongPress,
     this.onShow,
     this.onHide,
+    this.popupDirectionBuilder,
     /**
      * showCloseButton 
      * This will enable the closeButton 
@@ -551,7 +562,8 @@ class _SuperTooltipState extends State<SuperTooltip>
         widget.backgroundColor ?? Theme.of(context).cardColor;
 
     var constraints = widget.constraints;
-    var preferredDirection = widget.popupDirection;
+    var preferredDirection =
+        widget.popupDirectionBuilder?.call() ?? widget.popupDirection;
     var left = widget.left;
     var right = widget.right;
     var top = widget.top;
@@ -839,7 +851,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     double right;
     double top;
 
-    switch (widget.popupDirection) {
+    switch (widget.popupDirectionBuilder?.call() ?? widget.popupDirection) {
       //
       // LEFT: -------------------------------------
       case TooltipDirection.left:
@@ -887,7 +899,9 @@ class _SuperTooltipState extends State<SuperTooltip>
       // ---------------------------------------------
 
       default:
-        throw AssertionError(widget.popupDirection);
+        throw AssertionError(
+          widget.popupDirectionBuilder?.call() ?? widget.popupDirection,
+        );
     }
 
     // Wrap the close button in a [Positioned] widget to position it within
