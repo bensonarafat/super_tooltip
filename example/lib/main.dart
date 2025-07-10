@@ -85,9 +85,9 @@ class _TargetWidgetState extends State<TargetWidget> {
             borderWidth: 2.0,
             constraints: const BoxConstraints(
               minHeight: 0.0,
-              maxHeight: 100,
+              maxHeight: 870,
               minWidth: 0.0,
-              maxWidth: 100,
+              maxWidth: 402,
             ),
             touchThroughAreaShape: ClipAreaShape.rectangle,
             touchThroughAreaCornerRadius: 30,

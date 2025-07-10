@@ -1,5 +1,5 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-
 import 'enums.dart';
 import 'utils.dart';
 
@@ -36,8 +36,7 @@ class TooltipPositionDelegate extends SingleChildLayoutDelegate {
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     // TD: when margin is EdgeInsets, look into
     // constraints.deflate(margin);
-
-    var newConstraints = constraints;
+    var newConstraints = this.constraints;
 
     switch (preferredDirection) {
       case TooltipDirection.up:
@@ -69,14 +68,23 @@ class TooltipPositionDelegate extends SingleChildLayoutDelegate {
     }
 
     // TD: This scenerio should likely be avoided in the initial functions
-    return newConstraints.copyWith(
-      minHeight: newConstraints.minHeight > newConstraints.maxHeight
-          ? newConstraints.maxHeight
-          : newConstraints.minHeight,
-      minWidth: newConstraints.minWidth > newConstraints.maxWidth
-          ? newConstraints.maxWidth
-          : newConstraints.minWidth,
+    // Ensure constraints are valid - no negiative values
+    final validatedConstraints = newConstraints.copyWith(
+      minHeight: math.max(
+          0,
+          newConstraints.minHeight > newConstraints.maxHeight
+              ? newConstraints.maxHeight
+              : newConstraints.minHeight),
+      minWidth: math.max(
+          0,
+          newConstraints.minWidth > newConstraints.maxWidth
+              ? newConstraints.maxWidth
+              : newConstraints.minWidth),
+      maxHeight: math.max(0, newConstraints.maxHeight),
+      maxWidth: math.max(0, newConstraints.maxWidth),
     );
+
+    return validatedConstraints;
   }
 
   @override

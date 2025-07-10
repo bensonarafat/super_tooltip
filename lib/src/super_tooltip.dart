@@ -568,6 +568,7 @@ class _SuperTooltipState extends State<SuperTooltip>
         widget.backgroundColor ?? Theme.of(context).cardColor;
 
     var constraints = widget.constraints;
+
     var preferredDirection =
         widget.popupDirectionBuilder?.call() ?? widget.popupDirection;
     var left = widget.left;
@@ -594,6 +595,7 @@ class _SuperTooltipState extends State<SuperTooltip>
       }
     } else if (widget.snapsFarAwayHorizontally) {
       constraints = constraints.copyWith(maxHeight: null);
+
       top = bottom = 0.0;
 
       if (overlay != null) {
