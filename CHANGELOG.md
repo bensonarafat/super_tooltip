@@ -1,3 +1,7 @@
+# [2.1.0] - 10.07.2025
+- Fixed BoxConstraints negative height issue in TooltipPositionDelegate
+- Improved constraint validation to prevent layout errors
+
 # [2.0.9] - 27.10.2024
 - Fix hide tooltip doesn't work when tap arrow
 - Arrow tip radius
