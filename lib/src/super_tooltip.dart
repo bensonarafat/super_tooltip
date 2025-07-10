@@ -459,6 +459,9 @@ class _SuperTooltipState extends State<SuperTooltip>
   void didUpdateWidget(SuperTooltip oldWidget) {
     if (_superTooltipController != widget.controller) {
       _superTooltipController!.removeListener(_onChangeNotifier);
+      if (oldWidget.controller == null) {
+        _superTooltipController?.dispose();
+      }
       _superTooltipController = widget.controller ?? SuperTooltipController();
       _superTooltipController!.addListener(_onChangeNotifier);
     }
@@ -470,6 +473,9 @@ class _SuperTooltipState extends State<SuperTooltip>
   void dispose() {
     if (_entry != null) _removeEntries();
     _superTooltipController?.removeListener(_onChangeNotifier);
+    if (widget.controller == null) {
+      _superTooltipController?.dispose();
+    }
     _animationController.dispose();
     super.dispose();
   }
