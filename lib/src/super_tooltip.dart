@@ -325,6 +325,8 @@ class SuperTooltip extends StatefulWidget {
   /// Defaults to `false`.
   final bool clickThrough;
 
+  final bool enableClick;
+
   SuperTooltip({
     Key? key,
     required this.content,
@@ -399,6 +401,7 @@ class SuperTooltip extends StatefulWidget {
     this.showOnTap = true,
     this.boxShadows,
     this.clickThrough = false,
+    this.enableClick = true,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
@@ -497,20 +500,31 @@ class _SuperTooltipState extends State<SuperTooltip>
 
     return CompositedTransformTarget(
       link: _layerLink,
-      child: GestureDetector(
-        onTap: () {
-          if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-            _superTooltipController!.hideTooltip();
-          } else {
-            if (widget.showOnTap) {
-              _superTooltipController!.showTooltip();
-            }
-          }
-        },
-        onLongPress: widget.onLongPress,
-        child: widget.child,
-      ),
+      child: buildChild(),
     );
+  }
+
+  void clickEnable() {
+    if (widget.toggleOnTap && _superTooltipController!.isVisible) {
+      _superTooltipController!.hideTooltip();
+    } else {
+      if (widget.showOnTap) {
+        _superTooltipController!.showTooltip();
+      }
+    }
+  }
+
+  Widget buildChild() {
+    if (widget.enableClick) {
+      return GestureDetector(
+        onTap: () {
+          clickEnable();
+        },
+        child: widget.child,
+      );
+    } else {
+      return widget.child!;
+    }
   }
 
   /// Called when the [_superTooltipController] notifies its listeners.
