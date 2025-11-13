@@ -2,14 +2,14 @@
 
 import 'dart:ui';
 
-import 'package:flutter/material.dart' hide TooltipPositionDelegate;
+import 'package:flutter/material.dart';
 import 'package:super_tooltip/src/utils.dart';
 
 import 'bubble_shape.dart';
 import 'enums.dart';
 import 'shape_overlay.dart';
 import 'super_tooltip_controller.dart';
-import 'tooltip_position_delegate.dart';
+import 'tooltip_position_delegate.dart' as tpd;
 
 typedef DecorationBuilder = Decoration Function(
   Offset target,
@@ -335,8 +335,8 @@ class SuperTooltip extends StatefulWidget {
     this.onHide,
     this.popupDirectionBuilder,
     /**
-     * showCloseButton 
-     * This will enable the closeButton 
+     * showCloseButton
+     * This will enable the closeButton
      */
     this.showCloseButton = false,
     this.closeButtonType = CloseButtonType.inside,
@@ -666,7 +666,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               showWhenUnlinked: false,
               offset: offsetToTarget,
               child: CustomSingleChildLayout(
-                delegate: TooltipPositionDelegate(
+                delegate: tpd.TooltipPositionDelegate(
                   preferredDirection: preferredDirection,
                   constraints: constraints,
                   top: top,
