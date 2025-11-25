@@ -187,11 +187,11 @@ SuperTooltip(
 ),
 ```
 
-To hide the tooltip when the user tap the back button. Wrap your `GestureDetector` widget with `WillPopScope` widget passing a callback function to `onWillPop` like the example below
+To hide the tooltip when the user tap the back button. Wrap your `GestureDetector` widget with `PopScope` widget passing a callback function to `onPopInvokedWithResult` like the example below
 
 ```dart
-    return WillPopScope(
-      onWillPop: _willPopCallback,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) => _willPopCallback,
       child: GestureDetector(
         onTap: () async {
           await _controller.showTooltip();
