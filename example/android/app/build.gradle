@@ -1,8 +1,9 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
+    id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
 }
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -10,6 +11,7 @@ if (localPropertiesFile.exists()) {
         localProperties.load(reader)
     }
 }
+
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -20,12 +22,9 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-// apply plugin: 'com.android.application'
-// apply plugin: 'kotlin-android'
-// apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
+    namespace "com.example.super_tooltip_example"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -39,7 +38,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.super_tooltip_example"
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 28
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -51,12 +50,17 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 flutter {
     source '../..'
-}
-
-dependencies {
-    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
