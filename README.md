@@ -40,7 +40,7 @@ You have to make your Widget a `StatefulWidget` and you just need to create a co
   final _controller = SuperTooltipController();
 
   child: SuperTooltip(
-    _controller: tooltipController,
+    controller: _controller,
     // ...
     )
 
@@ -234,3 +234,4 @@ In case of trivial fixes open a [pull request](https://github.com/bensonarafat/s
 
 <!-- readme: contributors -start -->
 <!-- readme: contributors -end -->
+
