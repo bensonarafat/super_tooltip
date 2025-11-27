@@ -16,3 +16,4 @@ example/android.iml
 
 # FVM Version Cache
 .fvm/
+.fvmrc
