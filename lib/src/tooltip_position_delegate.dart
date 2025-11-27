@@ -34,15 +34,15 @@ class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    // TD: when margin is EdgeInsets, look into
-    // constraints.deflate(margin);
-    var newConstraints = this.constraints;
+    // We use the INCOMING constraints (screen size) to calculate available space.
+    // We do NOT start with this.constraints (user prefs) because that leads to negative math.
+    var availableConstraints = constraints;
 
     switch (preferredDirection) {
       case TooltipDirection.up:
       case TooltipDirection.down:
-        newConstraints = SuperUtils.verticalConstraints(
-          constraints: newConstraints,
+        availableConstraints = SuperUtils.verticalConstraints(
+          constraints: availableConstraints,
           margin: margin,
           bottom: bottom,
           isUp: preferredDirection == TooltipDirection.up,
@@ -54,8 +54,8 @@ class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
         break;
       case TooltipDirection.right:
       case TooltipDirection.left:
-        newConstraints = SuperUtils.horizontalConstraints(
-          constraints: newConstraints,
+        availableConstraints = SuperUtils.horizontalConstraints(
+          constraints: availableConstraints,
           margin: margin,
           bottom: bottom,
           isRight: preferredDirection == TooltipDirection.right,
@@ -67,21 +67,24 @@ class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
         break;
     }
 
-    // TD: This scenerio should likely be avoided in the initial functions
-    // Ensure constraints are valid - no negiative values
-    final validatedConstraints = newConstraints.copyWith(
-      minHeight: math.max(
-          0,
-          newConstraints.minHeight > newConstraints.maxHeight
-              ? newConstraints.maxHeight
-              : newConstraints.minHeight),
-      minWidth: math.max(
-          0,
-          newConstraints.minWidth > newConstraints.maxWidth
-              ? newConstraints.maxWidth
-              : newConstraints.minWidth),
-      maxHeight: math.max(0, newConstraints.maxHeight),
-      maxWidth: math.max(0, newConstraints.maxWidth),
+    // Now we merge the calculated "Available Space" with the User's "Desired Constraints".
+    // We take the smaller of the two max widths/heights to ensure we fit in both.
+    // We respect the user's min sizes unless they exceed available space.
+
+    double finalMaxWidth =
+        math.min(availableConstraints.maxWidth, this.constraints.maxWidth);
+    double finalMaxHeight =
+        math.min(availableConstraints.maxHeight, this.constraints.maxHeight);
+
+    // Ensure final max is not negative
+    finalMaxWidth = math.max(0.0, finalMaxWidth);
+    finalMaxHeight = math.max(0.0, finalMaxHeight);
+
+    final validatedConstraints = BoxConstraints(
+      minWidth: math.min(this.constraints.minWidth, finalMaxWidth),
+      maxWidth: finalMaxWidth,
+      minHeight: math.min(this.constraints.minHeight, finalMaxHeight),
+      maxHeight: finalMaxHeight,
     );
 
     return validatedConstraints;
@@ -89,18 +92,6 @@ class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
-    // TD: If there isn't enough space for the child on the preferredDirection
-    // use the opposite dirrection
-    //
-    // See:
-    // return positionDependentBox(
-    //     size: size,
-    //     childSize: childSize,
-    //     target: target,
-    //     verticalOffset: verticalOffset,
-    //     preferBelow: preferBelow,
-    //   );
-
     switch (preferredDirection) {
       case TooltipDirection.up:
       case TooltipDirection.down:

@@ -153,17 +153,24 @@ class SuperUtils {
 
     if (isRight) {
       if (right != null) {
-        minWidth = maxWidth = maxWidth - right - target.dx;
+        // Calculate available width based on margin
+        maxWidth = maxWidth - right - target.dx;
+        // Don't force minWidth to be equal to maxWidth (allows shrinking)
       } else {
-        maxWidth = min(maxWidth, maxWidth - target.dx) - margin;
+        maxWidth = (maxWidth - target.dx) - margin;
       }
     } else {
       if (left != null) {
-        minWidth = maxWidth = target.dx - left;
+        // Calculate available width based on margin
+        maxWidth = target.dx - left;
       } else {
         maxWidth = min(maxWidth, target.dx) - margin;
       }
     }
+
+    // Robustness check to prevent negative constraints
+    if (maxWidth < 0) maxWidth = 0;
+    if (minWidth > maxWidth) minWidth = maxWidth;
 
     return constraints.copyWith(
       maxHeight: maxHeight,
@@ -190,7 +197,6 @@ class SuperUtils {
       maxWidth = maxWidth - (left + right);
     } else if ((left != null && right == null) ||
         (left == null && right != null)) {
-      // make sure that the sum of left, right + maxwidth isn't bigger than the screen width.
       final sideDelta = (left ?? 0.0) + (right ?? 0.0) + margin;
 
       if (maxWidth > maxWidth - sideDelta) {
@@ -204,19 +210,21 @@ class SuperUtils {
 
     if (isUp) {
       if (top != null) {
-        minHeight = maxHeight = target.dy - top;
+        maxHeight = target.dy - top;
       } else {
         maxHeight = min(maxHeight, target.dy) - margin;
-        // TD: clamp minheight
       }
     } else {
       if (bottom != null) {
-        minHeight = maxHeight = maxHeight - bottom - target.dy;
+        maxHeight = maxHeight - bottom - target.dy;
       } else {
         maxHeight = min(maxHeight, maxHeight - target.dy) - margin;
-        // TD: clamp minheight
       }
     }
+
+    // Robustness check
+    if (maxHeight < 0) maxHeight = 0;
+    if (minHeight > maxHeight) minHeight = maxHeight;
 
     return constraints.copyWith(
       minHeight: minHeight,
