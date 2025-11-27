@@ -355,8 +355,8 @@ class SuperTooltip extends StatefulWidget {
     this.onHide,
     this.popupDirectionBuilder,
     /**
-     * showCloseButton 
-     * This will enable the closeButton 
+     * showCloseButton
+     * This will enable the closeButton
      */
     this.showCloseButton = false,
     this.closeButtonType = CloseButtonType.inside,
@@ -722,7 +722,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               showWhenUnlinked: false,
               offset: offsetToTarget,
               child: CustomSingleChildLayout(
-                delegate: TooltipPositionDelegate(
+                delegate: ToolTipPositionDelegate(
                   preferredDirection: preferredDirection,
                   constraints: constraints,
                   top: top,

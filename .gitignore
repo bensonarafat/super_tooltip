@@ -13,3 +13,6 @@ pubspec.lock
 example/flutter_weather_demo/pubspec.lock
 /*.code-workspace
 example/android.iml
+
+# FVM Version Cache
+.fvm/

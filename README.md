@@ -40,7 +40,7 @@ You have to make your Widget a `StatefulWidget` and you just need to create a co
   final _controller = SuperTooltipController();
 
   child: SuperTooltip(
-    _controller: tooltipController,
+    controller: _controller,
     // ...
     )
 
@@ -187,11 +187,11 @@ SuperTooltip(
 ),
 ```
 
-To hide the tooltip when the user tap the back button. Wrap your `GestureDetector` widget with `WillPopScope` widget passing a callback function to `onWillPop` like the example below
+To hide the tooltip when the user tap the back button. Wrap your `GestureDetector` widget with `PopScope` widget passing a callback function to `onPopInvokedWithResult` like the example below
 
 ```dart
-    return WillPopScope(
-      onWillPop: _willPopCallback,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) => _willPopCallback,
       child: GestureDetector(
         onTap: () async {
           await _controller.showTooltip();
@@ -234,3 +234,4 @@ In case of trivial fixes open a [pull request](https://github.com/bensonarafat/s
 
 <!-- readme: contributors -start -->
 <!-- readme: contributors -end -->
+
