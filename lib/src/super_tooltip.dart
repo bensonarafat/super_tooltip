@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/src/utils.dart';
 
@@ -325,6 +326,25 @@ class SuperTooltip extends StatefulWidget {
   /// Defaults to `false`.
   final bool clickThrough;
 
+  /// Whether to automatically show the tooltip when the mouse pointer hovers over the [child].
+  ///
+  /// This feature utilizes [MouseRegion] and is primarily intended for Web and Desktop platforms.
+  /// On touch-based mobile devices, this parameter is generally ignored unless a mouse is connected.
+  ///
+  /// Defaults to `false`.
+  final bool showOnHover;
+
+  /// Whether to automatically hide the tooltip when the mouse pointer leaves the [child]'s bounds.
+  ///
+  /// This is primarily intended for Web and Desktop platforms.
+  ///
+  /// **Note:** On Web/Desktop, enabling this will automatically disable the modal barrier
+  /// (regardless of [showBarrier]) to ensure the mouse can exit the widget area without
+  /// being blocked by the overlay.
+  ///
+  /// Defaults to `false`.
+  final bool hideOnHoverExit;
+
   SuperTooltip({
     Key? key,
     required this.content,
@@ -399,6 +419,8 @@ class SuperTooltip extends StatefulWidget {
     this.showOnTap = true,
     this.boxShadows,
     this.clickThrough = false,
+    this.showOnHover = false,
+    this.hideOnHoverExit = false,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
@@ -486,7 +508,6 @@ class _SuperTooltipState extends State<SuperTooltip>
     closeButtonType = widget.closeButtonType;
     closeButtonColor = widget.closeButtonColor ?? Colors.black;
     closeButtonSize = widget.closeButtonSize ?? 30.0;
-    showBarrier = widget.showBarrier ?? true;
     barrierColor = widget.barrierColor ?? Colors.black54;
     hasShadow = widget.hasShadow ?? true;
     shadowColor = widget.shadowColor ?? Colors.black54;
@@ -495,20 +516,55 @@ class _SuperTooltipState extends State<SuperTooltip>
     shadowOffset = widget.shadowOffset ?? Offset.zero;
     showBlur = widget.showDropBoxFilter;
 
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: GestureDetector(
-        onTap: () {
-          if (widget.toggleOnTap && _superTooltipController!.isVisible) {
-            _superTooltipController!.hideTooltip();
-          } else {
-            if (widget.showOnTap) {
-              _superTooltipController!.showTooltip();
-            }
+    /// On native mobile platforms, this parameter is ignored as hover events are not supported.
+    /// The widget reverts to standard barrier behavior (tap-to-dismiss) to prevent the
+    /// tooltip from becoming unresponsive.
+    var isNativeMobile = !kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.android);
+
+    if (isNativeMobile) {
+      /// On native mobile platforms, this parameter is ignored as hover events are not supported.
+      /// The widget reverts to standard barrier behavior (tap-to-dismiss) to prevent the
+      /// tooltip from becoming unresponsive.
+      showBarrier = widget.showBarrier ?? true;
+    } else {
+      /// On Web and Desktop, if [hideOnHoverExit] is true, the barrier is
+      /// automatically disabled regardless of this value. This ensures that
+      /// the barrier does not obstruct the mouse cursor from triggering the exit event.
+      showBarrier = widget.hideOnHoverExit ? false : widget.showBarrier ?? true;
+    }
+    return MouseRegion(
+      hitTestBehavior: HitTestBehavior.translucent,
+      onEnter: (_) {
+        if (widget.showOnHover) {
+          if (!_superTooltipController!.isVisible) {
+            _superTooltipController!.showTooltip();
           }
-        },
-        onLongPress: widget.onLongPress,
-        child: widget.child,
+        }
+      },
+      onExit: (_) {
+        if (widget.hideOnHoverExit) {
+          if (_superTooltipController!.isVisible) {
+            _superTooltipController!.hideTooltip();
+          }
+        }
+      },
+      child: CompositedTransformTarget(
+        link: _layerLink,
+        child: GestureDetector(
+          onTap: () {
+            if (widget.toggleOnTap && _superTooltipController!.isVisible) {
+              _superTooltipController!.hideTooltip();
+            } else {
+              if (widget.showOnTap) {
+                _superTooltipController!.showTooltip();
+              }
+            }
+          },
+          onLongPress: widget.onLongPress,
+          child: widget.child,
+        ),
       ),
     );
   }

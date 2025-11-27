@@ -75,6 +75,8 @@ class _TargetWidgetState extends State<TargetWidget> {
             },
             backgroundColor: Color(0xff2f2d2f),
             showCloseButton: true,
+            showOnHover: true,
+            hideOnHoverExit: false,
             left: 30,
             right: 30,
             bottom: 200,
