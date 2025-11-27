@@ -1,6 +1,3 @@
-# [2.2.0] - 13.11.2025
-- Fixed `TooltipPositionDelegate` import conflict with Material class with the same name
-
 # [2.1.0] - 10.07.2025
 - Fixed BoxConstraints negative height issue in TooltipPositionDelegate
 - Improved constraint validation to prevent layout errors

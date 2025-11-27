@@ -9,7 +9,7 @@ import 'bubble_shape.dart';
 import 'enums.dart';
 import 'shape_overlay.dart';
 import 'super_tooltip_controller.dart';
-import 'tooltip_position_delegate.dart' as tpd;
+import 'tooltip_position_delegate.dart';
 
 typedef DecorationBuilder = Decoration Function(
   Offset target,
@@ -666,7 +666,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               showWhenUnlinked: false,
               offset: offsetToTarget,
               child: CustomSingleChildLayout(
-                delegate: tpd.TooltipPositionDelegate(
+                delegate: ToolTipPositionDelegate(
                   preferredDirection: preferredDirection,
                   constraints: constraints,
                   top: top,
