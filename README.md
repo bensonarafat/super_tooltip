@@ -215,6 +215,25 @@ Create a callback function to dismiss
   }
 ```
 
+## MouseRegion on Desktop & Web 
+Based on issue [#80](https://github.com/bensonarafat/super_tooltip/issues/80) Supertooltip now support MouseEnter and Exit for Desktop for Web
+### How to use 
+```dart
+SuperTooltip(
+  // ... other parameters
+  showOnHover: true, // Tooltip appears on hover
+  hideOnHoverExit: true, // Tooltip disappears when mouse leaves
+  content: Text("Hello World"),
+  child: Icon(Icons.info),
+);
+
+```
+<b>Demo</b> 
+<p>
+<img src="https://private-user-images.githubusercontent.com/74812392/518725925-f425c7b1-fd4b-48ee-9a1b-079fe357f269.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjU2MjY0MzEsIm5iZiI6MTc2NTYyNjEzMSwicGF0aCI6Ii83NDgxMjM5Mi81MTg3MjU5MjUtZjQyNWM3YjEtZmQ0Yi00OGVlLTlhMWItMDc5ZmUzNTdmMjY5LmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMTMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjEzVDExNDIxMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRlMjU1OWI5ODAwMjJhY2I4MjkyNzIzMGQwYzA4YjBkYTc5YjZkNDU3YTFhZDA0YzY3NDM1ZjE4ZjdhNWYyZTgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.GWaIPrIgvwidohapOkdY3TMQsqOgowtxT33Y31zVtlw" width="200"/>
+</p>
+Thanks [@akhil-ge0rge](https://github.com/akhil-ge0rge) 
+
 ## Example app
 
 Find the example app [here](https://github.com/bensonarafat/super_tooltip/tree/master/example).
