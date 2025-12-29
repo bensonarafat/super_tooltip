@@ -1,5 +1,6 @@
 // ignore_for_file: comment_references
 
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -345,6 +346,18 @@ class SuperTooltip extends StatefulWidget {
   /// Defaults to `false`.
   final bool hideOnHoverExit;
 
+  /// The delay before the tooltip is shown.
+  final Duration waitDuration;
+
+  /// The length of time the tooltip is shown.
+  final Duration? showDuration;
+
+  /// The delay before the tooltip is hidden after hover exit.
+  final Duration exitDuration;
+
+  /// The mouse cursor when hovering over the child.
+  final MouseCursor? mouseCursor;
+
   SuperTooltip({
     Key? key,
     required this.content,
@@ -421,6 +434,10 @@ class SuperTooltip extends StatefulWidget {
     this.clickThrough = false,
     this.showOnHover = false,
     this.hideOnHoverExit = false,
+    this.waitDuration = Duration.zero,
+    this.showDuration,
+    this.exitDuration = const Duration(milliseconds: 100),
+    this.mouseCursor,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
@@ -463,6 +480,10 @@ class _SuperTooltipState extends State<SuperTooltip>
   late Offset shadowOffset;
   late bool showBlur;
 
+  Timer? _showTimer;
+  Timer? _hideTimer;
+  Timer? _showDurationTimer;
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -493,6 +514,9 @@ class _SuperTooltipState extends State<SuperTooltip>
   // @override
   @override
   void dispose() {
+    _showTimer?.cancel();
+    _hideTimer?.cancel();
+    _showDurationTimer?.cancel();
     if (_entry != null) _removeEntries();
     _superTooltipController?.removeListener(_onChangeNotifier);
     if (widget.controller == null) {
@@ -535,20 +559,32 @@ class _SuperTooltipState extends State<SuperTooltip>
       showBarrier = widget.hideOnHoverExit ? false : widget.showBarrier ?? true;
     }
     return MouseRegion(
+      cursor: widget.mouseCursor ?? SystemMouseCursors.basic,
       hitTestBehavior: HitTestBehavior.translucent,
       onEnter: (_) {
-        if (widget.showOnHover) {
+        if (!widget.showOnHover) return;
+
+        _hideTimer?.cancel();
+
+        _showTimer?.cancel();
+        _showTimer = Timer(widget.waitDuration, () {
           if (!_superTooltipController!.isVisible) {
             _superTooltipController!.showTooltip();
           }
-        }
+        });
       },
       onExit: (_) {
-        if (widget.hideOnHoverExit) {
+        if (!widget.hideOnHoverExit) return;
+
+        _showTimer?.cancel();
+
+        if (!_superTooltipController!.isVisible) return;
+        _hideTimer?.cancel();
+        _hideTimer = Timer(widget.exitDuration, () {
           if (_superTooltipController!.isVisible) {
             _superTooltipController!.hideTooltip();
           }
-        }
+        });
       },
       child: CompositedTransformTarget(
         link: _layerLink,
@@ -844,7 +880,7 @@ class _SuperTooltipState extends State<SuperTooltip>
 
     // Already visible.
     if (_entry != null) return;
-
+    _showTimer?.cancel();
     // Create the overlay entries for the tooltip, barrier, and blur filter.
     _createOverlayEntries();
 
@@ -852,6 +888,14 @@ class _SuperTooltipState extends State<SuperTooltip>
     await _animationController
         .forward()
         .whenComplete(_superTooltipController!.complete);
+    _showDurationTimer?.cancel();
+    if (widget.showDuration != null) {
+      _showDurationTimer = Timer(widget.showDuration!, () {
+        if (_superTooltipController!.isVisible) {
+          _superTooltipController!.hideTooltip();
+        }
+      });
+    }
   }
 
   /// Removes the overlay entries for the tooltip, barrier, and blur filter.
@@ -887,7 +931,7 @@ class _SuperTooltipState extends State<SuperTooltip>
   Future<void> _hideTooltip() async {
     // Call the onHide callback before the animation starts.
     widget.onHide?.call();
-
+    _showDurationTimer?.cancel();
     // Start the fade-out animation and wait for it to complete.
     await _animationController
         .reverse()
