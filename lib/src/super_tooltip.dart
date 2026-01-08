@@ -326,6 +326,9 @@ class SuperTooltip extends StatefulWidget {
   /// Defaults to `false`.
   final bool clickThrough;
 
+  //scroll dismiss
+  final bool hideTooltipOnScroll;
+
   /// Whether to automatically show the tooltip when the mouse pointer hovers over the [child].
   ///
   /// This feature utilizes [MouseRegion] and is primarily intended for Web and Desktop platforms.
@@ -677,6 +680,16 @@ class _SuperTooltipState extends State<SuperTooltip>
                 onTap: widget.hideTooltipOnBarrierTap
                     ? _superTooltipController!.hideTooltip
                     : null,
+                onVerticalDragUpdate: (_) {
+                  if (widget.hideTooltipOnScroll) {
+                    _superTooltipController!.hideTooltip();
+                  }
+                },
+                onHorizontalDragUpdate: (_) {
+                  if (widget.hideTooltipOnScroll) {
+                    _superTooltipController!.hideTooltip();
+                  }
+                },
                 child: Container(
                   key: SuperTooltip.barrierKey,
                   decoration: ShapeDecoration(
@@ -748,6 +761,16 @@ class _SuperTooltipState extends State<SuperTooltip>
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           if (widget.hideTooltipOnTap) {
+                            _superTooltipController!.hideTooltip();
+                          }
+                        },
+                        onVerticalDragUpdate: (_) {
+                          if (widget.hideTooltipOnScroll) {
+                            _superTooltipController!.hideTooltip();
+                          }
+                        },
+                        onHorizontalDragUpdate: (_) {
+                          if (widget.hideTooltipOnScroll) {
                             _superTooltipController!.hideTooltip();
                           }
                         },
