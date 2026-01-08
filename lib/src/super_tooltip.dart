@@ -424,6 +424,7 @@ class SuperTooltip extends StatefulWidget {
     this.clickThrough = false,
     this.showOnHover = false,
     this.hideOnHoverExit = false,
+    this.hideTooltipOnScroll = false,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
