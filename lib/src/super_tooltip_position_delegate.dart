@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'enums.dart';
 import 'utils.dart';
 
-class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
-  ToolTipPositionDelegate({
+class SuperToolTipPositionDelegate extends SingleChildLayoutDelegate {
+  SuperToolTipPositionDelegate({
     required this.snapsFarAwayVertically,
     required this.snapsFarAwayHorizontally,
     required this.preferredDirection,
@@ -59,6 +59,18 @@ class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
           margin: margin,
           bottom: bottom,
           isRight: preferredDirection == TooltipDirection.right,
+          target: target,
+          top: top,
+          left: left,
+          right: right,
+        );
+        break;
+      case TooltipDirection.auto:
+        availableConstraints = SuperUtils.verticalConstraints(
+          constraints: availableConstraints,
+          margin: margin,
+          bottom: bottom,
+          isUp: false,
           target: target,
           top: top,
           left: left,
@@ -133,5 +145,5 @@ class ToolTipPositionDelegate extends SingleChildLayoutDelegate {
   }
 
   @override
-  bool shouldRelayout(ToolTipPositionDelegate oldDelegate) => true;
+  bool shouldRelayout(SuperToolTipPositionDelegate oldDelegate) => true;
 }

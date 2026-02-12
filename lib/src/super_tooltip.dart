@@ -1,5 +1,6 @@
 // ignore_for_file: comment_references
 
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -10,7 +11,7 @@ import 'bubble_shape.dart';
 import 'enums.dart';
 import 'shape_overlay.dart';
 import 'super_tooltip_controller.dart';
-import 'tooltip_position_delegate.dart';
+import 'super_tooltip_position_delegate.dart';
 
 typedef DecorationBuilder = Decoration Function(
   Offset target,
@@ -348,6 +349,18 @@ class SuperTooltip extends StatefulWidget {
   /// Defaults to `false`.
   final bool hideOnHoverExit;
 
+  /// The delay before the tooltip is shown.
+  final Duration waitDuration;
+
+  /// The length of time the tooltip is shown.
+  final Duration? showDuration;
+
+  /// The delay before the tooltip is hidden after hover exit.
+  final Duration exitDuration;
+
+  /// The mouse cursor when hovering over the child.
+  final MouseCursor? mouseCursor;
+
   SuperTooltip({
     Key? key,
     required this.content,
@@ -425,6 +438,10 @@ class SuperTooltip extends StatefulWidget {
     this.showOnHover = false,
     this.hideOnHoverExit = false,
     this.hideTooltipOnScroll = false,
+    this.waitDuration = Duration.zero,
+    this.showDuration,
+    this.exitDuration = const Duration(milliseconds: 100),
+    this.mouseCursor,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
         super(key: key);
@@ -467,6 +484,12 @@ class _SuperTooltipState extends State<SuperTooltip>
   late Offset shadowOffset;
   late bool showBlur;
 
+  late TooltipDirection _resolvedDirection;
+
+  Timer? _showTimer;
+  Timer? _hideTimer;
+  Timer? _showDurationTimer;
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -497,6 +520,9 @@ class _SuperTooltipState extends State<SuperTooltip>
   // @override
   @override
   void dispose() {
+    _showTimer?.cancel();
+    _hideTimer?.cancel();
+    _showDurationTimer?.cancel();
     if (_entry != null) _removeEntries();
     _superTooltipController?.removeListener(_onChangeNotifier);
     if (widget.controller == null) {
@@ -539,20 +565,32 @@ class _SuperTooltipState extends State<SuperTooltip>
       showBarrier = widget.hideOnHoverExit ? false : widget.showBarrier ?? true;
     }
     return MouseRegion(
+      cursor: widget.mouseCursor ?? SystemMouseCursors.basic,
       hitTestBehavior: HitTestBehavior.translucent,
       onEnter: (_) {
-        if (widget.showOnHover) {
+        if (!widget.showOnHover) return;
+
+        _hideTimer?.cancel();
+
+        _showTimer?.cancel();
+        _showTimer = Timer(widget.waitDuration, () {
           if (!_superTooltipController!.isVisible) {
             _superTooltipController!.showTooltip();
           }
-        }
+        });
       },
       onExit: (_) {
-        if (widget.hideOnHoverExit) {
+        if (!widget.hideOnHoverExit) return;
+
+        _showTimer?.cancel();
+
+        if (!_superTooltipController!.isVisible) return;
+        _hideTimer?.cancel();
+        _hideTimer = Timer(widget.exitDuration, () {
           if (_superTooltipController!.isVisible) {
             _superTooltipController!.hideTooltip();
           }
-        }
+        });
       },
       child: CompositedTransformTarget(
         link: _layerLink,
@@ -635,6 +673,47 @@ class _SuperTooltipState extends State<SuperTooltip>
     var right = widget.right;
     var top = widget.top;
     var bottom = widget.bottom;
+    _resolvedDirection = preferredDirection;
+    // When [TooltipDirection.auto] is specified, the tooltip direction is
+    // dynamically resolved based on available space around the target widget.
+    if (preferredDirection == TooltipDirection.auto && overlay != null) {
+      final estimatedTooltipSize = Size(
+        constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : overlay.size.width * 0.8,
+        constraints.maxHeight.isFinite
+            ? constraints.maxHeight
+            : overlay.size.height * 0.4,
+      );
+
+      final screen = overlay.size;
+
+      final spaceAbove = target.dy - widget.minimumOutsideMargin;
+      final spaceBelow =
+          screen.height - target.dy - widget.minimumOutsideMargin;
+      final spaceLeft = target.dx - widget.minimumOutsideMargin;
+      final spaceRight = screen.width - target.dx - widget.minimumOutsideMargin;
+
+      if (spaceBelow >= estimatedTooltipSize.height) {
+        preferredDirection = TooltipDirection.down;
+      } else if (spaceAbove >= estimatedTooltipSize.height) {
+        preferredDirection = TooltipDirection.up;
+      } else if (spaceRight >= estimatedTooltipSize.width) {
+        preferredDirection = TooltipDirection.right;
+      } else if (spaceLeft >= estimatedTooltipSize.width) {
+        preferredDirection = TooltipDirection.left;
+      } else {
+        final candidates = <TooltipDirection, double>{
+          TooltipDirection.down: spaceBelow,
+          TooltipDirection.up: spaceAbove,
+          TooltipDirection.right: spaceRight,
+          TooltipDirection.left: spaceLeft,
+        };
+
+        preferredDirection =
+            candidates.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+      }
+    }
 
     if (widget.snapsFarAwayVertically) {
       constraints = constraints.copyWith(maxHeight: null);
@@ -672,6 +751,7 @@ class _SuperTooltipState extends State<SuperTooltip>
         left = 0.0;
       }
     }
+    _resolvedDirection = preferredDirection;
 
     _barrierEntry = showBarrier
         ? OverlayEntry(
@@ -736,7 +816,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               showWhenUnlinked: false,
               offset: offsetToTarget,
               child: CustomSingleChildLayout(
-                delegate: ToolTipPositionDelegate(
+                delegate: SuperToolTipPositionDelegate(
                   preferredDirection: preferredDirection,
                   constraints: constraints,
                   top: top,
@@ -781,7 +861,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                             arrowLength: widget.arrowLength,
                             arrowTipDistance: widget.arrowTipDistance,
                             closeButtonSize: closeButtonSize,
-                            preferredDirection: preferredDirection,
+                            preferredDirection: _resolvedDirection,
                             closeButtonType: closeButtonType,
                             showCloseButton: showCloseButton,
                           ),
@@ -868,7 +948,7 @@ class _SuperTooltipState extends State<SuperTooltip>
 
     // Already visible.
     if (_entry != null) return;
-
+    _showTimer?.cancel();
     // Create the overlay entries for the tooltip, barrier, and blur filter.
     _createOverlayEntries();
 
@@ -876,6 +956,14 @@ class _SuperTooltipState extends State<SuperTooltip>
     await _animationController
         .forward()
         .whenComplete(_superTooltipController!.complete);
+    _showDurationTimer?.cancel();
+    if (widget.showDuration != null) {
+      _showDurationTimer = Timer(widget.showDuration!, () {
+        if (_superTooltipController!.isVisible) {
+          _superTooltipController!.hideTooltip();
+        }
+      });
+    }
   }
 
   /// Removes the overlay entries for the tooltip, barrier, and blur filter.
@@ -911,7 +999,7 @@ class _SuperTooltipState extends State<SuperTooltip>
   Future<void> _hideTooltip() async {
     // Call the onHide callback before the animation starts.
     widget.onHide?.call();
-
+    _showDurationTimer?.cancel();
     // Start the fade-out animation and wait for it to complete.
     await _animationController
         .reverse()
@@ -939,7 +1027,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     double right;
     double top;
 
-    switch (widget.popupDirectionBuilder?.call() ?? widget.popupDirection) {
+    switch (_resolvedDirection) {
       //
       // LEFT: -------------------------------------
       case TooltipDirection.left:
