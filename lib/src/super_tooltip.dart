@@ -440,6 +440,10 @@ class SuperTooltip extends StatefulWidget {
     this.mouseCursor,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
+        assert(
+            popupDirectionBuilder == null ||
+                popupDirection != TooltipDirection.auto,
+            'popupDirectionBuilder cannot be used with TooltipDirection.auto'),
         super(key: key);
 
   /// Key used to identify the inside close button.
