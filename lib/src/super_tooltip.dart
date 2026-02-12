@@ -3,7 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide TooltipPositionDelegate;
 import 'package:super_tooltip/src/utils.dart';
 
 import 'bubble_shape.dart';
