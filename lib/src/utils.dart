@@ -232,4 +232,38 @@ class SuperUtils {
       maxWidth: maxWidth,
     );
   }
+
+  /// This method determines the most suitable direction for displaying
+  /// the tooltip relative to the target widget.
+  static TooltipDirection resolve({
+    required RenderBox overlay,
+    required Offset target,
+    required Size estimatedTooltipSize,
+    required double margin,
+  }) {
+    final screen = overlay.size;
+
+    final spaceAbove = target.dy - margin;
+    final spaceBelow = screen.height - target.dy - margin;
+    final spaceLeft = target.dx - margin;
+    final spaceRight = screen.width - target.dx - margin;
+
+    final requiredHeight = estimatedTooltipSize.height;
+    final requiredWidth = estimatedTooltipSize.width;
+
+    if (spaceBelow >= requiredHeight) return TooltipDirection.down;
+    if (spaceAbove >= requiredHeight) return TooltipDirection.up;
+
+    if (spaceRight >= requiredWidth) return TooltipDirection.right;
+    if (spaceLeft >= requiredWidth) return TooltipDirection.left;
+
+    final candidates = <TooltipDirection, double>{
+      TooltipDirection.down: spaceBelow,
+      TooltipDirection.up: spaceAbove,
+      TooltipDirection.right: spaceRight,
+      TooltipDirection.left: spaceLeft,
+    };
+
+    return candidates.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+  }
 }

@@ -440,6 +440,10 @@ class SuperTooltip extends StatefulWidget {
     this.mouseCursor,
   })  : assert(showDropBoxFilter ? showBarrier ?? false : true,
             'showDropBoxFilter or showBarrier can\'t be false | null'),
+        assert(
+            popupDirectionBuilder == null ||
+                popupDirection != TooltipDirection.auto,
+            'popupDirectionBuilder cannot be used with TooltipDirection.auto'),
         super(key: key);
 
   /// Key used to identify the inside close button.
@@ -479,6 +483,8 @@ class _SuperTooltipState extends State<SuperTooltip>
   late double shadowSpreadRadius;
   late Offset shadowOffset;
   late bool showBlur;
+
+  late TooltipDirection _resolvedDirection;
 
   Timer? _showTimer;
   Timer? _hideTimer;
@@ -667,6 +673,47 @@ class _SuperTooltipState extends State<SuperTooltip>
     var right = widget.right;
     var top = widget.top;
     var bottom = widget.bottom;
+    _resolvedDirection = preferredDirection;
+    // When [TooltipDirection.auto] is specified, the tooltip direction is
+    // dynamically resolved based on available space around the target widget.
+    if (preferredDirection == TooltipDirection.auto && overlay != null) {
+      final estimatedTooltipSize = Size(
+        constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : overlay.size.width * 0.8,
+        constraints.maxHeight.isFinite
+            ? constraints.maxHeight
+            : overlay.size.height * 0.4,
+      );
+
+      final screen = overlay.size;
+
+      final spaceAbove = target.dy - widget.minimumOutsideMargin;
+      final spaceBelow =
+          screen.height - target.dy - widget.minimumOutsideMargin;
+      final spaceLeft = target.dx - widget.minimumOutsideMargin;
+      final spaceRight = screen.width - target.dx - widget.minimumOutsideMargin;
+
+      if (spaceBelow >= estimatedTooltipSize.height) {
+        preferredDirection = TooltipDirection.down;
+      } else if (spaceAbove >= estimatedTooltipSize.height) {
+        preferredDirection = TooltipDirection.up;
+      } else if (spaceRight >= estimatedTooltipSize.width) {
+        preferredDirection = TooltipDirection.right;
+      } else if (spaceLeft >= estimatedTooltipSize.width) {
+        preferredDirection = TooltipDirection.left;
+      } else {
+        final candidates = <TooltipDirection, double>{
+          TooltipDirection.down: spaceBelow,
+          TooltipDirection.up: spaceAbove,
+          TooltipDirection.right: spaceRight,
+          TooltipDirection.left: spaceLeft,
+        };
+
+        preferredDirection =
+            candidates.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+      }
+    }
 
     if (widget.snapsFarAwayVertically) {
       constraints = constraints.copyWith(maxHeight: null);
@@ -704,6 +751,7 @@ class _SuperTooltipState extends State<SuperTooltip>
         left = 0.0;
       }
     }
+    _resolvedDirection = preferredDirection;
 
     _barrierEntry = showBarrier
         ? OverlayEntry(
@@ -793,7 +841,7 @@ class _SuperTooltipState extends State<SuperTooltip>
                             arrowLength: widget.arrowLength,
                             arrowTipDistance: widget.arrowTipDistance,
                             closeButtonSize: closeButtonSize,
-                            preferredDirection: preferredDirection,
+                            preferredDirection: _resolvedDirection,
                             closeButtonType: closeButtonType,
                             showCloseButton: showCloseButton,
                           ),
@@ -959,7 +1007,7 @@ class _SuperTooltipState extends State<SuperTooltip>
     double right;
     double top;
 
-    switch (widget.popupDirectionBuilder?.call() ?? widget.popupDirection) {
+    switch (_resolvedDirection) {
       //
       // LEFT: -------------------------------------
       case TooltipDirection.left:

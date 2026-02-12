@@ -58,8 +58,6 @@ class _TargetWidgetState extends State<TargetWidget> {
     return true;
   }
 
-  TooltipDirection _tooltipDirection = TooltipDirection.left;
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -69,10 +67,7 @@ class _TargetWidgetState extends State<TargetWidget> {
         children: [
           SuperTooltip(
             controller: _controller,
-            popupDirection: TooltipDirection.left,
-            popupDirectionBuilder: () {
-              return _tooltipDirection;
-            },
+            popupDirection: TooltipDirection.auto,
             backgroundColor: Color(0xff2f2d2f),
             showCloseButton: true,
             left: 30,
@@ -113,29 +108,6 @@ class _TargetWidgetState extends State<TargetWidget> {
               ),
             ),
           ),
-          Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    _tooltipDirection = TooltipDirection.left;
-                  },
-                  icon: Icon(
-                    Icons.arrow_left,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _tooltipDirection = TooltipDirection.right;
-                  },
-                  icon: Icon(
-                    Icons.arrow_right,
-                  ),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
