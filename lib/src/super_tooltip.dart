@@ -722,7 +722,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               showWhenUnlinked: false,
               offset: offsetToTarget,
               child: CustomSingleChildLayout(
-                delegate: ToolTipPositionDelegate(
+                delegate: SuperTooltipPositionDelegate(
                   preferredDirection: preferredDirection,
                   constraints: constraints,
                   top: top,
