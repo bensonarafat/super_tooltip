@@ -1,114 +1,127 @@
 import 'package:flutter/material.dart';
-import 'package:super_tooltip/super_tooltip.dart';
+import 'package:super_tooltip_example/auto_direction_example.dart';
+import 'package:super_tooltip_example/backdrop_effects_example.dart';
+import 'package:super_tooltip_example/basic_tooltip_example.dart';
+import 'package:super_tooltip_example/close_buton_example.dart';
+import 'package:super_tooltip_example/complex_content_example.dart';
+import 'package:super_tooltip_example/custom_styled_example.dart';
+import 'package:super_tooltip_example/directional_example.dart';
+import 'package:super_tooltip_example/interactive_behaviors_example.dart';
+import 'package:super_tooltip_example/multiple_tooltip_example.dart';
 
 void main() => runApp(const MainApp());
 
 class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Super Tooltip Demo',
+      title: 'Super Tooltip Examples',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
-      home: const ExamplePage(),
+      home: const ExamplesHomePage(),
     );
   }
 }
 
-class ExamplePage extends StatefulWidget {
-  const ExamplePage({
-    Key? key,
-  }) : super(key: key);
-  @override
-  State createState() => _ExamplePageState();
-}
+class ExamplesHomePage extends StatelessWidget {
+  const ExamplesHomePage({Key? key}) : super(key: key);
 
-class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: TargetWidget(),
+      appBar: AppBar(
+        title: const Text('SuperTooltip Examples'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _ExampleCard(
+            title: '1. Basic Tooltip',
+            description: 'Simple tooltip with default styling',
+            onTap: () => _navigate(context, const BasicTooltipExample()),
+          ),
+          _ExampleCard(
+            title: '2. Auto Direction',
+            description: 'Tooltip that automatically positions itself',
+            onTap: () => _navigate(context, const AutoDirectionExample()),
+          ),
+          _ExampleCard(
+            title: '3. Custom Styled',
+            description: 'Colorful tooltips with custom styling',
+            onTap: () => _navigate(context, const CustomStyledExample()),
+          ),
+          _ExampleCard(
+            title: '4. With Close Button',
+            description: 'Tooltips with inside and outside close buttons',
+            onTap: () => _navigate(context, const CloseButtonExample()),
+          ),
+          _ExampleCard(
+            title: '5. Different Directions',
+            description: 'Tooltips in all four directions',
+            onTap: () => _navigate(context, const DirectionalExample()),
+          ),
+          _ExampleCard(
+            title: '6. Backdrop Effects',
+            description: 'Tooltips with barriers and blur effects',
+            onTap: () => _navigate(context, const BackdropEffectsExample()),
+          ),
+          _ExampleCard(
+            title: '7. Interactive Behaviors',
+            description: 'Hover, tap, and auto-dismiss behaviors',
+            onTap: () =>
+                _navigate(context, const InteractiveBehaviorsExample()),
+          ),
+          _ExampleCard(
+            title: '8. Complex Content',
+            description: 'Tooltips with rich content and actions',
+            onTap: () => _navigate(context, const ComplexContentExample()),
+          ),
+          _ExampleCard(
+            title: '9. All Together',
+            description: 'Multiple tooltips on one screen',
+            onTap: () => _navigate(context, const MultipleTooltipsExample()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigate(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
     );
   }
 }
 
-class TargetWidget extends StatefulWidget {
-  const TargetWidget({Key? key}) : super(key: key);
+class _ExampleCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final VoidCallback onTap;
 
-  @override
-  State createState() => _TargetWidgetState();
-}
-
-class _TargetWidgetState extends State<TargetWidget> {
-  final _controller = SuperTooltipController();
-  Future<bool>? _willPopCallback() async {
-    // If the tooltip is open we don't pop the page on a backbutton press
-    // but close the ToolTip
-    if (_controller.isVisible) {
-      await _controller.hideTooltip();
-      return false;
-    }
-    return true;
-  }
+  const _ExampleCard({
+    required this.title,
+    required this.description,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) => _willPopCallback,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SuperTooltip(
-            controller: _controller,
-            popupDirection: TooltipDirection.auto,
-            backgroundColor: Color(0xff2f2d2f),
-            showCloseButton: true,
-            left: 30,
-            right: 30,
-            bottom: 200,
-            arrowTipDistance: 20.0,
-            minimumOutsideMargin: 120,
-            arrowBaseWidth: 20.0,
-            arrowLength: 20.0,
-            borderWidth: 2.0,
-            constraints: const BoxConstraints(
-              minHeight: 0.0,
-              maxHeight: 870,
-              minWidth: 0.0,
-              maxWidth: 402,
-            ),
-            touchThroughAreaShape: ClipAreaShape.rectangle,
-            touchThroughAreaCornerRadius: 30,
-            barrierColor: Color.fromARGB(26, 47, 45, 47),
-            content: const Text(
-              "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            child: Container(
-              width: 40.0,
-              height: 40.0,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.blue,
-              ),
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(description),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
       ),
     );
   }
