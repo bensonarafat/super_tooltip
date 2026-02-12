@@ -3,7 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' hide TooltipPositionDelegate;
+import 'package:flutter/material.dart';
 import 'package:super_tooltip/src/utils.dart';
 
 import 'bubble_shape.dart';
@@ -722,7 +722,7 @@ class _SuperTooltipState extends State<SuperTooltip>
               showWhenUnlinked: false,
               offset: offsetToTarget,
               child: CustomSingleChildLayout(
-                delegate: SuperTooltipPositionDelegate(
+                delegate: SuperToolTipPositionDelegate(
                   preferredDirection: preferredDirection,
                   constraints: constraints,
                   top: top,
