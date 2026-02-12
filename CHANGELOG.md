@@ -1,3 +1,12 @@
+# [2.1.1] - 13.02.2016
+- Update README to use new update 
+- Update example code 
+- Update Flutter SDK to 3.32.0 and Dart SDK to 3.8.0
+- Fixed conflict with Flutter's TooltipPositionDelegate (Flutter 3.4+)
+- Add Option to hide Tooltio onScroll
+- Add Hover Timer (wait/exit/showduration) and mouseCursor support 
+- Add TooltipDirection Auto with safe resolved direction handling
+
 # [2.1.0] - 10.07.2025
 - Fixed BoxConstraints negative height issue in TooltipPositionDelegate
 - Improved constraint validation to prevent layout errors
