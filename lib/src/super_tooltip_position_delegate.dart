@@ -65,6 +65,18 @@ class SuperToolTipPositionDelegate extends SingleChildLayoutDelegate {
           right: right,
         );
         break;
+      case TooltipDirection.auto:
+        availableConstraints = SuperUtils.verticalConstraints(
+          constraints: availableConstraints,
+          margin: margin,
+          bottom: bottom,
+          isUp: false,
+          target: target,
+          top: top,
+          left: left,
+          right: right,
+        );
+        break;
     }
 
     // Now we merge the calculated "Available Space" with the User's "Desired Constraints".
