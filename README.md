@@ -178,6 +178,7 @@ SuperTooltip(
     type: CloseButtonType.inside, // or CloseButtonType.outside
     color: Colors.white,
     size: 24.0,
+    tooltip: "Close",
   ),
   // ...
 )

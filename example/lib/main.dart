@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:super_tooltip_example/auto_direction_example.dart';
 import 'package:super_tooltip_example/backdrop_effects_example.dart';
 import 'package:super_tooltip_example/basic_tooltip_example.dart';
-import 'package:super_tooltip_example/close_buton_example.dart';
+import 'package:super_tooltip_example/close_button_example.dart';
 import 'package:super_tooltip_example/complex_content_example.dart';
 import 'package:super_tooltip_example/custom_styled_example.dart';
 import 'package:super_tooltip_example/directional_example.dart';
