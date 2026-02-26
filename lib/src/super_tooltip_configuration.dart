@@ -38,24 +38,28 @@ class CloseButtonConfiguration {
     this.type = CloseButtonType.inside,
     this.color,
     this.size,
+    this.tooltip,
   });
 
   final bool show;
   final CloseButtonType type;
   final Color? color;
   final double? size;
+  final String? tooltip;
 
   CloseButtonConfiguration copyWith({
     bool? show,
     CloseButtonType? type,
     Color? color,
     double? size,
+    String? tooltip,
   }) {
     return CloseButtonConfiguration(
       show: show ?? this.show,
       type: type ?? this.type,
       color: color ?? this.color,
       size: size ?? this.size,
+      tooltip: tooltip ?? this.tooltip,
     );
   }
 }

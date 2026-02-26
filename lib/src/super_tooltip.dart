@@ -601,6 +601,7 @@ class _SuperTooltipState extends State<SuperTooltip>
             color: _effectiveCloseButtonColor,
           ),
           onPressed: _controller.hideTooltip,
+          tooltip: widget.closeButtonConfig.tooltip,
         ),
       ),
     );
