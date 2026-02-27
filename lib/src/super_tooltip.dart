@@ -549,7 +549,8 @@ class _SuperTooltipState extends State<SuperTooltip>
     _PositionData positionData,
   ) {
     return ShapeDecoration(
-      color: backgroundColor,
+      gradient: widget.style.gradient,
+      color: widget.style.gradient == null ? backgroundColor : null,
       shadows: widget.style.hasShadow
           ? widget.style.boxShadows ??
                 [

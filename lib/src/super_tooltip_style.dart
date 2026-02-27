@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class TooltipStyle {
   const TooltipStyle({
     this.backgroundColor,
+    this.gradient,
     this.borderColor = Colors.black,
     this.borderWidth = 0.0,
     this.borderRadius = 10.0,
@@ -18,6 +19,7 @@ class TooltipStyle {
   });
 
   final Color? backgroundColor;
+  final Gradient? gradient;
   final Color borderColor;
   final double borderWidth;
   final double borderRadius;
@@ -32,6 +34,7 @@ class TooltipStyle {
 
   TooltipStyle copyWith({
     Color? backgroundColor,
+    Gradient? gradient,
     Color? borderColor,
     double? borderWidth,
     double? borderRadius,
@@ -46,6 +49,7 @@ class TooltipStyle {
   }) {
     return TooltipStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      gradient: gradient ?? this.gradient,
       borderColor: borderColor ?? this.borderColor,
       borderWidth: borderWidth ?? this.borderWidth,
       borderRadius: borderRadius ?? this.borderRadius,
