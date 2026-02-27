@@ -15,17 +15,14 @@ class SuperToolTipPositionDelegate extends SingleChildLayoutDelegate {
     required this.left,
     required this.right,
     required this.target,
-    // @required this.verticalOffset,
     required this.overlay,
   });
-  // assert(verticalOffset != null);
 
   final bool snapsFarAwayVertically;
   final bool snapsFarAwayHorizontally;
   // TD: Make this EdgeInsets
   final double margin;
   final Offset target;
-  // final double verticalOffset;
   final RenderBox? overlay;
   final BoxConstraints constraints;
 
