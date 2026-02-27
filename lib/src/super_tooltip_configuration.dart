@@ -107,7 +107,6 @@ class PositionConfiguration {
     this.bottom,
     this.left,
     this.minimumOutsideMargin = 20.0,
-    this.verticalOffset = 0.0,
   });
 
   final TooltipDirection preferredDirection;
@@ -119,7 +118,6 @@ class PositionConfiguration {
   final double? bottom;
   final double? left;
   final double minimumOutsideMargin;
-  final double verticalOffset;
 
   PositionConfiguration copyWith({
     TooltipDirection? preferredDirection,
@@ -131,7 +129,6 @@ class PositionConfiguration {
     double? bottom,
     double? left,
     double? minimumOutsideMargin,
-    double? verticalOffset,
   }) {
     return PositionConfiguration(
       preferredDirection: preferredDirection ?? this.preferredDirection,
@@ -146,7 +143,6 @@ class PositionConfiguration {
       bottom: bottom ?? this.bottom,
       left: left ?? this.left,
       minimumOutsideMargin: minimumOutsideMargin ?? this.minimumOutsideMargin,
-      verticalOffset: verticalOffset ?? this.verticalOffset,
     );
   }
 }
